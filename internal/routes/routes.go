@@ -51,6 +51,7 @@ func NewRouter() *echo.Echo {
 
 	// API Routes
 	router.GET("/api/paste/:id", getPaste)
+	router.POST("/documents", createPaste) // Hastebin compatibility
 	router.POST("/api/upload", createPaste)
 
 	return router
