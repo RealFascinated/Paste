@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  paste:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: fascinated/paste-backend:latest
+    restart: always
+    environment:
+      - PASTE_ID_LENGTH=12
+      - MAX_PASTE_SIZE=5000000
+      - MONGO_URI=mongodb://root:root@mongo:27017
+    ports:
+      - "8080:8080"
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Paste</title>
+
+    <!-- TailwindCSS -->
+    <script src="/assets/external/tailwindcss.js"></script>
+
+    <!-- Toastify -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  </head>
+  <body class="bg-neutral-900 text-white">
+    <div class="p-3 h-screen w-screen relative">
+      <div class="flex gap-2 h-full w-full text-sm">
+        <p class="hidden md:block select-none pointer-events-none">&gt;</p>
+        <textarea
+          id="paste-input"
+          class="w-full h-full bg-background outline-none resize-none bg-transparent"
+          placeholder="Paste your code here..."
+        ></textarea>
+      </div>
+
+      <div class="absolute top-0 right-0 p-3">
+        <button id="paste-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+          Paste
+        </button>
+      </div>
+    </div>
+  </body>
+
+  <!-- Paste Script -->
+  <script src="/assets/script.js"></script>
+</html>

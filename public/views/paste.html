@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ index . "title" }}</title>
+
+    <!--  Meta tags for social media sharing -->
+    <meta content='{{ index . "title" }}' property="og:title" />
+    <meta content="Click to view the Paste." property="og:description" />
+
+    <!-- TailwindCSS -->
+    <script src="/assets/external/tailwindcss.js"></script>
+
+    <!-- Highlight.js -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  </head>
+  <body class="bg-neutral-900 text-white h-screen relative">
+    <pre><code class="bg-transparent text-sm">{{ index . "content" }}</code></pre>
+
+    <div class="absolute top-0 right-0 p-3">
+      <button id="raw-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+        <a href='{{ index . "rawUrl" }}'>Raw</a>
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+        <a href="/">New</a>
+      </button>
+    </div>
+  </body>
+  <script>
+    // Highlight the code block
+    hljs.highlightAll();
+
+    // Custom select all behavior to select all the content inside the <pre> block
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey && event.key === "a") {
+        event.preventDefault(); // Prevent the default select all behavior
+
+        // Select all the content inside the <pre> block
+        const preBlock = document.querySelector("pre");
+        const range = document.createRange();
+        range.selectNodeContents(preBlock);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    });
+  </script>
+</html>
