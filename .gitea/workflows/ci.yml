@@ -1,0 +1,33 @@
+name: Deploy App
+
+on:
+  push:
+    branches: ["master"]
+    paths-ignore:
+      - .gitignore
+      - README.md
+      - LICENSE
+      - docker-compose.yml
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        arch: ["ubuntu-latest"]
+        git-version: ["2.44.0"]
+    runs-on: ${{ matrix.arch }}
+
+    # Steps to run
+    steps:
+      # Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Deploy to Dokku
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@10.0.50.118:22/paste"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
