@@ -43,7 +43,7 @@ func NewRouter() *echo.Echo {
 	router.File("/", "public/views/index.html")
 
 	// Favicon
-	router.File("/favicon.ico", "public/favicon.ico")
+	router.File("/favicon.ico", "public/assets/favicon.ico")
 
 	// Site
 	router.GET("/:id", renderPaste)
