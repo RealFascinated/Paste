@@ -13,6 +13,7 @@ RUN make
 
 # Expose the port that the application listens on
 EXPOSE 8080
+ENV PORT=8080
 
 # Run the Go application
 CMD ["./bin/paste"]
