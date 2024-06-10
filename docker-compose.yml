@@ -4,7 +4,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: fascinated/paste-backend:latest
+    image: fascinated/paste:latest
     restart: always
     environment:
       - PASTE_ID_LENGTH=12
