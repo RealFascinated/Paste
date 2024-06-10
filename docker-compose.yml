@@ -10,6 +10,8 @@ services:
       - PASTE_ID_LENGTH=12
       - MAX_PASTE_SIZE=5000000
       - MONGO_URI=mongodb://root:root@mongo:27017
+    depends_on:
+      - mongo
     ports:
       - "8080:8080"
   mongo:
