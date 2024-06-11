@@ -9,3 +9,4 @@ type Paste struct {
 }
 
 var ErrPasteTooLarge = errors.New("Paste is too large")
+var ErrUnknownPaste = errors.New("Unknown Paste")
