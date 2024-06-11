@@ -4,12 +4,15 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: fascinated/paste:latest
+    image: fascinated/paste:latest-bray
     restart: always
     environment:
       - PASTE_ID_LENGTH=12
       - MAX_PASTE_SIZE=5000000
       - MONGO_URI=mongodb://root:root@mongo:27017
+      - REDIS_HOST=joe
+      - REDIS_PASSWORD=
+      - REDIS_DB=0
     depends_on:
       - mongo
     ports:

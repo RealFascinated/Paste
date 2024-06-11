@@ -6,8 +6,9 @@ import (
 	"time"
 
 	"cc.fascinated/paste/internal/config"
+	"cc.fascinated/paste/internal/database/mongo"
+	"cc.fascinated/paste/internal/database/redis"
 	"cc.fascinated/paste/internal/model"
-	"cc.fascinated/paste/internal/mongo"
 	stringUtils "cc.fascinated/paste/internal/utils"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -20,14 +21,40 @@ func GetPaste(id string) (*model.Paste, error) {
 	defer cancel()
 
 	var paste model.Paste
-	err := collection.FindOne(ctx, bson.M{"_id": id}).Decode(&paste)
-	if err != nil {
-		fmt.Printf("Unable to find paste \"%s\"\n", id)
-		return nil, err
+	var foundPaste bool
+
+	collection.FindOne(ctx, bson.M{"_id": id}).Decode(&paste)
+	if paste.ID != "" { // If the paste exists in MongoDB
+		paste.LineCount = getLineCount(&paste) // Get the number of lines in the paste
+		fmt.Printf("Found paste \"%s\" in %fms\n", id, time.Since(before).Seconds()*1000)
+		return &paste, nil
+	}
+
+	// !!!!!! THIS IS REALLY SHIT LOLLL !!!!!!!!!!!!!
+	redisClient := redis.GetDatabase()
+	pasteContent, _ := redisClient.Get(ctx, stringUtils.GetMD5Hash(id)).Result()
+	if pasteContent != "" { // If the paste exists in Redis
+		paste = model.Paste{
+			ID:      id,
+			Content: pasteContent,
+		}
+
+		// Add the paste to Mongo
+		_, err := collection.InsertOne(ctx, paste)
+		if err != nil {
+			return nil, err
+		}
+
+		foundPaste = true
+	}
+
+	// No paste found
+	if !foundPaste {
+		return nil, model.ErrUnknownPaste
 	}
 
 	paste.LineCount = getLineCount(&paste) // Get the number of lines in the paste
-	fmt.Printf("Found paste \"%s\" in %fms\n", id, time.Since(before).Seconds()*1000)
+	fmt.Printf("Found and migrated paste from redis \"%s\" in %fms\n", id, time.Since(before).Seconds()*1000)
 	return &paste, nil
 }
 

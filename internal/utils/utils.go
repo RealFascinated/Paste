@@ -1,6 +1,8 @@
 package stringUtils
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"math/rand"
 )
 
@@ -12,4 +14,10 @@ func RandomString(length int) string {
 		b[i] = charset[rand.Intn(len(charset))]
 	}
 	return string(b)
+}
+
+// Generates an MD5 hash of a given text
+func GetMD5Hash(text string) string {
+ hash := md5.Sum([]byte(text))
+ return hex.EncodeToString(hash[:])
 }
