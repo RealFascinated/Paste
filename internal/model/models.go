@@ -13,3 +13,4 @@ type Paste struct {
 
 var ErrPasteTooLarge = errors.New("Paste is too large")
 var ErrUnableToGeneratePasteKey = errors.New("Unable to generate a paste key")
+var ErrUnknownPaste = errors.New("Unknown Paste")
