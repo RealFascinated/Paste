@@ -86,7 +86,7 @@ func getNextPasteID() string {
 		id = stringUtils.RandomString(config.GetPasteIDLength())
 		currentIteration++
 	}
-	fmt.Printf("Generated paste key \"%s\"\n", id)
+	fmt.Printf("Generated paste key \"%s\" in %d iterations\n", id, currentIteration)
 	return id
 }
 
