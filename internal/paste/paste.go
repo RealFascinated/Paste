@@ -22,6 +22,7 @@ func GetPaste(id string) (*model.Paste, error) {
 		return nil, err
 	}
 
+	paste.LineCount = getLineCount(&paste) // Get the number of lines in the paste
 	return &paste, nil
 }
 
@@ -50,4 +51,15 @@ func CreatePaste(content string) (*model.Paste, error) {
 	}
 
 	return &paste, nil
+}
+
+// Gets the number of lines in a paste
+func getLineCount(paste *model.Paste) int {
+	lineCount := 1
+	for _, char := range paste.Content {
+		if char == '\n' {
+			lineCount++
+		}
+	}
+	return lineCount
 }

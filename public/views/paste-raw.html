@@ -8,6 +8,16 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{ index . "title" }}</title>
+
+    <!--  Meta tags for social media sharing -->
+    <meta content='{{ index . "title" }}' property="og:title" />
+    <meta
+      content='
+      {{ index . "totalLines" }} Total Lines
+    
+      Click to view the Paste.'
+      property="og:description"
+    />
   </head>
   <body>
     <pre><code>{{ index . "content" }}</code></pre>

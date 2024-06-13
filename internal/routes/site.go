@@ -25,6 +25,7 @@ func renderPaste(c echo.Context) error {
 		"title": "Paste - " + paste.ID,
 		"content": paste.Content,
 		"rawUrl": "/raw/" + paste.ID,
+		"lineCount": paste.LineCount,
 	})
 }
 
@@ -45,5 +46,6 @@ func renderPasteRaw(c echo.Context) error {
 	return c.Render(http.StatusOK, "paste-raw.html", map[string]interface{}{
 		"title": "Paste - " + paste.ID + " (Raw)",
 		"content": paste.Content,
+		"lineCount": paste.LineCount,
 	})
 }

@@ -11,7 +11,13 @@
 
     <!--  Meta tags for social media sharing -->
     <meta content='{{ index . "title" }}' property="og:title" />
-    <meta content="Click to view the Paste." property="og:description" />
+    <meta
+      content='
+      {{ index . "totalLines" }} Total Lines
+    
+      Click to view the Paste.'
+      property="og:description"
+    />
 
     <!-- TailwindCSS -->
     <script src="/assets/external/tailwindcss.js"></script>
