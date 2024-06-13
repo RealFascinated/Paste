@@ -45,9 +45,14 @@ func CreatePaste(content string) (*model.Paste, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	id := getNextPasteID()
+	if id == "" { // Unable to generate a paste key
+		return nil, model.ErrUnableToGeneratePasteKey
+	}
+
 	// Create a new paste
 	paste := model.Paste{
-		ID:      getNextPasteID(),
+		ID:      id,
 		Content: content,
 	}
 
@@ -64,15 +69,22 @@ func CreatePaste(content string) (*model.Paste, error) {
 // Get the next available paste ID
 func getNextPasteID() string {
 	id := stringUtils.RandomString(config.GetPasteIDLength())
+	currentIteration := 0
 
 	// Generate a new ID if the current one is already in use
 	for {
+		if currentIteration >= 100 {
+			fmt.Println("Unable to generate a unique paste key after 100 attempts, maybe increase the paste key length?")
+			return ""
+		}
+
 		_, err := mongo.GetCollection().FindOne(context.Background(), bson.M{"_id": id}).Raw()
 		if err != nil {
 			break
 		}
 		fmt.Printf("Paste key \"%s\" already in use\n", id)
 		id = stringUtils.RandomString(config.GetPasteIDLength())
+		currentIteration++
 	}
 	fmt.Printf("Generated paste key \"%s\"\n", id)
 	return id
