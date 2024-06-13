@@ -17,11 +17,11 @@
     <script src="/assets/external/tailwindcss.js"></script>
 
     <!-- Highlight.js -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="/assets/external/atom-one-dark.min.css" />
+    <script src="/assets/external/highlight.min.js"></script>
+
+    <!-- Highlight.js line numbers -->
+    <script src="/assets/external/highlightjs-line-numbers.min.js"></script>
   </head>
   <body class="bg-neutral-900 text-white h-screen relative">
     <pre><code class="bg-transparent text-sm">{{ index . "content" }}</code></pre>
@@ -36,8 +36,9 @@
     </div>
   </body>
   <script>
-    // Highlight the code block
-    hljs.highlightAll();
+    console.log(`Using Highlight.js version ${hljs.version}`);
+    hljs.highlightAll(); // Highlight the code block
+    hljs.initLineNumbersOnLoad(); // Add line numbers to the code block
 
     // Custom select all behavior to select all the content inside the <pre> block
     document.addEventListener("keydown", function (event) {
