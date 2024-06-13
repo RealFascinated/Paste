@@ -5,6 +5,12 @@ document.addEventListener("keydown", function (event) {
     event.preventDefault();
     upload();
   }
+
+  // Upload the paste when Ctrl + S is pressed
+  if (event.ctrlKey && event.key === "s") {
+    event.preventDefault();
+    upload();
+  }
 });
 
 // Upload the paste when the paste button is clicked
@@ -44,6 +50,6 @@ const toast = (message, duration = 3000) => {
     text: message,
     duration: duration,
     gravity: "bottom",
-    position: "right"
+    position: "right",
   }).showToast();
 };
