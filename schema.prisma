@@ -1,0 +1,17 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_URI")
+}
+
+generator db {
+  provider = "go run github.com/steebchen/prisma-client-go"
+}
+
+// The Pastes model is used to store the pastes that are created by the users.
+model Paste {
+  id        String  @id @map("_id")
+  content   String
+  lineCount Int
+
+  @@map("paste")
+}
