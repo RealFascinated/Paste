@@ -5,34 +5,31 @@ import (
 	"fmt"
 	"time"
 
+	"cc.fascinated/paste/db"
 	"cc.fascinated/paste/internal/config"
 	"cc.fascinated/paste/internal/model"
-	"cc.fascinated/paste/internal/mongo"
+	"cc.fascinated/paste/internal/prisma"
 	stringUtils "cc.fascinated/paste/internal/utils"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetPaste(id string) (*model.Paste, error) {
+func GetPaste(id string) (*db.PasteModel, error) {
 	fmt.Printf("Getting paste \"%s\"...\n", id)
 	before := time.Now()
-	collection := mongo.GetCollection()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	
+	paste, err := prisma.GetPrismaClient().Paste.FindFirst(db.PasteEqualsWhereParam(
+		db.Paste.ID.Equals(id),
+	)).Exec(context.Background())
 
-	var paste model.Paste
-	err := collection.FindOne(ctx, bson.M{"_id": id}).Decode(&paste)
 	if err != nil {
-		fmt.Printf("Unable to find paste \"%s\"\n", id)
 		return nil, err
 	}
 
-	paste.LineCount = getLineCount(&paste) // Get the number of lines in the paste
 	fmt.Printf("Found paste \"%s\" in %fms\n", id, time.Since(before).Seconds()*1000)
-	return &paste, nil
+	return paste, nil
 }
 
 // CreatePaste creates a new paste
-func CreatePaste(content string) (*model.Paste, error) {
+func CreatePaste(content string) (*db.PasteModel, error) {
 	fmt.Println("Creating paste...")
 	before := time.Now()
 	// Get the length of the content
@@ -41,29 +38,22 @@ func CreatePaste(content string) (*model.Paste, error) {
 		return nil, model.ErrPasteTooLarge
 	}
 
-	collection := mongo.GetCollection()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
 	id := getNextPasteID()
 	if id == "" { // Unable to generate a paste key
 		return nil, model.ErrUnableToGeneratePasteKey
 	}
 
-	// Create a new paste
-	paste := model.Paste{
-		ID:      id,
-		Content: content,
-	}
-
-	// Insert the paste into the database
-	_, err := collection.InsertOne(ctx, paste)
+	paste, err := prisma.GetPrismaClient().Paste.CreateOne(
+		db.Paste.ID.Set(id),
+		db.Paste.Content.Set(content),
+		db.Paste.LineCount.Set(getLineCount(content)),
+	).Exec(context.Background())
 	if err != nil {
 		return nil, err
 	}
 
 	fmt.Printf("Created paste \"%s\" in %fms\n", paste.ID, time.Since(before).Seconds()*1000)
-	return &paste, nil
+	return paste, nil
 }
 
 // Get the next available paste ID
@@ -78,10 +68,14 @@ func getNextPasteID() string {
 			return ""
 		}
 
-		_, err := mongo.GetCollection().FindOne(context.Background(), bson.M{"_id": id}).Raw()
+		// Check if the paste key is already in use
+		_, err := prisma.GetPrismaClient().Paste.FindFirst(db.PasteEqualsWhereParam(
+			db.Paste.ID.Equals(id),
+		)).Exec(context.Background())
 		if err != nil {
 			break
 		}
+
 		fmt.Printf("Paste key \"%s\" already in use\n", id)
 		id = stringUtils.RandomString(config.GetPasteIDLength())
 		currentIteration++
@@ -91,12 +85,6 @@ func getNextPasteID() string {
 }
 
 // Gets the number of lines in a paste
-func getLineCount(paste *model.Paste) int {
-	lineCount := 0
-	for _, char := range paste.Content {
-		if char == '\n' {
-			lineCount++
-		}
-	}
-	return lineCount
+func getLineCount(content string) int {
+	return len(stringUtils.SplitLines(content))
 }

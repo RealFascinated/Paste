@@ -5,7 +5,7 @@ import (
 
 	"cc.fascinated/paste/internal/config"
 	"cc.fascinated/paste/internal/metrics"
-	"cc.fascinated/paste/internal/mongo"
+	"cc.fascinated/paste/internal/prisma"
 	"cc.fascinated/paste/internal/routes"
 )
 
@@ -13,9 +13,10 @@ func main() {
 	fmt.Println("Starting Paste...")
 	router := routes.NewRouter()
 
-	_, err := mongo.ConnectMongo(config.GetMongoConnectionString())
+	// Connect to the Prisma database
+	err := prisma.ConnectPrisma()
 	if err != nil {
-		fmt.Printf("Error connecting to MongoDB: %v\n", err)
+		fmt.Println("Error connecting to the Prisma database:", err)
 		return
 	}
 
