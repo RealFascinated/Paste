@@ -11,7 +11,7 @@ generator db {
 model Paste {
   id        String  @id @map("_id")
   content   String
-  lineCount Int
+  lineCount Int     @default(0)
 
   @@map("paste")
 }
