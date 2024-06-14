@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  paste:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    # image: fascinated/paste:latest
+    restart: always
+    environment:
+      - PASTE_ID_LENGTH=12
+      - MAX_PASTE_SIZE=5000000
+      - MONGO_URI=mongodb://root:root@mongo:27017
+      - ENABLE_METRICS=true
+    depends_on:
+      - mongo
+      - prometheus
+    ports:
+      - "8080:8080"
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo:/data/db
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana-provisioning/dashboards:/var/lib/grafana/dashboards
+      - ./grafana-provisioning:/etc/grafana/provisioning
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=paste
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    depends_on:
+      - prometheus

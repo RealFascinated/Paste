@@ -5,6 +5,8 @@ import (
 	"io"
 	"net/http"
 
+	"cc.fascinated/paste/internal/config"
+	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -20,6 +22,8 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 // Creates a new router
 func NewRouter() *echo.Echo {
 	router := echo.New()
+
+	router.Use(echoprometheus.NewMiddleware("paste")) // adds middleware to gather metrics		
 
 	// Template Renderer
 	templates := &Template{
@@ -37,6 +41,10 @@ func NewRouter() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost},
 	}))
+
+	if config.EnableMetrics() { // Check if metrics are enabled
+		router.GET("/metrics", echoprometheus.NewHandler())
+	}
 
 	// Static Files
 	router.Static("/assets", "public/assets")

@@ -33,6 +33,11 @@ func GetMaxPasteLength() int {
 
 }
 
+// Whether to enable metrics or not (default: false)
+func EnableMetrics() bool {
+	return getEnv("ENABLE_METRICS", "false") == "true"
+}
+
 // Gets a key from the environment or returns a default value
 func getEnv(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {

@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 1m
+
+scrape_configs:
+  - job_name: "paste"
+    static_configs:
+      - targets: ["paste:8080"]
+    metrics_path: "/metrics"
