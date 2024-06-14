@@ -3,10 +3,13 @@ datasource db {
   url      = env("MONGO_URI")
 }
 
+<<<<<<< HEAD
 generator db {
   provider = "go run github.com/steebchen/prisma-client-go"
 }
 
+=======
+>>>>>>> 7846a7175903632c243d1dd41c7a54c5ba64a4fe
 // The Pastes model is used to store the pastes that are created by the users.
 model Paste {
   id        String  @id @map("_id")

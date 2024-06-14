@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"cc.fascinated/paste/internal/mongo"
+	"cc.fascinated/paste/internal/prisma"
 	"github.com/prometheus/client_golang/prometheus"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 var totalPastesCounter = prometheus.NewGauge(
@@ -33,8 +32,14 @@ func InitMetricsUpdater() {
 func updateMetrics() {
 	fmt.Println("Updating metrics...")
 	ctx := context.Background()
-	collection := mongo.GetCollection()
-	totalDocuments, _ := collection.CountDocuments(ctx, bson.M{})
 
-	totalPastesCounter.Set(float64(totalDocuments))
+	// todo: since this will grow and grow over time, we should probably
+	// use a count query instead but idk how to do that in prisma
+	pastes, err := prisma.GetPrismaClient().Paste.FindMany().Exec(ctx)
+	if err != nil {
+		fmt.Println("Error fetching pastes:", err)
+		return
+	}
+
+	totalPastesCounter.Set(float64(len(pastes)))
 }
