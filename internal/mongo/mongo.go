@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,6 +13,7 @@ var mongoClient *mongo.Client // MongoDB client
 
 // Connect to MongoDB
 func ConnectMongo(connectionString string) (*mongo.Client, error) {
+	fmt.Println("Connecting to MongoDB...")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -24,6 +26,8 @@ func ConnectMongo(connectionString string) (*mongo.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("Connected to MongoDB!")
 
 	mongoClient = client
 	return client, nil

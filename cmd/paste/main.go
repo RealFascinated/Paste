@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Starting Paste...")
 	router := routes.NewRouter()
 
 	_, err := mongo.ConnectMongo(config.GetMongoConnectionString())
