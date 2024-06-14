@@ -399,7 +399,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-24h",
     "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
@@ -407,6 +407,6 @@
   "timezone": "browser",
   "title": "Paste",
   "uid": "adopjlv6rsv7kf",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
