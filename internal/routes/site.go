@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Renders the paste content
 func renderPaste(c echo.Context) error {
 	// Get the paste ID
 	id := c.Param("id")
@@ -29,6 +30,7 @@ func renderPaste(c echo.Context) error {
 	})
 }
 
+// Renders the raw paste content
 func renderPasteRaw(c echo.Context) error {
 	// Get the paste ID
 	id := c.Param("id")

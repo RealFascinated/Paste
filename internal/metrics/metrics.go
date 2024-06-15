@@ -29,6 +29,7 @@ func InitMetricsUpdater() {
 	}()
 }
 
+// Updates the metrics
 func updateMetrics() {
 	fmt.Println("Updating metrics...")
 	ctx := context.Background()

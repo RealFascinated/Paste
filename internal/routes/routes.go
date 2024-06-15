@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// InitRoutes initializes the routes for the application.
+// Initializes the routes for the application.
 func InitRoutes(router *echo.Echo) {
 	if config.EnableMetrics() { // Check if metrics are enabled
 		router.GET("/metrics", echoprometheus.NewHandler())

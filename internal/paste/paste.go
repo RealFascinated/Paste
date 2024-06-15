@@ -13,6 +13,7 @@ import (
 	stringUtils "cc.fascinated/paste/internal/utils"
 )
 
+// Gets a paste by its ID
 func GetPaste(id string) (*db.PasteModel, error) {
 	fmt.Printf("Getting paste \"%s\"...\n", id)
 	before := time.Now()
