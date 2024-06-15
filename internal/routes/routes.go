@@ -19,6 +19,9 @@ func InitRoutes(router *echo.Echo) {
 	// Favicon
 	router.File("/favicon.ico", "public/assets/favicon.ico")
 
+	// Robots.txt
+	router.File("/robots.txt", "public/assets/robots.txt")
+
 	// Site
 	router.GET("/:id", renderPaste)
 	router.GET("/raw/:id", renderPasteRaw)
