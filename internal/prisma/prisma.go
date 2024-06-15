@@ -29,6 +29,7 @@ func ConnectPrisma() (err error) {
 	if err != nil {
 		return errors.ErrUnableToConnectToDatabase
 	}
+	prismaClient = client
 	return nil
 }
 
