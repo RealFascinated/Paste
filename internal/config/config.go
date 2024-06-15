@@ -30,6 +30,7 @@ func GetRedisDB() int {
 		fmt.Println("using fallback redis db index")
 		return 0
 	}
+	fmt.Printf("db id: %d\n", db)
 	return db
 }
 
