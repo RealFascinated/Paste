@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"strconv"
+	"fmt"
 )
 
 // Gets the mongo connection string from the environment or returns a default value
@@ -26,6 +27,7 @@ func GetRedisDB() int {
 	db, err := strconv.Atoi(dbStr)
 	if err != nil {
 		// handle the error, e.g. return a default value
+		fmt.Println("using fallback redis db index")
 		return 0
 	}
 	return db
