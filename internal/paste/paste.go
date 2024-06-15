@@ -32,8 +32,11 @@ func GetPaste(id string) (*model.Paste, error) {
 
 	// !!!!!! THIS IS REALLY SHIT LOLLL !!!!!!!!!!!!!
 	redisClient := redis.GetDatabase()
-	pasteContent, _ := redisClient.Get(ctx, stringUtils.GetMD5Hash(id)).Result()
-	if pasteContent != "" { // If the paste exists in Redis
+	pasteContent, err := redisClient.Get(ctx, stringUtils.GetMD5Hash(id)).Result()
+	if err != nil {
+		fmt.Printf("redis error: %s\n", err)
+	}
+	if pasteContent != "" && err == nil { // If the paste exists in Redis
 		paste = model.Paste{
 			ID:      id,
 			Content: pasteContent,
