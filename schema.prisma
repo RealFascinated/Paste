@@ -1,6 +1,7 @@
 datasource db {
   provider = "mongodb"
   url      = env("MONGO_URI")
+  // url      = "mongodb://paste:paste@localhost:27017/paste"
 }
 
 generator db {

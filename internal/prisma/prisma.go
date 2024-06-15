@@ -1,8 +1,14 @@
 package prisma
 
-import "cc.fascinated/paste/db"
+import (
+	"context"
+	"fmt"
 
-var prismaClient *db.PrismaClient;
+	"cc.fascinated/paste/db"
+	errors "cc.fascinated/paste/internal/error"
+)
+
+var prismaClient *db.PrismaClient; // Prisma client
 
 // Connects to the Prisma database
 func ConnectPrisma() (err error) {
@@ -10,7 +16,19 @@ func ConnectPrisma() (err error) {
 	if err := client.Prisma.Connect(); err != nil {
 		return err
 	}
-	prismaClient = client
+
+	// Defer the disconnect
+	defer func() {
+		if err := client.Prisma.Disconnect(); err != nil {
+			panic(fmt.Errorf("could not disconnect: %w", err))
+		}
+	}()
+
+	// Check if the database is connected
+	_, err = client.Paste.FindFirst().Exec(context.Background())
+	if err != nil {
+		return errors.ErrUnableToConnectToDatabase
+	}
 	return nil
 }
 

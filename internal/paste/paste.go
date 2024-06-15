@@ -3,11 +3,12 @@ package paste
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"cc.fascinated/paste/db"
 	"cc.fascinated/paste/internal/config"
-	"cc.fascinated/paste/internal/model"
+	errors "cc.fascinated/paste/internal/error"
 	"cc.fascinated/paste/internal/prisma"
 	stringUtils "cc.fascinated/paste/internal/utils"
 )
@@ -15,6 +16,10 @@ import (
 func GetPaste(id string) (*db.PasteModel, error) {
 	fmt.Printf("Getting paste \"%s\"...\n", id)
 	before := time.Now()
+
+	if strings.Contains(id, "/") { // This was causing a panic w/o it???????
+		return nil, errors.ErrInvalidPasteID
+	}
 	
 	paste, err := prisma.GetPrismaClient().Paste.FindFirst(db.PasteEqualsWhereParam(
 		db.Paste.ID.Equals(id),
@@ -35,12 +40,12 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 	// Get the length of the content
 	contentLength := len(content)
 	if contentLength > config.GetMaxPasteLength() {
-		return nil, model.ErrPasteTooLarge
+		return nil, errors.ErrPasteTooLarge
 	}
 
 	id := getNextPasteID()
 	if id == "" { // Unable to generate a paste key
-		return nil, model.ErrUnableToGeneratePasteKey
+		return nil, errors.ErrUnableToGeneratePasteKey
 	}
 
 	paste, err := prisma.GetPrismaClient().Paste.CreateOne(

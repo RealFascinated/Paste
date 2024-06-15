@@ -4,6 +4,8 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"strings"
+	"time"
 
 	"cc.fascinated/paste/internal/config"
 	"github.com/labstack/echo-contrib/echoprometheus"
@@ -22,8 +24,42 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 // Creates a new router
 func NewRouter() *echo.Echo {
 	router := echo.New()
+	router.HideBanner = true // Hide the banner
 
-	router.Use(echoprometheus.NewMiddleware("paste")) // adds middleware to gather metrics		
+	// Use Gzip Compression
+	router.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Skipper: func(c echo.Context) bool {
+			return strings.Contains(c.Path(), "metrics")
+		},
+	}))
+	router.Use(middleware.BodyLimit("1M")) // Limit the body size to 1MB
+	router.Use(echoprometheus.NewMiddleware("paste")) // adds middleware to gather metrics	
+
+	// Rate Limiter
+	router.Use(middleware.RateLimiterWithConfig( middleware.RateLimiterConfig{
+		Skipper: func(c echo.Context) bool {
+			if strings.Contains(c.Path(), "metrics") { // Skip rate limiter for metrics
+				return true
+			}
+			if c.Request().Method == http.MethodGet { // Skip rate limiter for GET requests
+				return true
+			}
+			return false
+		},
+		Store: middleware.NewRateLimiterMemoryStoreWithConfig(
+				middleware.RateLimiterMemoryStoreConfig{Rate: 10, Burst: 30, ExpiresIn: 3 * time.Minute},
+		),
+		IdentifierExtractor: func(ctx echo.Context) (string, error) {
+				id := ctx.RealIP()
+				return id, nil
+		},
+		ErrorHandler: func(context echo.Context, err error) error {
+				return context.JSON(http.StatusForbidden, nil)
+		},
+		DenyHandler: func(context echo.Context, identifier string,err error) error {
+				return context.JSON(http.StatusTooManyRequests, nil)
+		},
+	}))
 
 	// Template Renderer
 	templates := &Template{

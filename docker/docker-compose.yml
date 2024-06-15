@@ -19,6 +19,7 @@ services:
 
   mongo:
     image: "bitnami/mongodb:latest"
+    restart: always
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=10.0.0.86 # SET THIS TO THE MACHINES IP
       - MONGODB_REPLICA_SET_MODE=primary
@@ -39,6 +40,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/prometheus
 
   grafana:
     image: grafana/grafana:latest
