@@ -43,3 +43,81 @@ async function uploadPaste(content: string) {
 
 console.log(await uploadPaste("Hello, World!"));
 ```
+
+## Go Utility
+
+```go
+package main
+
+import (
+ "bytes"
+ "encoding/json"
+ "fmt"
+ "io/ioutil"
+ "net/http"
+)
+
+// PasteResponse represents the response from the paste API
+type PasteResponse struct {
+ Key  string `json:"key"`
+ URL  string `json:"url"`
+}
+
+func uploadPaste(content string) (*PasteResponse, error) {
+ url := "https://paste.fascinated.cc/api/upload"
+
+ // Create a new POST request with the content as the body
+ req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(content)))
+ if err != nil {
+  return nil, err
+ }
+
+ // Set the Content-Type header
+ req.Header.Set("Content-Type", "text/plain")
+
+ // Perform the request
+ client := &http.Client{}
+ resp, err := client.Do(req)
+ if err != nil {
+  return nil, err
+ }
+ defer resp.Body.Close()
+
+ // Read the response body
+ body, err := ioutil.ReadAll(resp.Body)
+ if err != nil {
+  return nil, err
+ }
+
+ // Check if the request was successful
+ if resp.StatusCode != http.StatusOK {
+  var errResponse map[string]interface{}
+  if err := json.Unmarshal(body, &errResponse); err != nil {
+   return nil, err
+  }
+  return nil, fmt.Errorf("error: %v", errResponse["message"])
+ }
+
+ // Parse the JSON response
+ var pasteResponse PasteResponse
+ if err := json.Unmarshal(body, &pasteResponse); err != nil {
+  return nil, err
+ }
+
+ // Add the URL field to the response
+ pasteResponse.URL = fmt.Sprintf("https://paste.fascinated.cc/%s", pasteResponse.Key)
+
+ return &pasteResponse, nil
+}
+
+func main() {
+ content := "Hello, World!"
+ response, err := uploadPaste(content)
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
+
+ fmt.Printf("URL: %s\n", response.URL)
+}
+```
