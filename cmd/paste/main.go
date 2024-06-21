@@ -90,7 +90,7 @@ func main() {
 		AllowMethods: []string{http.MethodGet, http.MethodPost},
 	}))
 
-	if config.EnableMetrics() {	// Check if metrics are enabled
+	if config.ENABLE_METRICS {	// Check if metrics are enabled
 		metrics.RegisterMetrics() // Register the metrics
 		metrics.InitMetricsUpdater() // Start the metrics updater
 	}

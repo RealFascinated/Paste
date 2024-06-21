@@ -40,7 +40,7 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 	before := time.Now()
 	// Get the length of the content
 	contentLength := len(content)
-	if contentLength > config.GetMaxPasteLength() {
+	if contentLength > config.MAX_PASTE_LENGTH {
 		return nil, errors.ErrPasteTooLarge
 	}
 
@@ -64,7 +64,7 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 
 // Get the next available paste ID
 func getNextPasteID() string {
-	id := stringUtils.RandomString(config.GetPasteIDLength())
+	id := stringUtils.RandomString(config.PASTE_ID_LENGTH)
 	currentIteration := 0
 
 	// Generate a new ID if the current one is already in use
@@ -83,7 +83,7 @@ func getNextPasteID() string {
 		}
 
 		fmt.Printf("Paste key \"%s\" already in use\n", id)
-		id = stringUtils.RandomString(config.GetPasteIDLength())
+		id = stringUtils.RandomString(config.PASTE_ID_LENGTH)
 		currentIteration++
 	}
 	fmt.Printf("Generated paste key \"%s\" in %d iterations\n", id, currentIteration)

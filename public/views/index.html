@@ -7,7 +7,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Paste</title>
+    <title>{{ index . "title" }}</title>
 
     <!--  Meta tags for social media sharing -->
     <meta content="Paste" property="og:title" />
@@ -27,7 +27,7 @@
         <textarea
           id="paste-input"
           class="w-full h-full bg-background outline-none resize-none bg-transparent"
-          placeholder="Paste your code here..."
+          placeholder='{{ index . "textboxPlaceholder" }}'
         ></textarea>
       </div>
 

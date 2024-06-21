@@ -2,6 +2,18 @@
 
 A simple pastebin service. Running at [paste.fascinated.cc](https://paste.fascinated.cc).
 
+## Environment Variables
+
+| Name                       | Description                               | Default                   |
+| -------------------------- | ----------------------------------------- | ------------------------- |
+| MONGO_URI                  | The MongoDB URI                           | mongodb://localhost:27017 |
+| PASTE_ID_LENGTH            | The length of the paste ID                | 12                        |
+| MAX_PASTE_LENGTH           | The maximum length of a paste             | 5000000                   |
+| ENABLE_METRICS             | Whether to enable Prometheus metrics      | false                     |
+| TEXTBOX_PLACEHOLDER        | The placeholder text for the textbox      | Enter your text here...   |
+| HASTEBIN_COMPATIBILITY_URL | The URL to use for Hastebin compatibility | /documents                |
+| SITE_TITLE                 | The title of the site                     | Paste                     |
+
 ## Javascript Utility
 
 ```js
