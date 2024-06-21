@@ -23,11 +23,11 @@ const upload = async () => {
 
   if (!paste || paste.trim() === "") {
     pasteInput.focus();
-    toast("Please enter a paste to upload.");
+    toast("Please enter text to upload.");
     return;
   }
 
-  console.log("Uploading paste...");
+  console.log("Creating paste...");
   try {
     const response = await fetch("/api/upload", {
       method: "POST",
@@ -41,7 +41,7 @@ const upload = async () => {
     window.location.href = "/" + data.key;
   } catch (error) {
     console.error("Error:", error);
-    toast(`${error.message || "An error occurred while uploading the paste."}`);
+    toast(`${error.message || "An error occurred while creating the paste."}`);
   }
 };
 
