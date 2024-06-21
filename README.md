@@ -13,6 +13,7 @@ A simple pastebin service. Running at [paste.fascinated.cc](https://paste.fascin
 | TEXTBOX_PLACEHOLDER        | The placeholder text for the textbox      | Enter your text here...   |
 | HASTEBIN_COMPATIBILITY_URL | The URL to use for Hastebin compatibility | /documents                |
 | SITE_TITLE                 | The title of the site                     | Paste                     |
+| ENABLE_LOGGING             | Whether to enable logging                 | true                      |
 
 ## Javascript Utility
 

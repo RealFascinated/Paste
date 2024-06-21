@@ -80,9 +80,11 @@ func main() {
 	router.Renderer = templates
 
 	// Middleware Logger
-	router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}\n",
-	}))
+	if config.ENABLE_LOGGING {
+		router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+			Format: "method=${method}, uri=${uri}, status=${status}\n",
+		}))
+	}
 
 	// CORS (Allow all origins)
 	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{

@@ -13,6 +13,7 @@ var (
 	TEXTBOX_PLACEHOLDER = getEnv("TEXTBOX_PLACEHOLDER", "Enter your text here...")
 	HASTEBIN_COMPATIBILITY_URL = getEnv("HASTEBIN_COMPATIBILITY_URL", "/documents")
 	SITE_TITLE = getEnv("SITE_TITLE", "Paste")
+	ENABLE_LOGGING = getBoolEnv("ENABLE_LOGGING", true)
 )
 
 // Returns the environment variable value or a default value if not set.
