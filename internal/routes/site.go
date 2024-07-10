@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"html"
 	"net/http"
 
 	"cc.fascinated/paste/internal/config"
@@ -35,7 +36,7 @@ func renderPaste(c echo.Context) error {
 	// Render the paste
 	return c.Render(http.StatusOK, "paste.html", map[string]interface{}{
 		"title": config.SITE_TITLE + " - " + paste.ID,
-		"content": paste.Content,
+		"content": html.EscapeString(paste.Content),
 		"rawUrl": "/raw/" + paste.ID,
 		"lineCount": paste.LineCount,
 		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
@@ -59,7 +60,7 @@ func renderPasteRaw(c echo.Context) error {
 	// Render the paste
 	return c.Render(http.StatusOK, "paste-raw.html", map[string]interface{}{
 		"title": config.SITE_TITLE + " - " + paste.ID + " (Raw)",
-		"content": paste.Content,
+		"content": html.EscapeString(paste.Content),
 		"lineCount": paste.LineCount,
 		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
 	})

@@ -13,10 +13,6 @@
     <meta content="Paste" property="og:title" />
     <meta content="Create, share and view code snippets with ease." property="og:description" />
 
-    <style>
-      @import url("/assets/font/JetBrainsMono-Regular.woff2");
-    </style>
-
     <!-- TailwindCSS -->
     <script src="/assets/external/tailwindcss.js"></script>
 
@@ -24,34 +20,35 @@
     <link rel="stylesheet" type="text/css" href="/assets/external/toastify.min.css" />
     <script type="text/javascript" src="/assets/external/toastify.js"></script>
 
-    <!-- Custom CSS -->
+    <!-- Custom Font -->
     <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("/assets/font/JetBrainsMono-Regular.woff2");
+      }
+
       * {
         font-family: "JetBrains Mono", monospace;
       }
     </style>
   </head>
-  <body class="bg-gray-800 text-white">
-    <div class="p-3 h-screen w-screen relative">
-      <div class="flex gap-2 h-[92vh] w-full text-sm">
-        <p class="hidden md:block select-none pointer-events-none">&gt;</p>
+  <body class="bg-gray-800 text-white h-screen flex flex-col">
+    <div class="flex justify-between py-2 px-4">
+      <p class="text-gray-300 font-bold">Paste</p>
+      <div class="flex gap-4">
+        <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
+        <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
+        <a class="text-gray-400 cursor-help">Raw Text</a>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col px-4">
+      <div class="flex gap-2 w-full h-full">
+        <p class="hidden md:block select-none pointer-events-none text-white">&gt;</p>
         <textarea
           id="paste-input"
-          class="w-full bg-background outline-none resize-none bg-transparent"
+          class="w-full h-full flex-1 bg-transparent outline-none resize-none text-white text-sm"
           placeholder='{{ index . "textboxPlaceholder" }}'
         ></textarea>
-      </div>
-
-      <div>
-        <div class="fixed bottom-0 left-0 px-4 py-3 flex gap-4">
-          <p class="text-gray-300 font-bold">Paste</p>
-        </div>
-
-        <div class="fixed bottom-0 right-0 px-4 py-3 flex gap-4">
-          <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
-          <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
-          <a class="text-gray-400 cursor-help">Raw Text</a>
-        </div>
       </div>
     </div>
   </body>

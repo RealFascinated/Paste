@@ -14,7 +14,10 @@ document.addEventListener("keydown", function (event) {
 });
 
 // Upload the paste when the paste button is clicked
-document.getElementById("paste-button").addEventListener("click", () => upload());
+const pasteButton = document.getElementById("paste-button");
+if (pasteButton != undefined) {
+  pasteButton.addEventListener("click", () => upload());
+}
 
 // Upload the paste to the server
 const upload = async () => {
