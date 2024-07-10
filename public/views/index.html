@@ -32,9 +32,11 @@
       }
     </style>
   </head>
-  <body class="bg-zinc-900 text-white h-screen flex flex-col">
-    <div class="flex justify-between py-2 px-4">
-      <p class="text-gray-300 font-bold">Paste</p>
+  <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
+    <div class="flex justify-between py-2 px-4 select-none">
+      <div class="flex gap-4 justify-center items-center">
+        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">Paste</a>
+      </div>
       <div class="flex gap-4">
         <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
         <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
@@ -46,7 +48,7 @@
         <p class="hidden md:block select-none pointer-events-none text-white">&gt;</p>
         <textarea
           id="paste-input"
-          class="w-full h-full flex-1 bg-transparent outline-none resize-none text-white text-sm"
+          class="w-full h-full flex-1 bg-transparent outline-none resize-none text-white"
           placeholder='{{ index . "textboxPlaceholder" }}'
         ></textarea>
       </div>
