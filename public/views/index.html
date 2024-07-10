@@ -13,28 +13,45 @@
     <meta content="Paste" property="og:title" />
     <meta content="Create, share and view code snippets with ease." property="og:description" />
 
+    <style>
+      @import url("/assets/font/JetBrainsMono-Regular.woff2");
+    </style>
+
     <!-- TailwindCSS -->
     <script src="/assets/external/tailwindcss.js"></script>
 
     <!-- Toastify -->
     <link rel="stylesheet" type="text/css" href="/assets/external/toastify.min.css" />
     <script type="text/javascript" src="/assets/external/toastify.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      * {
+        font-family: "JetBrains Mono", monospace;
+      }
+    </style>
   </head>
-  <body class="bg-neutral-900 text-white">
+  <body class="bg-gray-800 text-white">
     <div class="p-3 h-screen w-screen relative">
-      <div class="flex gap-2 h-full w-full text-sm">
+      <div class="flex gap-2 h-[92vh] w-full text-sm">
         <p class="hidden md:block select-none pointer-events-none">&gt;</p>
         <textarea
           id="paste-input"
-          class="w-full h-full bg-background outline-none resize-none bg-transparent"
+          class="w-full bg-background outline-none resize-none bg-transparent"
           placeholder='{{ index . "textboxPlaceholder" }}'
         ></textarea>
       </div>
 
-      <div class="absolute top-0 right-0 p-3">
-        <button id="paste-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
-          Paste
-        </button>
+      <div>
+        <div class="fixed bottom-0 left-0 px-4 py-3 flex gap-4">
+          <p class="text-gray-300 font-bold">Paste</p>
+        </div>
+
+        <div class="fixed bottom-0 right-0 px-4 py-3 flex gap-4">
+          <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
+          <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
+          <a class="text-gray-400 cursor-help">Raw Text</a>
+        </div>
       </div>
     </div>
   </body>
