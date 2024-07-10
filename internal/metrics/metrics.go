@@ -15,8 +15,15 @@ var totalPastesCounter = prometheus.NewGauge(
 		Help: "Total number of pastes",
 	})
 
+var avgPasteSize = prometheus.NewGauge(
+	prometheus.GaugeOpts{
+		Name: "avg_paste_size",
+		Help: "Average size of pastes",
+	})
+
 func RegisterMetrics() {
 	prometheus.Register(totalPastesCounter)
+	prometheus.Register(avgPasteSize)
 }
 
 // Starts the metrics updater (runs every 1 minute)
@@ -42,5 +49,12 @@ func updateMetrics() {
 		return
 	}
 
+	avgSize := 0
+	for _, paste := range pastes {
+		avgSize += paste.SizeBytes
+	}
+	avgSize /= len(pastes)
+
 	totalPastesCounter.Set(float64(len(pastes)))
+	avgPasteSize.Set(float64(avgSize))
 }
