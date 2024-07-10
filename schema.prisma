@@ -13,7 +13,7 @@ model Paste {
   id        String  @id @map("_id")
   content   String
   lineCount Int     @default(0)
-  sizeBytes String  @default("")
+  sizeBytes Int     @default(0)
 
   @@map("paste")
 }

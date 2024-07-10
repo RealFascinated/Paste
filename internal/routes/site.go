@@ -5,6 +5,7 @@ import (
 
 	"cc.fascinated/paste/internal/config"
 	"cc.fascinated/paste/internal/paste"
+	"cc.fascinated/paste/internal/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -37,7 +38,7 @@ func renderPaste(c echo.Context) error {
 		"content": paste.Content,
 		"rawUrl": "/raw/" + paste.ID,
 		"lineCount": paste.LineCount,
-		"sizeBytes": paste.SizeBytes,
+		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
 	})
 }
 
@@ -60,6 +61,6 @@ func renderPasteRaw(c echo.Context) error {
 		"title": config.SITE_TITLE + " - " + paste.ID + " (Raw)",
 		"content": paste.Content,
 		"lineCount": paste.LineCount,
-		"sizeBytes": paste.SizeBytes,
+		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
 	})
 }
