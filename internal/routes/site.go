@@ -36,6 +36,7 @@ func renderPaste(c echo.Context) error {
 	// Render the paste
 	return c.Render(http.StatusOK, "paste.html", map[string]interface{}{
 		"title": config.SITE_TITLE + " - " + paste.ID,
+		"siteName": config.SITE_TITLE,
 		"content": html.EscapeString(paste.Content),
 		"rawUrl": "/raw/" + paste.ID,
 		"lineCount": paste.LineCount,
@@ -60,6 +61,7 @@ func renderPasteRaw(c echo.Context) error {
 	// Render the paste
 	return c.Render(http.StatusOK, "paste-raw.html", map[string]interface{}{
 		"title": config.SITE_TITLE + " - " + paste.ID + " (Raw)",
+		"siteName": config.SITE_TITLE,
 		"content": html.EscapeString(paste.Content),
 		"lineCount": paste.LineCount,
 		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
