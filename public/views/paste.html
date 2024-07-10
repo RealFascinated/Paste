@@ -13,7 +13,8 @@
     <meta content='{{ index . "title" }}' property="og:title" />
     <meta
       content='
-      {{ index . "lineCount" }} Total Lines
+      Lines: {{ index . "lineCount" }}
+      Size: {{ index . "sizeBytes" }}
     
       Click to view the Paste.'
       property="og:description"

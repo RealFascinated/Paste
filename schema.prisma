@@ -1,7 +1,7 @@
 datasource db {
   provider = "mongodb"
-  url      = env("MONGO_URI")
-  // url      = "mongodb://paste:paste@localhost:27017/paste"
+  // url      = env("MONGO_URI")
+  url      = "mongodb://paste:paste@localhost:27017/paste"
 }
 
 generator db {
@@ -13,6 +13,7 @@ model Paste {
   id        String  @id @map("_id")
   content   String
   lineCount Int     @default(0)
+  sizeBytes String  @default("")
 
   @@map("paste")
 }

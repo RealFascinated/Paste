@@ -2,6 +2,7 @@ package prisma
 
 import (
 	"context"
+	"fmt"
 
 	"cc.fascinated/paste/db"
 	errors "cc.fascinated/paste/internal/error"
@@ -19,6 +20,7 @@ func ConnectPrisma() (err error) {
 	// Check if the database is connected
 	_, err = client.Paste.FindFirst().Exec(context.Background())
 	if err != nil {
+		fmt.Println("Error connecting to the Prisma database:", err)
 		return errors.ErrUnableToConnectToDatabase
 	}
 	prismaClient = client

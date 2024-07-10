@@ -37,6 +37,7 @@ func renderPaste(c echo.Context) error {
 		"content": paste.Content,
 		"rawUrl": "/raw/" + paste.ID,
 		"lineCount": paste.LineCount,
+		"sizeBytes": paste.SizeBytes,
 	})
 }
 
@@ -59,5 +60,6 @@ func renderPasteRaw(c echo.Context) error {
 		"title": config.SITE_TITLE + " - " + paste.ID + " (Raw)",
 		"content": paste.Content,
 		"lineCount": paste.LineCount,
+		"sizeBytes": paste.SizeBytes,
 	})
 }

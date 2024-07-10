@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017")
+	MONGO_URI = getEnv("MONGO_URI", "mongodb://paste:paste@localhost:27017/paste")
 	PASTE_ID_LENGTH = getIntEnv("PASTE_ID_LENGTH", 12)
 	MAX_PASTE_LENGTH = getIntEnv("MAX_PASTE_LENGTH", 5000000)
 	ENABLE_METRICS = getBoolEnv("ENABLE_METRICS", false)

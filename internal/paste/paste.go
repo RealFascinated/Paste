@@ -10,7 +10,9 @@ import (
 	"cc.fascinated/paste/internal/config"
 	errors "cc.fascinated/paste/internal/error"
 	"cc.fascinated/paste/internal/prisma"
+	"cc.fascinated/paste/internal/utils"
 	stringUtils "cc.fascinated/paste/internal/utils"
+	"github.com/DmitriyVTitov/size"
 )
 
 // Gets a paste by its ID
@@ -28,6 +30,19 @@ func GetPaste(id string) (*db.PasteModel, error) {
 
 	if err != nil {
 		return nil, err
+	}
+
+	// Update data if it's missing
+	if paste.SizeBytes == "" || paste.LineCount == 0 {
+		paste.SizeBytes = utils.FormatBytes(uint64(size.Of(paste.Content)))
+		_, err := prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Update(
+			db.Paste.SizeBytes.Set(paste.SizeBytes),
+			db.Paste.LineCount.Set(getLineCount(paste.Content)),
+		).Exec(context.Background())
+		if err != nil {
+			fmt.Println("Error updating paste size and line count:", err)
+			return nil, err
+		}
 	}
 
 	fmt.Printf("Found paste \"%s\" in %fms\n", id, time.Since(before).Seconds()*1000)
@@ -52,7 +67,7 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 	paste, err := prisma.GetPrismaClient().Paste.CreateOne(
 		db.Paste.ID.Set(id),
 		db.Paste.Content.Set(content),
-		db.Paste.LineCount.Set(getLineCount(content)),
+		db.Paste.SizeBytes.Set(utils.FormatBytes(uint64(size.Of(content)))),
 	).Exec(context.Background())
 	if err != nil {
 		return nil, err
