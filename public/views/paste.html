@@ -56,7 +56,7 @@
   <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
     <div class="flex justify-between py-2 px-4 select-none">
       <div class="flex gap-4 justify-center items-center">
-        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">Paste</a>
+        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "title" }}</a>
         <p class="text-gray-300 text-sm">{{ index . "sizeBytes" }}</p>
       </div>
       <div class="flex gap-4">

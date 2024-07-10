@@ -10,7 +10,7 @@
     <title>{{ index . "title" }}</title>
 
     <!--  Meta tags for social media sharing -->
-    <meta content="Paste" property="og:title" />
+    <meta content='{{ index . "title" }}' property="og:title" />
     <meta content="Create, share and view code snippets with ease." property="og:description" />
 
     <!-- TailwindCSS -->
@@ -35,7 +35,7 @@
   <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
     <div class="flex justify-between py-2 px-4 select-none">
       <div class="flex gap-4 justify-center items-center">
-        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">Paste</a>
+        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "title" }}</a>
       </div>
       <div class="flex gap-4">
         <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
