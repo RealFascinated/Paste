@@ -44,7 +44,7 @@ func updateMetrics() {
 
 	// todo: since this will grow and grow over time, we should probably
 	// use a count query instead but idk how to do that in prisma
-	pastes, err := prisma.GetPrismaClient().Paste.FindMany().Select(db.Paste.LineCount.Field()).Exec(ctx)
+	pastes, err := prisma.GetPrismaClient().Paste.FindMany().Select(db.Paste.SizeBytes.Field()).Exec(ctx)
 	if err != nil {
 		fmt.Println("Error fetching pastes:", err)
 		return
