@@ -14,6 +14,9 @@ RUN npx next telemetry disable
 # Copy the rest of the files
 COPY ./frontend ./
 
+# Build the frontend
+RUN pnpm build
+
 # Use the official Golang image as the base image
 FROM golang:latest AS builder
 
@@ -21,7 +24,7 @@ FROM golang:latest AS builder
 WORKDIR /app
 
 # Download the Paste dependencies
-COPY go.mod go.sum ./
+COPY ./backend/go.mod ./backend/go.sum ./
 RUN go mod download
 
 # Prefetch the binaries, so that they will be cached and not downloaded on each change
