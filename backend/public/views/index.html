@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ index . "title" }}</title>
+
+    <!--  Meta tags for social media sharing -->
+    <meta content='{{ index . "title" }}' property="og:title" />
+    <meta content="Create, share and view code snippets with ease." property="og:description" />
+
+    <!-- TailwindCSS -->
+    <script src="/assets/external/tailwindcss.js"></script>
+
+    <!-- Toastify -->
+    <link rel="stylesheet" type="text/css" href="/assets/external/toastify.min.css" />
+    <script type="text/javascript" src="/assets/external/toastify.js"></script>
+
+    <!-- Custom Font -->
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("/assets/font/JetBrainsMono-Regular.woff2");
+      }
+
+      * {
+        font-family: "JetBrains Mono", monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
+    <div class="flex justify-between py-2 px-4 select-none">
+      <div class="flex gap-4 justify-center items-center">
+        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "title" }}</a>
+
+        <!-- Expires in Dropdown -->
+        <div class="relative">
+          <button id="expires-button" class="text-gray-400 hover:text-blue-300 transition-all cursor-pointer">
+            Expires in 1 day
+          </button>
+          <div id="expires-dropdown" class="hidden absolute right-0 mt-2 w-32 bg-zinc-800 rounded-lg shadow-lg z-10">
+            <a class="block px-4 py-2 text-white hover:bg-zinc-700" data-expires="1">Expires in 1 day</a>
+            <a class="block px-4 py-2 text-white hover:bg-zinc-700" data-expires="7">Expires in 1 week</a>
+            <a class="block px-4 py-2 text-white hover:bg-zinc-700" data-expires="30">Expires in 1 month</a>
+            <a class="block px-4 py-2 text-white hover:bg-zinc-700" data-expires="0">Never expires</a>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <a id="paste-button" class="text-white hover:text-blue-300 transition-all cursor-default">Save</a>
+        <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
+        <a class="text-gray-400 cursor-help">Raw Text</a>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col px-4">
+      <div class="flex gap-2 w-full h-full">
+        <p class="hidden md:block select-none pointer-events-none text-white">&gt;</p>
+        <textarea
+          id="paste-input"
+          class="w-full h-full flex-1 bg-transparent outline-none resize-none text-white"
+          placeholder='{{ index . "textboxPlaceholder" }}'
+        ></textarea>
+      </div>
+    </div>
+  </body>
+
+  <!-- Script -->
+  <script src="/assets/index.js"></script>
+</html>

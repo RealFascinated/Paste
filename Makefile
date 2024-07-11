@@ -1,6 +1,5 @@
 # Variables
 TARGET = paste
-SRC_DIR = ./cmd/paste
 BUILD_DIR = ./bin
 
 # Detect the OS
@@ -29,6 +28,7 @@ build:
 
 # Run target
 run:
-	go run $(SRC_DIR)/main.go
+	@echo "Starting frontend and backend..."
+	@powershell -File run.ps1
 
 .PHONY: build test run
