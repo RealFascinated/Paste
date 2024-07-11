@@ -15,6 +15,7 @@ RUN npx next telemetry disable
 COPY ./frontend ./
 
 RUN ls -la ./src
+RUN ls -la ./src/common
 
 # Build the frontend
 RUN pnpm build
