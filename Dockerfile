@@ -40,7 +40,7 @@ RUN go run github.com/steebchen/prisma-client-go generate
 COPY ./Makefile ./
 
 # Build the Go application
-RUN make
+RUN go build -o ./bin/paste ./cmd/paste 
 
 # Expose the port that the application listens on
 EXPOSE 8080
