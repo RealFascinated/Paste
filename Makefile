@@ -1,5 +1,6 @@
 # Variables
 TARGET = paste
+SRC_DIR = ./backend/cmd/paste
 BUILD_DIR = ./bin
 
 # Detect the OS
