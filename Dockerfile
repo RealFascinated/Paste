@@ -1,7 +1,7 @@
 FROM fascinated/docker-images:node-pnpm-latest AS frontend
 
 ENV NODE_ENV=production
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json separately to fully utilize Docker layer caching
 COPY ./frontend/package.json ./
@@ -13,6 +13,8 @@ RUN npx next telemetry disable
 
 # Copy the rest of the files
 COPY ./frontend ./
+
+RUN ls -la
 
 # Build the frontend
 RUN pnpm build
