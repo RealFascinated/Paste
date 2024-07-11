@@ -4,8 +4,8 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json separately to fully utilize Docker layer caching
-COPY package.json ./
-COPY pnpm-lock.yaml ./
+COPY ./frontend/package.json ./
+COPY ./frontend/pnpm-lock.yaml ./
 RUN pnpm install --production --silent
 
 # Opt out of Next.js telemetry
