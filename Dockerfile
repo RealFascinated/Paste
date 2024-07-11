@@ -36,6 +36,9 @@ COPY ./backend ./
 # Generate the Prisma Client Go client
 RUN go run github.com/steebchen/prisma-client-go generate
 
+# Copy Makefile to the container
+COPY ./Makefile ./
+
 # Build the Go application
 RUN make
 
