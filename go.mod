@@ -8,7 +8,7 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/prometheus/client_golang v1.19.1
 	github.com/shopspring/decimal v1.4.0
-	github.com/steebchen/prisma-client-go v0.37.0
+	github.com/steebchen/prisma-client-go v0.38.0
 )
 
 require (
