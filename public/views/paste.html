@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ index . "title" }}</title>
+
+    <!--  Meta tags for social media sharing -->
+    <meta content='{{ index . "title" }}' property="og:title" />
+    <meta
+      content='
+      Lines: {{ index . "lineCount" }}
+      Size: {{ index . "sizeBytes" }}
+    
+      Click to view the Paste.'
+      property="og:description"
+    />
+
+    <!-- Custom Line Number CSS -->
+    <style>
+      .hljs-ln-code {
+        padding-left: 10px !important;
+      }
+
+      pre code.hljs {
+        padding-top: 0 !important;
+      }
+    </style>
+
+    <!-- TailwindCSS -->
+    <script src="/assets/external/tailwindcss.js"></script>
+
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="/assets/external/atom-one-dark.min.css" />
+    <script src="/assets/external/highlight.min.js"></script>
+
+    <!-- Highlight.js line numbers -->
+    <script src="/assets/external/highlightjs-line-numbers.min.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("/assets/font/JetBrainsMono-Regular.woff2");
+      }
+
+      * {
+        font-family: "JetBrains Mono", monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
+    <div class="flex justify-between py-2 px-4 select-none">
+      <div class="flex gap-4 justify-center items-center">
+        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "siteName" }}</a>
+        <p class="text-gray-300 text-sm">{{ index . "sizeBytes" }}</p>
+      </div>
+      <div class="flex gap-4">
+        <div class="flex gap-4">
+          <a class="text-gray-400 cursor-help">Save</a>
+          <a href="/" class="text-white hover:text-blue-300 transition-all cursor-default">New</a>
+          <a href='{{ index . "rawUrl" }}' class="text-white hover:text-blue-300 transition-all cursor-default"
+            >Raw Text</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col">
+      <div class="flex gap-2 w-full h-full">
+        <pre><code class="bg-transparent text-sm !overflow-x-hidden text-wrap break-all">{{ index . "content" }}</code></pre>
+      </div>
+    </div>
+  </body>
+
+  <!-- Script -->
+  <script src="/assets/paste.js"></script>
+  <script src="/assets/index.js"></script>
+</html>

@@ -1,3 +1,4 @@
+data
 bin/*
 docker/grafana/*
 docker/mongo/*

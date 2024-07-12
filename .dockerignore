@@ -1,4 +1,4 @@
-backend/db/*
+db/*
+bin/*
 .gitea/*
 docker/*
-run.ps1
