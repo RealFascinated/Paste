@@ -28,6 +28,7 @@ func GetPaste(id string) (*db.PasteModel, error) {
 	)).Exec(context.Background())
 
 	if err != nil {
+		fmt.Println("Error getting paste:", err)
 		return nil, err
 	}
 
