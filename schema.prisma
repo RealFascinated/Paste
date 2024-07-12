@@ -13,8 +13,8 @@ model Paste {
   content       String
   lineCount     Int       @default(0)
   sizeBytes     Int       @default(0)
-  expireSeconds Int       @default(0)
-  createdAt     DateTime  @default(now())
+  createdAt     Int       @default(0)
+  expireAt      Int       @default(0)
 
   @@map("paste")
 }
