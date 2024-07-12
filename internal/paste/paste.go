@@ -76,6 +76,16 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 		return nil, err
 	}
 
+	// Update the paste object
+	paste.SizeBytes = size.Of(content)
+	paste.LineCount = getLineCount(content)
+
+	// Save the new data
+	_, err = prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Update(
+		db.Paste.SizeBytes.Set(paste.SizeBytes),
+		db.Paste.LineCount.Set(paste.LineCount),
+	).Exec(context.Background())
+
 	fmt.Printf("Created paste \"%s\" in %fms\n", paste.ID, time.Since(before).Seconds()*1000)
 	return paste, nil
 }
