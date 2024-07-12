@@ -31,6 +31,21 @@ func GetPaste(id string) (*db.PasteModel, error) {
 		return nil, err
 	}
 
+	// Ensure the paste hasn't expired
+	if paste.ExpireSeconds > 0 {
+		if time.Since(paste.CreatedAt).Seconds() > float64(paste.ExpireSeconds) {
+			fmt.Printf("Paste \"%s\" has expired\n", id)
+
+			// Delete the paste
+			_, err := prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Delete().Exec(context.Background())
+			if err != nil {
+				fmt.Println("Error deleting expired paste:", err)
+				return nil, err
+			}
+			return nil, nil
+		}
+	}
+
 	// Update data if it's missing
 	// todo: CLEAN THIS UP AAAAAAAAHHHHHHHHHHHHHHHH
 	if paste.SizeBytes == 0 || paste.LineCount == 0 {
@@ -54,7 +69,7 @@ func GetPaste(id string) (*db.PasteModel, error) {
 }
 
 // CreatePaste creates a new paste
-func CreatePaste(content string) (*db.PasteModel, error) {
+func CreatePaste(content string, expireSeconds int) (*db.PasteModel, error) {
 	fmt.Println("Creating paste...")
 	before := time.Now()
 	// Get the length of the content
@@ -79,11 +94,15 @@ func CreatePaste(content string) (*db.PasteModel, error) {
 	// Update the paste object
 	paste.SizeBytes = size.Of(content)
 	paste.LineCount = getLineCount(content)
+	paste.CreatedAt = time.Now()
+	paste.ExpireSeconds = expireSeconds
 
 	// Save the new data
-	_, err = prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Update(
+	prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Update(
 		db.Paste.SizeBytes.Set(paste.SizeBytes),
 		db.Paste.LineCount.Set(paste.LineCount),
+		db.Paste.CreatedAt.Set(paste.CreatedAt),
+		db.Paste.ExpireSeconds.Set(paste.ExpireSeconds),
 	).Exec(context.Background())
 
 	fmt.Printf("Created paste \"%s\" in %fms\n", paste.ID, time.Since(before).Seconds()*1000)
@@ -116,6 +135,38 @@ func getNextPasteID() string {
 	}
 	fmt.Printf("Generated paste key \"%s\" in %d iterations\n", id, currentIteration)
 	return id
+}
+
+func ExpiredPasteRemoval() {
+	// Get all pastes that have an expiration time
+	pastes, err := prisma.GetPrismaClient().Paste.FindMany(
+		db.Paste.ExpireSeconds.Not(0),
+	).Exec(context.Background())
+	if err != nil {
+		fmt.Println("Error getting expiring pastes:", err)
+		return
+	}
+
+	fmt.Printf("Checking %d pastes for expiration...\n", len(pastes))
+
+	removedPastes := 0
+	// Iterate over all pastes
+	for _, paste := range pastes {
+		// Check if the paste has expired
+		if time.Since(paste.CreatedAt).Seconds() > float64(paste.ExpireSeconds) {
+			fmt.Printf("Deleting expired paste \"%s\"\n", paste.ID)
+
+			// Delete the paste
+			_, err := prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(paste.ID)).Delete().Exec(context.Background())
+			if err != nil {
+				fmt.Println("Error deleting expired paste:", err)
+			}
+
+			removedPastes++
+		}
+	}
+
+	fmt.Printf("Removed %d expired pastes\n", removedPastes)
 }
 
 // Gets the number of lines in a paste

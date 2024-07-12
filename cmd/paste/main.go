@@ -10,6 +10,7 @@ import (
 
 	"cc.fascinated/paste/internal/config"
 	"cc.fascinated/paste/internal/metrics"
+	"cc.fascinated/paste/internal/paste"
 	"cc.fascinated/paste/internal/prisma"
 	"cc.fascinated/paste/internal/routes"
 	"github.com/labstack/echo-contrib/echoprometheus"
@@ -98,6 +99,14 @@ func main() {
 	}
 
 	routes.InitRoutes(router) // Initialize the routes
+
+	// Handle auto deletion of expired pastes
+	go func() {
+		for {
+			paste.ExpiredPasteRemoval()	// Remove expired pastes
+			time.Sleep(1 * time.Minute)
+		}
+	}()
 
 	port := 8080
 	router.Logger.Fatal(router.Start(fmt.Sprintf(":%d", port)))
