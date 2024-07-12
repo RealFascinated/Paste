@@ -41,6 +41,7 @@ func renderPaste(c echo.Context) error {
 		"rawUrl": "/raw/" + paste.ID,
 		"lineCount": paste.LineCount,
 		"sizeBytes": utils.FormatBytes(uint64(paste.SizeBytes)),
+		"expiresAt": paste.ExpireAt,
 	})
 }
 

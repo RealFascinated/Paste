@@ -96,7 +96,11 @@ func CreatePaste(content string, expireSeconds int) (*db.PasteModel, error) {
 	paste.SizeBytes = size.Of(content)
 	paste.LineCount = getLineCount(content)
 	paste.CreatedAt = int(time.Now().UnixMilli())
-	paste.ExpireAt = int(time.Now().UnixMilli()) + expireSeconds * 1000
+	if expireSeconds > 0 {
+		paste.ExpireAt = int(time.Now().UnixMilli()) + expireSeconds * 1000
+	} else {
+		paste.ExpireAt = 0
+	}
 
 	// Save the new data
 	prisma.GetPrismaClient().Paste.FindMany(db.Paste.ID.Equals(id)).Update(

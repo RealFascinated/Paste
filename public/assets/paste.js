@@ -16,3 +16,19 @@ document.addEventListener("keydown", function (event) {
     selection.addRange(range);
   }
 });
+
+// Set the expires text
+document.addEventListener("DOMContentLoaded", function () {
+  const expires = document.getElementById("expires");
+  if (expires != undefined) {
+    const expiresContent = expires.textContent;
+    if (expiresContent == 0) {
+      const expiresParent = expires.parentElement;
+      expiresParent.style.display = "none";
+      return;
+    }
+    console.log(expiresContent);
+
+    expires.textContent = moment.unix(Number(expiresContent) / 1000).fromNow();
+  }
+});

@@ -41,6 +41,9 @@
     <!-- Highlight.js line numbers -->
     <script src="/assets/external/highlightjs-line-numbers.min.js"></script>
 
+    <!-- Moment.js -->
+    <script src="/assets/external/moment.min.js"></script>
+
     <!-- Custom CSS -->
     <style>
       @font-face {
@@ -55,9 +58,15 @@
   </head>
   <body class="bg-zinc-900 text-white h-screen flex flex-col text-sm">
     <div class="flex justify-between py-2 px-4 select-none">
-      <div class="flex gap-4 justify-center items-center">
-        <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "siteName" }}</a>
-        <p class="text-gray-300 text-sm">{{ index . "sizeBytes" }}</p>
+      <div class="flex-row md:flex gap-3 justify-center items-center">
+        <div class="flex gap-2 items-center">
+          <a href="/" class="text-gray-300 font-bold hover:text-blue-300 transition-all">{{ index . "siteName" }}</a>
+          <p class="text-gray-300 text-sm">{{ index . "sizeBytes" }}</p>
+        </div>
+        <div class="flex gap-2 items-center">
+          <p class="text-gray-300 text-sm">Expires:</p>
+          <p id="expires" class="text-gray-300 text-sm">{{ index . "expiresAt" }}</p>
+        </div>
       </div>
       <div class="flex gap-4">
         <div class="flex gap-4">
