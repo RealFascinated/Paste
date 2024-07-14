@@ -16,6 +16,12 @@ var totalPastesCounter = prometheus.NewGauge(
 		Help: "Total number of pastes",
 	})
 
+var totalLimitedTimePastesCounter = prometheus.NewGauge(
+	prometheus.GaugeOpts{
+		Name: "total_limited_time_pastes",
+		Help: "Total number of pastes with an expiration date",
+	})
+
 var avgPasteSizeCounter = prometheus.NewGauge(
 	prometheus.GaugeOpts{
 		Name: "avg_paste_size",
@@ -30,6 +36,7 @@ var avgLineCountCounter = prometheus.NewGauge(
 
 func RegisterMetrics() {
 	prometheus.Register(totalPastesCounter)
+	prometheus.Register(totalLimitedTimePastesCounter)
 	prometheus.Register(avgPasteSizeCounter)
 	prometheus.Register(avgLineCountCounter)
 }
@@ -60,15 +67,19 @@ func updateMetrics() {
 		return
 	}
 
-	avgSize, avgLineCount := 0, 0
+	avgSize, avgLineCount, limitedTimePastes := 0, 0, 0
 	for _, paste := range pastes {
 		avgSize += paste.SizeBytes
 		avgLineCount += paste.LineCount
+		if (paste.ExpireAt != 0) {
+			limitedTimePastes++
+		}
 	}
 	avgSize /= len(pastes)
 	avgLineCount /= len(pastes)
 
 	totalPastesCounter.Set(float64(len(pastes)))
+	totalLimitedTimePastesCounter.Set(float64(limitedTimePastes))
 	avgPasteSizeCounter.Set(float64(avgSize))
 	avgLineCountCounter.Set(float64(avgLineCount))
 }
