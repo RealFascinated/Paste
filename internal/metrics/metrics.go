@@ -61,6 +61,7 @@ func updateMetrics() {
 	pastes, err := prisma.GetPrismaClient().Paste.FindMany().Select(
 		db.Paste.SizeBytes.Field(),
 		db.Paste.LineCount.Field(),
+		db.Paste.ExpireAt.Field(),
 	).Exec(ctx)
 	if err != nil {
 		fmt.Println("Error fetching pastes:", err)
