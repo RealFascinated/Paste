@@ -270,6 +270,23 @@
           "range": true,
           "refId": "A",
           "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "paste-prometheus"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "total_limited_time_pastes",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Timed Pastes",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
         }
       ],
       "title": "Total Pastes",
@@ -604,6 +621,6 @@
   "timezone": "browser",
   "title": "Paste",
   "uid": "adopjlv6rsv7kf",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
