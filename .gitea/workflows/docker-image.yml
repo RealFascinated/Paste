@@ -22,9 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Get the commit hash
-      - uses: prompt/actions-commit-hash@v3
-
       # Login to Docker Hub
       - name: Login to Repo
         uses: docker/login-action@v3
@@ -45,4 +42,4 @@ jobs:
         with:
           push: true
           context: .
-          tags: fascinated/paste:${{ steps.commit.outputs.short }}
+          tags: fascinated/paste:${{ env.GITHUB_SHA }}
