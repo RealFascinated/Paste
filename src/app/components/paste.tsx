@@ -5,17 +5,22 @@ import { uploadPaste } from "@/app/common/api";
 import { redirect } from "next/navigation";
 import { Paste } from "@prisma/client";
 import { Navbar } from "@/app/components/navbar";
-import Form from "next/form";
+import { FormEvent } from "react";
+import { useToast } from "../hooks/use-toast";
 
 export function PastePage() {
   const { expiry } = usePasteExpiry();
+  const toast = useToast();
 
   /**
    * Creates a new paste.
    *
-   * @param form the form to create the paste with.
+   * @param event
    */
-  async function createPaste(form: FormData) {
+  async function createPaste(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = new FormData(event.target as HTMLFormElement);
     const content = form.get("content") as string;
     if (content == null || content.length == 0) {
       return;
@@ -26,6 +31,10 @@ export function PastePage() {
       paste = await uploadPaste(content, expiry);
     } catch (error) {
       console.error(error);
+      toast.toast({
+        title: "Error",
+        description: "Failed to upload paste",
+      });
     } finally {
       if (paste != null) {
         redirect(`/${paste.id}`);
@@ -34,7 +43,13 @@ export function PastePage() {
   }
 
   return (
-    <Form action={createPaste} className="flex flex-col min-h-screen">
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        createPaste(event);
+      }}
+      className="flex flex-col min-h-screen gap-1"
+    >
       <Navbar />
       <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-1 text-sm">
         <span>{">"}</span>
@@ -44,6 +59,6 @@ export function PastePage() {
           placeholder="Paste here..."
         />
       </div>
-    </Form>
+    </form>
   );
 }

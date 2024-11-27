@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ReactNode } from "react";
 import { TooltipProvider } from "@/app/components/ui/tooltip";
+import { ToastProvider } from "@/app/components/ui/toast";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -12,6 +13,10 @@ const siteFont = localFont({
 export const metadata: Metadata = {
   title: "Paste",
   description: "Free and open-source paste service",
+  openGraph: {
+    title: "Paste",
+    description: "Free and open-source paste service",
+  },
 };
 
 export default function RootLayout({
@@ -22,7 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${siteFont.className} antialiased`}>
-        <TooltipProvider>{children}</TooltipProvider>
+        <ToastProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </ToastProvider>
       </body>
     </html>
   );
