@@ -1,0 +1,25 @@
+name: Deploy Website
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+jobs:
+  docker:
+    runs-on: self-hosted
+
+    # Steps to run
+    steps:
+      # Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Deploy to Dokku
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@10.0.50.163:22/paste"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

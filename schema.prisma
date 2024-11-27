@@ -1,0 +1,30 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Paste {
+  // The paste's ID
+  id String @id
+
+  // The paste's content
+  content String
+
+  // The size of the paste in bytes
+  size Int
+
+  // The code language for the content
+  lang String
+
+  // When the paste will expire
+  expiresAt DateTime?
+
+  // When the paste was created
+  timestamp DateTime @default(now())
+
+  @@map("pastes")
+}

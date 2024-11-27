@@ -1,6 +1,8 @@
 import { createServer } from "http";
 import { parse } from "url";
 import next from "next";
+import { schedule } from "node-cron";
+import { expirePastes } from "@/app/common/prisma";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -22,6 +24,11 @@ app.prepare().then(() => {
         ` ${req.method} ${parsedUrl.path} in ${(performance.now() - before).toFixed(2)}ms`,
       );
     }
+
+    // Schedule the paste expiration every 5 minutes
+    schedule("*/5 * * * * *", async () => {
+      await expirePastes();
+    });
   }).listen(port);
 
   console.log(
