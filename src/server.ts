@@ -24,12 +24,12 @@ app.prepare().then(() => {
         ` ${req.method} ${parsedUrl.path} in ${(performance.now() - before).toFixed(2)}ms`,
       );
     }
-
-    // Schedule the paste expiration every 5 minutes
-    schedule("*/5 * * * * *", async () => {
-      await expirePastes();
-    });
   }).listen(port);
+
+  // Schedule the paste expiration every 5 minutes
+  schedule("*/5 * * * * *", async () => {
+    await expirePastes();
+  });
 
   console.log(
     `> Server listening at http://localhost:${port} as ${
