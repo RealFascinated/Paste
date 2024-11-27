@@ -20,12 +20,10 @@ export function PastePage() {
     if (content == null || content.length == 0) {
       return;
     }
-    const expiresAt =
-      expiry > 0 ? new Date(Date.now() + expiry * 1000) : undefined;
 
     let paste: Paste | null = null;
     try {
-      paste = await uploadPaste(content, expiresAt);
+      paste = await uploadPaste(content, expiry);
     } catch (error) {
       console.error(error);
     } finally {
@@ -36,7 +34,11 @@ export function PastePage() {
   }
 
   return (
-    <Form action={createPaste} className="flex flex-col min-h-screen">
+    <Form
+      action={createPaste}
+      // onSubmit={(event) => event.preventDefault()}
+      className="flex flex-col min-h-screen"
+    >
       <Navbar />
       <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-1 text-sm">
         <span>{">"}</span>

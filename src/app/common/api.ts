@@ -4,16 +4,16 @@ import { Paste } from "@prisma/client";
 /**
  * Uploads a new paste.
  *
- * @param content The content of the paste.
- * @param expiresAt The expiration date of the paste.
- * @returns The response from the server.
+ * @param content the content of the paste.
+ * @param expires the expiration time in seconds.
+ * @returns the response from the server.
  */
-export function uploadPaste(content: string, expiresAt?: Date) {
+export function uploadPaste(content: string, expires?: number) {
   return ky
     .post<Paste>("/api/upload", {
       body: content,
       searchParams: {
-        ...(expiresAt ? { expiresAt: expiresAt.toISOString() } : {}),
+        ...(expires ? { expires: expires } : {}),
       },
     })
     .json();
