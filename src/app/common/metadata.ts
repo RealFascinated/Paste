@@ -8,7 +8,10 @@ import { Metadata } from "next";
  */
 export function defaultMetadata(openGraph: boolean = true): Metadata {
   return {
-    title: "Paste",
+    title: {
+      default: "Paste",
+      template: "Paste - %s",
+    },
     description: "Free and open-source paste service",
     ...(openGraph && {
       openGraph: {

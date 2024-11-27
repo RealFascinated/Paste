@@ -1,29 +1,17 @@
 import { redirect } from "next/navigation";
-import { getPaste } from "@/app/common/prisma";
 import { Navbar } from "@/app/components/navbar";
 import Highlighter from "@/app/components/highlighter";
-import { cache } from "react";
-import { Paste } from "@prisma/client";
 import { Metadata } from "next";
 import { defaultMetadata } from "@/app/common/metadata";
 import { formatBytes } from "@/app/common/utils/string.util";
 import { getRelativeTime } from "@/app/common/utils/date.util";
+import { lookupPaste } from "@/app/common/utils/paste.util";
 
 type PasteProps = {
   params: Promise<{
     id: string;
   }>;
 };
-
-/**
- * Gets a paste from the cache or the database.
- *
- * @param id The ID of the paste to get.
- * @returns The paste with the given ID.
- */
-const lookupPaste = cache(async (id: string): Promise<Paste | null> => {
-  return getPaste(id);
-});
 
 export async function generateMetadata(props: PasteProps): Promise<Metadata> {
   const id = (await props.params).id;
@@ -32,15 +20,22 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     return defaultMetadata();
   }
 
+  const formattedId = `${paste.id}.${paste.lang}`;
   return {
     ...defaultMetadata(false),
+    title: formattedId,
     openGraph: {
-      title: `Paste - ${paste.id}`,
+      title: `Paste - ${formattedId}`,
       description: `
 Lines: ${paste.content.split("\n").length}
 Size: ${formatBytes(paste.size)}
-
-${paste.expiresAt !== null ? `Expires ${getRelativeTime(paste.expiresAt)}` : ""}
+Language: ${paste.formattedLang}
+${
+  paste.expiresAt !== null
+    ? `
+Expires ${getRelativeTime(paste.expiresAt)}`
+    : ""
+}
 Click to view the Paste.
 `,
     },
