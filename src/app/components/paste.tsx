@@ -52,7 +52,7 @@ export function PastePage() {
     >
       <Navbar />
       <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-1 text-sm">
-        <span>{">"}</span>
+        <span className="hidden sm:block">{">"}</span>
         <textarea
           name="content"
           className="w-full text-white bg-background resize-none select-none outline-none"
