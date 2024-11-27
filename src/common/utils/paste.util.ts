@@ -1,9 +1,8 @@
 import { cache } from "react";
 import { randomString } from "@/common/utils/string.util";
 import { Config } from "@/common/config";
-import { prismaClient } from "@/common/prisma";
+import { prismaClient, getPaste } from "@/common/prisma";
 import { PasteWithLang } from "@/types/paste";
-import { getPaste } from "@/common/api";
 import { getLanguageName } from "@/common/utils/lang.util";
 
 /**
