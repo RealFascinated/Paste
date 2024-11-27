@@ -1,6 +1,5 @@
 import ky from "ky";
 import { Paste } from "@prisma/client";
-import { Config } from "@/app/common/config";
 
 /**
  * Uploads a new paste.
@@ -11,7 +10,7 @@ import { Config } from "@/app/common/config";
  */
 export function uploadPaste(content: string, expiresAt?: Date) {
   return ky
-    .post<Paste>(`${Config.websiteUrl}/api/upload`, {
+    .post<Paste>("/api/upload", {
       body: content,
       searchParams: {
         ...(expiresAt ? { expiresAt: expiresAt.toISOString() } : {}),
@@ -27,5 +26,5 @@ export function uploadPaste(content: string, expiresAt?: Date) {
  * @returns The response from the server.
  */
 export function getPaste(id: string) {
-  return ky.get<Paste>(`${Config.websiteUrl}/api/paste/${id}`).json();
+  return ky.get<Paste>(`/api/paste/${id}`).json();
 }
