@@ -2,11 +2,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
-import { TooltipProvider } from "@/app/components/ui/tooltip";
-import { ToastProvider } from "@/app/components/ui/toast";
 import PlausibleProvider from "next-plausible";
 import Head from "next/head";
-import { defaultMetadata } from "@/app/common/metadata";
+import { defaultMetadata } from "@/common/metadata";
+import { ToastProvider } from "@/components/ui/toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",

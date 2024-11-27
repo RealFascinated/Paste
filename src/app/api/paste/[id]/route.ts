@@ -1,5 +1,5 @@
-import { getPaste } from "@/app/common/prisma";
 import { NextRequest } from "next/server";
+import { getPaste } from "@/common/prisma";
 
 export async function GET(
   request: NextRequest,

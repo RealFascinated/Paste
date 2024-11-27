@@ -1,9 +1,10 @@
-import { getPaste, prismaClient } from "@/app/common/prisma";
-import { randomString } from "@/app/common/utils/string.util";
-import { Config } from "@/app/common/config";
 import { cache } from "react";
-import { getLanguageName } from "@/app/common/utils/lang.util";
-import { PasteWithLang } from "@/app/types/paste";
+import { randomString } from "@/common/utils/string.util";
+import { Config } from "@/common/config";
+import { prismaClient } from "@/common/prisma";
+import { PasteWithLang } from "@/types/paste";
+import { getPaste } from "@/common/api";
+import { getLanguageName } from "@/common/utils/lang.util";
 
 /**
  * Generates a paste ID.

@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { Config } from "@/app/common/config";
-import { createPaste } from "@/app/common/prisma";
+import { Config } from "@/common/config";
+import { createPaste } from "@/common/prisma";
 
 /**
  * Handles the upload request.

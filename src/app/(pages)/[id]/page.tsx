@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
-import { Navbar } from "@/app/components/navbar";
-import Highlighter from "@/app/components/highlighter";
 import { Metadata } from "next";
-import { defaultMetadata } from "@/app/common/metadata";
-import { formatBytes } from "@/app/common/utils/string.util";
-import { getRelativeTime } from "@/app/common/utils/date.util";
-import { lookupPaste } from "@/app/common/utils/paste.util";
+import { lookupPaste } from "@/common/utils/paste.util";
+import { defaultMetadata } from "@/common/metadata";
+import { formatBytes } from "@/common/utils/string.util";
+import { getRelativeTime } from "@/common/utils/date.util";
+import { Navbar } from "@/components/navbar";
+import Highlighter from "@/components/highlighter";
 
 type PasteProps = {
   params: Promise<{

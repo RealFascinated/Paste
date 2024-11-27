@@ -1,12 +1,12 @@
 "use client";
 
-import { usePasteExpiry } from "@/app/providers/paste-expiry-provider";
-import { uploadPaste } from "@/app/common/api";
 import { redirect } from "next/navigation";
 import { Paste } from "@prisma/client";
-import { Navbar } from "@/app/components/navbar";
 import { FormEvent } from "react";
-import { useToast } from "../hooks/use-toast";
+import { usePasteExpiry } from "@/providers/paste-expiry-provider";
+import { useToast } from "@/hooks/use-toast";
+import { uploadPaste } from "@/common/api";
+import { Navbar } from "./navbar";
 
 export function PastePage() {
   const { expiry } = usePasteExpiry();

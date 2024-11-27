@@ -1,13 +1,13 @@
 "use client";
 
+import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/select";
-import { usePasteExpiry } from "@/app/providers/paste-expiry-provider";
+} from "./ui/select";
 
 type ExpiryOption = {
   value: number;

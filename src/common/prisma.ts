@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { generatePasteId } from "@/app/common/utils/paste.util";
-import { getLanguage } from "@/app/common/utils/lang.util";
+import { generatePasteId } from "@/common/utils/paste.util";
+import { getLanguage } from "@/common/utils/lang.util";
 
 export const prismaClient = new PrismaClient();
 

@@ -1,11 +1,11 @@
-import { formatBytes } from "@/app/common/utils/string.util";
 import Link from "next/link";
-import { Button } from "@/app/components/ui/button";
-import { Expiry } from "@/app/components/expiry";
-import { getRelativeTime } from "@/app/common/utils/date.util";
-import Tooltip from "@/app/components/tooltip";
-import { PasteWithLang } from "@/app/types/paste";
 import { ReactNode } from "react";
+import { PasteWithLang } from "@/types/paste";
+import { formatBytes } from "@/common/utils/string.util";
+import { getRelativeTime } from "@/common/utils/date.util";
+import Tooltip from "./tooltip";
+import { Expiry } from "@/components/expiry";
+import { Button } from "./ui/button";
 
 type PasteDetails = {
   render: (paste: PasteWithLang) => string | ReactNode;

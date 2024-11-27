@@ -1,5 +1,5 @@
+import { lookupPaste } from "@/common/utils/paste.util";
 import { redirect } from "next/navigation";
-import { getPaste } from "@/app/common/prisma";
 
 type PasteRawProps = {
   params: Promise<{
@@ -9,7 +9,7 @@ type PasteRawProps = {
 
 export default async function PasteRaw({ params }: PasteRawProps) {
   const id = (await params).id;
-  const paste = await getPaste(id);
+  const paste = await lookupPaste(id);
   if (paste == null) {
     return redirect("/");
   }

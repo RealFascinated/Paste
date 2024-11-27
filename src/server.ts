@@ -2,7 +2,7 @@ import { createServer } from "http";
 import { parse } from "url";
 import next from "next";
 import { schedule } from "node-cron";
-import { expirePastes } from "@/app/common/prisma";
+import { expirePastes } from "@/common/prisma";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";

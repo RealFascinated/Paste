@@ -1,5 +1,5 @@
-import { PasteExpiryProvider } from "@/app/providers/paste-expiry-provider";
-import { PastePage } from "@/app/components/paste";
+import { PastePage } from "@/components/paste";
+import { PasteExpiryProvider } from "@/providers/paste-expiry-provider";
 
 export default function Home() {
   return (
