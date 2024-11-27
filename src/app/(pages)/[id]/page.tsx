@@ -7,6 +7,7 @@ import { Paste } from "@prisma/client";
 import { Metadata } from "next";
 import { defaultMetadata } from "@/app/common/metadata";
 import { formatBytes } from "@/app/common/utils/string.util";
+import { getRelativeTime } from "@/app/common/utils/date.util";
 
 type PasteProps = {
   params: Promise<{
@@ -39,6 +40,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
 Lines: ${paste.content.split("\n").length}
 Size: ${formatBytes(paste.size)}
 
+${paste.expiresAt !== null ? `Expires ${getRelativeTime(paste.expiresAt)}` : ""}
 Click to view the Paste.
 `,
     },
