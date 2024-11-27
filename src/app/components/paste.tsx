@@ -34,11 +34,7 @@ export function PastePage() {
   }
 
   return (
-    <Form
-      action={createPaste}
-      // onSubmit={(event) => event.preventDefault()}
-      className="flex flex-col min-h-screen"
-    >
+    <Form action={createPaste} className="flex flex-col min-h-screen">
       <Navbar />
       <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-1 text-sm">
         <span>{">"}</span>

@@ -13,7 +13,7 @@ export function uploadPaste(content: string, expires?: number) {
     .post<Paste>("/api/upload", {
       body: content,
       searchParams: {
-        ...(expires ? { expires: expires } : {}),
+        ...(expires && expires > 0 ? { expires: expires } : {}),
       },
     })
     .json();
