@@ -19,7 +19,7 @@ app.prepare().then(() => {
     await handle(req, res, parsedUrl);
 
     // Log the request to the console
-    if (!dev) {
+    if (!dev && !parsedUrl.path?.includes("_next")) {
       console.log(
         ` ${req.method} ${parsedUrl.path} in ${(performance.now() - before).toFixed(2)}ms`,
       );
