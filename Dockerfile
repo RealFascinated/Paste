@@ -13,7 +13,7 @@ RUN bun install
 FROM base AS build
 WORKDIR /app
 COPY . .
-RUN bun build
+RUN bun run build
 
 # Expose the app port
 EXPOSE 3000
