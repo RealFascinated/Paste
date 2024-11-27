@@ -13,7 +13,7 @@ const siteFont = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = defaultMetadata;
+export const metadata: Metadata = defaultMetadata();
 
 export default function RootLayout({
   children,

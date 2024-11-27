@@ -29,11 +29,11 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
   const id = (await props.params).id;
   const paste = await lookupPaste(id);
   if (paste == null) {
-    return defaultMetadata;
+    return defaultMetadata();
   }
 
   return {
-    ...defaultMetadata,
+    ...defaultMetadata(false),
     openGraph: {
       title: `Paste - ${paste.id}`,
       description: `
