@@ -19,7 +19,7 @@ export default async function Paste({ params }: PasteProps) {
   return (
     <main className="flex flex-col gap-1 min-h-screen">
       <Navbar paste={paste} />
-      <div className="overflow-x-auto h-full flex flex-grow w-full">
+      <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
         <Highlighter language={paste.lang}>{paste.content}</Highlighter>
       </div>
     </main>
