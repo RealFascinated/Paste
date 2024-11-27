@@ -5,12 +5,13 @@ import { Expiry } from "@/app/components/expiry";
 import { getRelativeTime } from "@/app/common/utils/date.util";
 import Tooltip from "@/app/components/tooltip";
 import { PasteWithLang } from "@/app/types/paste";
+import { ReactNode } from "react";
 
-type NavbarProps = {
-  paste?: PasteWithLang;
+type PasteDetails = {
+  render: (paste: PasteWithLang) => string | ReactNode;
 };
 
-const pasteDetails = [
+const pasteDetails: PasteDetails[] = [
   {
     render: (paste: PasteWithLang) => formatBytes(paste.size),
   },
@@ -39,12 +40,14 @@ function PasteDetails({ paste }: { paste?: PasteWithLang }) {
       {paste ? (
         <>
           {pasteDetails.map((detail, index) => {
+            const rendered = detail.render(paste);
+            if (rendered == undefined) {
+              return undefined;
+            }
+
             return (
-              <div
-                key={detail.render.toString()}
-                className="flex flex-row gap-1"
-              >
-                {detail.render(paste)}
+              <div key={index} className="flex flex-row gap-1">
+                {rendered}
                 {index !== pasteDetails.length - 1 && <p>|</p>}
               </div>
             );
@@ -56,6 +59,10 @@ function PasteDetails({ paste }: { paste?: PasteWithLang }) {
     </div>
   );
 }
+
+type NavbarProps = {
+  paste?: PasteWithLang;
+};
 
 export function Navbar({ paste }: NavbarProps) {
   return (
