@@ -44,9 +44,9 @@ export function PastePage() {
 
   return (
     <form
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        createPaste(event);
+        await createPaste(event);
       }}
       className="flex flex-col min-h-screen gap-1"
     >
