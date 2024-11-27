@@ -2,6 +2,11 @@ import { redirect } from "next/navigation";
 import { getPaste } from "@/app/common/prisma";
 import { Navbar } from "@/app/components/navbar";
 import Highlighter from "@/app/components/highlighter";
+import { cache } from "react";
+import { Paste } from "@prisma/client";
+import { Metadata } from "next";
+import { defaultMetadata } from "@/app/common/metadata";
+import { formatBytes } from "@/app/common/utils/string.util";
 
 type PasteProps = {
   params: Promise<{
@@ -9,9 +14,40 @@ type PasteProps = {
   }>;
 };
 
-export default async function Paste({ params }: PasteProps) {
+/**
+ * Gets a paste from the cache or the database.
+ *
+ * @param id The ID of the paste to get.
+ * @returns The paste with the given ID.
+ */
+const lookupPaste = cache(async (id: string): Promise<Paste | null> => {
+  return getPaste(id);
+});
+
+export async function generateMetadata(props: PasteProps): Promise<Metadata> {
+  const id = (await props.params).id;
+  const paste = await lookupPaste(id);
+  if (paste == null) {
+    return defaultMetadata;
+  }
+
+  return {
+    ...defaultMetadata,
+    openGraph: {
+      title: `Paste - ${paste.id}`,
+      description: `
+Lines: ${paste.content.split("\n").length}
+Size: ${formatBytes(paste.size)}
+
+Click to view the Paste.
+`,
+    },
+  };
+}
+
+export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
-  const paste = await getPaste(id);
+  const paste = await lookupPaste(id);
   if (paste == null) {
     return redirect("/");
   }

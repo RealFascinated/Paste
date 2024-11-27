@@ -6,20 +6,14 @@ import { TooltipProvider } from "@/app/components/ui/tooltip";
 import { ToastProvider } from "@/app/components/ui/toast";
 import PlausibleProvider from "next-plausible";
 import Head from "next/head";
+import { defaultMetadata } from "@/app/common/metadata";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Paste",
-  description: "Free and open-source paste service",
-  openGraph: {
-    title: "Paste",
-    description: "Free and open-source paste service",
-  },
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
