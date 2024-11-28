@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, Suspense, useEffect } from "react";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { toast } from "@/hooks/use-toast";
 import { uploadPaste } from "@/common/api";
@@ -12,6 +12,14 @@ import { Paste } from "@/types/paste";
 import { Footer } from "@/components/footer";
 
 export default function PasteCreatePage() {
+  return (
+    <Suspense>
+      <Page />
+    </Suspense>
+  );
+}
+
+function Page() {
   const searchParams = useSearchParams();
   const { expiry } = usePasteExpiry();
 
