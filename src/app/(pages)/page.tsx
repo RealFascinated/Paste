@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { redirect, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect } from "react";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
