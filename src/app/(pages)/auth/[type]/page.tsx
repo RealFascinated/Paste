@@ -33,10 +33,10 @@ export default async function Auth({ params }: AuthProps) {
   }
 
   return (
-    <main className="items-center justify-center w-full h-full flex flex-grow">
+    <div className="items-center justify-center w-full h-full flex flex-grow">
       <div className="bg-background-secondary rounded-md p-3 w-[400px]">
         {auth.render()}
       </div>
-    </main>
+    </div>
   );
 }

@@ -17,6 +17,13 @@ const pasteDetails: PasteDetails[] = [
     render: (paste: Paste) => formatBytes(paste.size),
   },
   {
+    render: (paste: Paste) =>
+      `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
+  },
+  {
+    render: (paste: Paste) => <PasteCreatedTime createdAt={paste.timestamp} />,
+  },
+  {
     render: (paste: Paste) => {
       if (paste.expiresAt === null) {
         return undefined;
@@ -31,20 +38,13 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     render: (paste: Paste) =>
-      `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
-  },
-  {
-    render: (paste: Paste) => <PasteCreatedTime createdAt={paste.timestamp} />,
-  },
-  {
-    render: (paste: Paste) =>
       paste.ext === "txt" ? "Plain Text" : paste.formattedLang,
   },
 ];
 
 function PasteDetails({ paste }: { paste: Paste }) {
   return (
-    <div className="text-xs flex gap-1 items-center flex-wrap">
+    <div className="text-xs flex gap-1 items-center justify-center flex-wrap">
       {pasteDetails.map((detail, index) => {
         const rendered = detail.render(paste);
         if (rendered == undefined) {
@@ -68,7 +68,7 @@ type FooterProps = {
 
 export function Footer({ paste }: FooterProps) {
   return (
-    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none flex justify-between items-center">
+    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none flex flex-col-reverse md:flex-row justify-between items-center">
       {paste && <PasteDetails paste={paste} />}
 
       <>
