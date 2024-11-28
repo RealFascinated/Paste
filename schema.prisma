@@ -36,6 +36,8 @@ model Paste {
   @@map("pastes")
 }
 
+// ---- Better Auth ----
+
 model User {
   id            String    @id
   name          String

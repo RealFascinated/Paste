@@ -29,7 +29,8 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
-    render: (paste: Paste) => `${formatNumber(paste.views)} Views`,
+    render: (paste: Paste) =>
+      `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
   },
   {
     render: (paste: Paste) =>
