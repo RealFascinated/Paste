@@ -16,6 +16,8 @@ import Link from "next/link";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import Tooltip from "@/components/tooltip";
 import { getRelativeTime } from "@/common/utils/date.util";
+import { useSearchParams } from "next/navigation";
+import usePageNavigation from "@/hooks/use-page-navigation";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -50,7 +52,12 @@ const pasteDetails: PasteDetails[] = [
 ];
 
 export function PastesDashboard() {
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const { navigateToPage } = usePageNavigation();
+
+  const [page, setPage] = useState(
+    searchParams.get("page") ? Number(searchParams.get("page")) : 1,
+  );
   const [pastes, setPastes] = useState<Page<Paste> | null>(null);
 
   const { data, isLoading } = useQuery({
@@ -61,8 +68,9 @@ export function PastesDashboard() {
   useEffect(() => {
     if (data) {
       setPastes(data);
+      navigateToPage(`/dashboard/pastes${page > 1 ? `?page=${page}` : ""}`);
     }
-  }, [data]);
+  }, [data, navigateToPage, page]);
 
   return (
     <div className="flex flex-col gap-4">
