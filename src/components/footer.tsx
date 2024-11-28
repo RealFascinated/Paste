@@ -7,6 +7,7 @@ import Tooltip from "./tooltip";
 import { Expiry } from "@/components/expiry";
 import { Button } from "@/components/button";
 import { PasteCreatedTime } from "@/components/paste/created-time";
+import { DownloadPasteButton } from "@/components/paste/download-button";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -68,12 +69,16 @@ type FooterProps = {
 
 export function Footer({ paste }: FooterProps) {
   return (
-    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none flex flex-col-reverse md:flex-row justify-between items-center">
+    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col-reverse md:flex-row justify-between items-center text-sm">
       {paste && <PasteDetails paste={paste} />}
 
       <>
         {paste ? (
           <div className="flex gap-2">
+            <DownloadPasteButton paste={paste} />
+            <Link href={`/?content=${encodeURI(paste.content)}`}>
+              <Button>Copy</Button>
+            </Link>
             <Link href={`/raw/${paste.id}.${paste.ext}`}>
               <Button>Raw</Button>
             </Link>

@@ -7,7 +7,7 @@ type PasteRawProps = {
   }>;
 };
 
-export default async function PasteRaw({ params }: PasteRawProps) {
+export default async function RawPage({ params }: PasteRawProps) {
   const id = (await params).id;
   const paste = await lookupPaste(id);
   if (paste == null) {

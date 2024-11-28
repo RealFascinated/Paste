@@ -25,7 +25,7 @@ const authTypes: AuthType[] = [
   },
 ];
 
-export default async function Auth({ params }: AuthProps) {
+export default async function AuthPage({ params }: AuthProps) {
   const type = (await params).type;
   const auth = authTypes.find((auth) => auth.type === type);
   if (auth == null) {
