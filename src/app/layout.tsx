@@ -6,8 +6,7 @@ import { defaultMetadata } from "@/common/metadata";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import Script from "next/script";
-import { Navbar } from "@/components/navbar/navbar";
-import { PasteExpiryProvider } from "@/providers/paste-expiry-provider";
+import { QueryProvider } from "@/providers/query-provider";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -32,12 +31,11 @@ export default function RootLayout({
       <body className={`${siteFont.className} antialiased w-full h-full`}>
         <Toaster />
         <TooltipProvider>
-          <PasteExpiryProvider>
+          <QueryProvider>
             <main className="flex flex-col min-h-screen text-white w-full">
-              <Navbar />
               {children}
             </main>
-          </PasteExpiryProvider>
+          </QueryProvider>
         </TooltipProvider>
       </body>
     </html>

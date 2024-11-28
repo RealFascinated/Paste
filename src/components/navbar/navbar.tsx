@@ -1,16 +1,37 @@
-import { AuthButton } from "@/components/auth/auth-button";
 import { HomeButton } from "@/components/navbar/home-button";
+import { auth } from "@/common/auth";
+import { headers } from "next/headers";
+import Link from "next/link";
+import { Button } from "@/components/button";
+import { SignoutButton } from "@/components/auth/signout-button";
 
-export function Navbar() {
+export async function Navbar() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
-    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none">
-      <div className="flex justify-between items-center">
+    <div>
+      <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary flex justify-between items-center h-full">
         <div className="flex flex-row gap-3 items-center">
           <HomeButton />
         </div>
 
-        <div className="flex gap-2">
-          <AuthButton />
+        <div className="flex gap-2 items-center">
+          {session == null ? (
+            <>
+              <Link href="/auth/login">
+                <Button>Login</Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/dashboard">
+                <Button>Dashboard</Button>
+              </Link>
+              <SignoutButton />
+            </>
+          )}
         </div>
       </div>
     </div>

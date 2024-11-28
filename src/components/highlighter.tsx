@@ -4,13 +4,13 @@ import React from "react";
 import { Highlight, themes } from "prism-react-renderer";
 
 type HighlighterProps = {
-  children: string;
+  content: string;
   language: string;
 };
 
-export default function Highlighter({ children, language }: HighlighterProps) {
+export default function Highlighter({ content, language }: HighlighterProps) {
   return (
-    <Highlight theme={themes.oneDark} code={children} language={language}>
+    <Highlight theme={themes.oneDark} code={content} language={language}>
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={{

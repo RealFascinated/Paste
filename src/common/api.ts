@@ -1,5 +1,7 @@
 import ky from "ky";
 import { Paste } from "@/types/paste";
+import { Config } from "@/common/config";
+import { Page } from "@/common/pagination/pagination";
 
 /**
  * Uploads a new paste.
@@ -27,4 +29,20 @@ export function uploadPaste(content: string, expires?: number) {
  */
 export function getPaste(id: string) {
   return ky.get<Paste>(`/api/paste/${id}`).json();
+}
+
+/**
+ * Gets the pastes for the logged-in user.
+ *
+ * @param page the page to fetch.
+ * @returns the pastes for the page.
+ */
+export function getLoggedInUsersPastes(page: number) {
+  return ky
+    .get<Page<Paste>>(`${Config.siteUrl}/api/user/pastes`, {
+      searchParams: {
+        page: page,
+      },
+    })
+    .json();
 }

@@ -85,7 +85,7 @@ export function Footer({ paste }: FooterProps) {
             <Link href={`/?content=${encodeURI(paste.content)}`}>
               <Button>Copy</Button>
             </Link>
-            <Link href={`/raw/${paste.id}.${paste.ext}`}>
+            <Link href={`/src/app/(pages)/(app)/raw/${paste.id}.${paste.ext}`}>
               <Button>Raw</Button>
             </Link>
             <Link href="/">

@@ -11,12 +11,17 @@
     "prisma:migrate": "npx prisma migrate deploy"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@prisma/client": "^5.22.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-icons": "^1.3.2",
     "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "@radix-ui/react-tooltip": "^1.1.4",
     "@ray-d-song/guesslang-js": "^0.1.0",
+    "@tanstack/react-query": "^5.55.4",
     "babel-plugin-react-compiler": "^19.0.0-beta-df7b47d-20241124",
     "better-auth": "^1.0.7",
     "class-variance-authority": "^0.7.1",

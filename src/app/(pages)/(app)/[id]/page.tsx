@@ -49,7 +49,7 @@ export default async function PastePage({ params }: PasteProps) {
     <main className="flex flex-col gap-1 h-full flex-grow">
       <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
         {paste ? (
-          <Highlighter language={paste.lang}>{paste.content}</Highlighter>
+          <Highlighter language={paste.lang} content={paste.content} />
         ) : (
           <div className="text-center w-full items-center mt-5">
             <p className="text-xl text-red-400">404</p>

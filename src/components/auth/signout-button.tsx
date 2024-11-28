@@ -10,7 +10,6 @@ export function SignoutButton() {
 
   return (
     <Button
-      type="button"
       onClick={() => {
         authClient.signOut({
           fetchOptions: {

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Paste, PrismaClient } from "@prisma/client";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { getLanguage } from "@/common/utils/lang.util";
 import { User } from "better-auth";
@@ -77,4 +77,18 @@ export async function expirePastes() {
     },
   });
   console.log(`Expired ${count} pastes`);
+}
+
+/**
+ * Gets all pastes for a user.
+ *
+ * @param user the user to get pastes for.
+ * @returns all pastes for the user.
+ */
+export async function getUsersPastes(user: User): Promise<Paste[]> {
+  return prismaClient.paste.findMany({
+    where: {
+      ownerId: user.id,
+    },
+  });
 }

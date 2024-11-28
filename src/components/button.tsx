@@ -10,7 +10,7 @@ export function Button({
 }: ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className="px-1.5 py-0.5 bg-input hover:brightness-75 transition-all transform-gpu"
+      className="px-1.5 py-0.5 bg-input hover:text-link transition-all transform-gpu text-sm"
       {...props}
     >
       {children}

@@ -41,3 +41,36 @@ export function formatBytes(bytes: number, decimals = 2) {
 export function formatNumber(number: number) {
   return number.toLocaleString();
 }
+
+/**
+ * Truncates text to the given length.
+ *
+ * @param text the text to truncate.
+ * @param maxLength the length to truncate at.
+ */
+export function truncateText(
+  text: string | undefined,
+  maxLength: number,
+): string | undefined {
+  if (!text) {
+    return undefined;
+  }
+  return text.length > maxLength
+    ? text.slice(0, maxLength - 3).trim() + "..."
+    : text;
+}
+
+/**
+ * Gets the lines of text.
+ *
+ * @param text the text to get the lines of.
+ * @param lineCount the number of lines to get.
+ * @returns the lines of text.
+ */
+export function getLines(text: string | undefined, lineCount: number) {
+  if (!text) {
+    return [];
+  }
+  const lines = text.split("\n");
+  return lines.slice(0, lineCount);
+}
