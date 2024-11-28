@@ -83,12 +83,37 @@ export async function expirePastes() {
  * Gets all pastes for a user.
  *
  * @param user the user to get pastes for.
+ * @param options the options to get pastes with.
  * @returns all pastes for the user.
  */
-export async function getUsersPastes(user: User): Promise<Paste[]> {
-  return prismaClient.paste.findMany({
+export async function getUsersPastes(
+  user: User,
+  options: {
+    skip?: number;
+    take?: number;
+    countOnly?: boolean;
+  },
+): Promise<{ pastes: Paste[]; totalItems: number }> {
+  const count = await prismaClient.paste.count({
     where: {
       ownerId: user.id,
     },
   });
+  if (options.countOnly) {
+    return { pastes: [], totalItems: count };
+  }
+
+  return {
+    pastes: await prismaClient.paste.findMany({
+      where: {
+        ownerId: user.id,
+      },
+      ...(options.skip && { skip: options.skip }),
+      ...(options.take && { take: options.take }),
+      orderBy: {
+        timestamp: "desc",
+      },
+    }),
+    totalItems: count,
+  };
 }
