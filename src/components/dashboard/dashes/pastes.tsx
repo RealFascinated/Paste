@@ -112,10 +112,12 @@ export function PastesDashboard() {
                       })}
                     </div>
                   </div>
-                  <Highlighter
-                    language={paste.lang}
-                    content={getLines(paste.content, 3).join("\n")}
-                  />
+                  <div className="text-sm">
+                    <Highlighter
+                      language={paste.lang}
+                      content={getLines(paste.content, 3).join("\n")}
+                    />
+                  </div>
                 </div>
               );
             })}
