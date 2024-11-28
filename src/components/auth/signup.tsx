@@ -4,9 +4,12 @@ import { authClient } from "@/common/auth-client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 export function Signup() {
+  const { replace, refresh } = useRouter();
+
   const [error, setError] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +27,13 @@ export function Signup() {
       setError(error.message!);
       return;
     } else {
-      redirect("/");
+      replace("/");
+      refresh();
+
+      toast({
+        title: "Success",
+        description: "You have successfully signed up.",
+      });
     }
   };
 

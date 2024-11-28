@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 export function SignIn() {
   const { replace, refresh } = useRouter();
@@ -27,6 +28,11 @@ export function SignIn() {
     } else {
       replace("/");
       refresh();
+
+      toast({
+        title: "Success",
+        description: "You have successfully signed in.",
+      });
     }
   };
 
