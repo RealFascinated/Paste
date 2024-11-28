@@ -46,7 +46,7 @@ const pasteDetails: PasteDetails[] = [
 
 function PasteDetails({ paste }: { paste: Paste }) {
   return (
-    <div className="text-xs flex gap-1 items-center justify-center flex-wrap">
+    <div className="text-xs flex items-center justify-center flex-wrap divide-x-2 divide-secondary">
       {pasteDetails.map((detail, index) => {
         const rendered = detail.render(paste);
         if (rendered == undefined) {
@@ -54,9 +54,8 @@ function PasteDetails({ paste }: { paste: Paste }) {
         }
 
         return (
-          <div key={index} className="flex flex-row gap-1">
+          <div key={index} className="flex flex-row gap-1 px-2">
             {rendered}
-            {index !== pasteDetails.length - 1 && <p>|</p>}
           </div>
         );
       })}

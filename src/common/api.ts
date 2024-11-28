@@ -2,6 +2,7 @@ import ky from "ky";
 import { Paste } from "@/types/paste";
 import { Config } from "@/common/config";
 import { Page } from "@/common/pagination/pagination";
+import SuperJSON from "superjson";
 
 /**
  * Uploads a new paste.
@@ -37,12 +38,17 @@ export function getPaste(id: string) {
  * @param page the page to fetch.
  * @returns the pastes for the page.
  */
-export function getLoggedInUsersPastes(page: number) {
-  return ky
-    .get<Page<Paste>>(`${Config.siteUrl}/api/user/pastes`, {
+export async function getLoggedInUsersPastes(page: number) {
+  const response = await ky
+    .get(`${Config.siteUrl}/api/user/pastes`, {
       searchParams: {
         page: page,
       },
     })
-    .json();
+    .text();
+  if (!response) {
+    return;
+  }
+
+  return SuperJSON.parse<Page<Paste>>(response);
 }

@@ -4,6 +4,7 @@ import { buildErrorResponse } from "@/common/error";
 import { getUsersPastes } from "@/common/prisma";
 import { Pagination } from "@/common/pagination/pagination";
 import { Paste } from "@prisma/client";
+import SuperJSON from "superjson";
 
 export async function GET(req: NextRequest) {
   const session = await auth.api.getSession({ headers: req.headers });
@@ -12,8 +13,16 @@ export async function GET(req: NextRequest) {
   }
 
   const page = parseInt(req.nextUrl.searchParams.get("page") ?? "1");
-  const pagination = new Pagination<Paste>()
-    .setItemsPerPage(12)
-    .setItems(await getUsersPastes(session.user));
-  return NextResponse.json(await pagination.getPage(page));
+  const pagination = new Pagination<Paste>().setItemsPerPage(12).setItems(
+    (await getUsersPastes(session.user))
+      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+      .map((paste) => ({
+        ...paste,
+        key: paste.id,
+        ext: paste.lang === "text" ? "txt" : paste.lang,
+      })),
+  );
+  return NextResponse.json(
+    SuperJSON.serialize((await pagination.getPage(page)).toJSON()),
+  );
 }
