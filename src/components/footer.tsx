@@ -33,6 +33,13 @@ const pasteDetails: PasteDetails[] = [
       `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
   },
   {
+    render: (paste: Paste) => (
+      <Tooltip display={paste.timestamp.toLocaleString()}>
+        {getRelativeTime(paste.timestamp)}
+      </Tooltip>
+    ),
+  },
+  {
     render: (paste: Paste) =>
       paste.ext === "txt" ? "Plain Text" : paste.formattedLang,
   },
