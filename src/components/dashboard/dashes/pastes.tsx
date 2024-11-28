@@ -18,6 +18,7 @@ import Tooltip from "@/components/tooltip";
 import { getRelativeTime } from "@/common/utils/date.util";
 import { useSearchParams } from "next/navigation";
 import usePageNavigation from "@/hooks/use-page-navigation";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -54,6 +55,7 @@ const pasteDetails: PasteDetails[] = [
 export function PastesDashboard() {
   const searchParams = useSearchParams();
   const { navigateToPage } = usePageNavigation();
+  const isMobile = useIsMobile();
 
   const [page, setPage] = useState(
     searchParams.get("page") ? Number(searchParams.get("page")) : 1,
@@ -120,7 +122,7 @@ export function PastesDashboard() {
           </div>
 
           <Pagination
-            mobilePagination={false}
+            mobilePagination={isMobile}
             page={page}
             totalItems={pastes.metadata.totalItems}
             itemsPerPage={pastes.metadata.itemsPerPage}
