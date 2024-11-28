@@ -5,9 +5,9 @@ import { FormEvent } from "react";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { toast } from "@/hooks/use-toast";
 import { uploadPaste } from "@/common/api";
-import { Navbar } from "./navbar";
 import { Config } from "@/common/config";
 import { Paste } from "@/types/paste";
+import { Footer } from "@/components/footer";
 
 export function PastePage() {
   const { expiry } = usePasteExpiry();
@@ -52,10 +52,9 @@ export function PastePage() {
         event.preventDefault();
         await createPaste(event);
       }}
-      className="flex flex-col min-h-screen gap-1"
+      className="flex flex-col h-full flex-grow gap-1 w-full"
     >
-      <Navbar />
-      <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-2 text-sm">
+      <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-2 text-sm z-10">
         <span className="hidden sm:block">{">"}</span>
         <textarea
           name="content"
@@ -63,6 +62,8 @@ export function PastePage() {
           placeholder={Config.pastePlaceholder}
         />
       </div>
+
+      <Footer />
     </form>
   );
 }

@@ -21,6 +21,10 @@ export async function GET(
   return Response.json({
     key: id,
     ext: paste.lang === "text" ? "txt" : paste.lang,
-    ...paste,
+    expiresAt: paste.expiresAt,
+    content: paste.content,
+    size: paste.size,
+    lang: paste.lang,
+    timestamp: paste.timestamp,
   });
 }

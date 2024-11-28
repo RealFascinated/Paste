@@ -6,6 +6,8 @@ import { defaultMetadata } from "@/common/metadata";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import Script from "next/script";
+import { Navbar } from "@/components/navbar";
+import { PasteExpiryProvider } from "@/providers/paste-expiry-provider";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -27,9 +29,16 @@ export default function RootLayout({
           data-domain="paste.fascinated.cc"
         />
       )}
-      <body className={`${siteFont.className} antialiased`}>
+      <body className={`${siteFont.className} antialiased w-full h-full`}>
         <Toaster />
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <PasteExpiryProvider>
+            <main className="flex flex-col min-h-screen text-white w-full">
+              <Navbar />
+              {children}
+            </main>
+          </PasteExpiryProvider>
+        </TooltipProvider>
       </body>
     </html>
   );

@@ -4,8 +4,8 @@ import { lookupPaste } from "@/common/utils/paste.util";
 import { defaultMetadata } from "@/common/metadata";
 import { formatBytes } from "@/common/utils/string.util";
 import { getRelativeTime } from "@/common/utils/date.util";
-import { Navbar } from "@/components/navbar";
 import Highlighter from "@/components/highlighter";
+import { Footer } from "@/components/footer";
 
 type PasteProps = {
   params: Promise<{
@@ -50,11 +50,12 @@ export default async function PastePage({ params }: PasteProps) {
   }
 
   return (
-    <main className="flex flex-col gap-1 min-h-screen">
-      <Navbar paste={paste} />
+    <main className="flex flex-col gap-1 h-full flex-grow">
       <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
         <Highlighter language={paste.lang}>{paste.content}</Highlighter>
       </div>
+
+      <Footer paste={paste} />
     </main>
   );
 }
