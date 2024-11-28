@@ -4,8 +4,16 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { Button } from "@/components/button";
 import { SignoutButton } from "@/components/auth/signout-button";
+import { ReactNode } from "react";
 
-export async function Navbar() {
+type NavbarProps = {
+  /**
+   * Additional buttons to display when logged in.
+   */
+  loggedInButtons?: ReactNode;
+};
+
+export async function Navbar({ loggedInButtons }: NavbarProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -30,6 +38,7 @@ export async function Navbar() {
                 <Button>Dashboard</Button>
               </Link>
               <SignoutButton />
+              {loggedInButtons}
             </>
           )}
         </div>
