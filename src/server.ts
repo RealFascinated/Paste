@@ -3,6 +3,7 @@ import { parse } from "url";
 import next from "next";
 import { schedule } from "node-cron";
 import { expirePastes } from "@/common/prisma";
+import { Config } from "@/common/config";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -15,7 +16,9 @@ console.log(
 app.prepare().then(() => {
   createServer(async (req, res) => {
     const before = performance.now();
-    const parsedUrl = parse(req.url!, true);
+    const url =
+      req.url! == Config.hastebinUploadEndpoint ? "/api/upload" : req.url!;
+    const parsedUrl = parse(url, true);
     await handle(req, res, parsedUrl);
 
     // Log the request to the console

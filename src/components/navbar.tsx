@@ -6,6 +6,7 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import Tooltip from "./tooltip";
 import { Expiry } from "@/components/expiry";
 import { Button } from "./ui/button";
+import { Config } from "@/common/config";
 
 type PasteDetails = {
   render: (paste: PasteWithLang) => string | ReactNode;
@@ -71,7 +72,7 @@ export function Navbar({ paste }: NavbarProps) {
         <div className="flex flex-row gap-3 items-center">
           <Link href="/">
             <p className="font-bold hover:brightness-75 transition-all transform-gpu">
-              Paste
+              {Config.siteTitle}
             </p>
           </Link>
           <div className="hidden sm:block">

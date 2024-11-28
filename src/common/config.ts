@@ -3,6 +3,10 @@ export const Config = {
   maxLength: Number(process.env.PASTE_MAX_LENGTH) ?? 500_000,
   maxExpiryLength:
     Number(process.env.PASTE_MAX_EXPIRY_LENGTH) ?? 60 * 60 * 24 * 30, // 30 days
+  hastebinUploadEndpoint: process.env.HASTEBIN_UPLOAD_ENDPOINT ?? "/documents",
+  siteTitle: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Paste",
+  pastePlaceholder:
+    process.env.NEXT_PUBLIC_PASTE_PLACEHOLDER ?? "Paste your text here...",
 };
 
 /**

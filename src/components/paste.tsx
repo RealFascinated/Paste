@@ -7,6 +7,7 @@ import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { useToast } from "@/hooks/use-toast";
 import { uploadPaste } from "@/common/api";
 import { Navbar } from "./navbar";
+import { Config } from "@/common/config";
 
 export function PastePage() {
   const { expiry } = usePasteExpiry();
@@ -51,12 +52,12 @@ export function PastePage() {
       className="flex flex-col min-h-screen gap-1"
     >
       <Navbar />
-      <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-1 text-sm">
+      <div className="flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-2 text-sm">
         <span className="hidden sm:block">{">"}</span>
         <textarea
           name="content"
           className="w-full text-white bg-background resize-none select-none outline-none"
-          placeholder="Paste here..."
+          placeholder={Config.pastePlaceholder}
         />
       </div>
     </form>
