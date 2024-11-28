@@ -41,9 +41,9 @@ export async function uploadHandler(req: NextRequest) {
     });
   }
 
-  const paste = await createPaste(body, expiresAt);
+  const { id, ...paste } = await createPaste(body, expiresAt);
   return Response.json({
-    key: paste.id,
+    key: id,
     ...paste,
   });
 }
