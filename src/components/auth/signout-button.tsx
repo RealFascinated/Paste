@@ -3,6 +3,7 @@
 import { authClient } from "@/common/auth-client";
 import { Button } from "@/components/button";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 export function SignoutButton() {
   const router = useRouter();
@@ -15,6 +16,10 @@ export function SignoutButton() {
           fetchOptions: {
             onSuccess: () => {
               router.refresh();
+              toast({
+                title: "Success",
+                description: "You have successfully signed out.",
+              });
             },
           },
         });
