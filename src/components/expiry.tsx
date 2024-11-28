@@ -18,9 +18,12 @@ const expiryOptions: ExpiryOption[] = [
   { value: -1, label: "Never" },
   { value: 60 * 60, label: "1 Hour" },
   { value: 60 * 60 * 2, label: "2 Hours" },
+  { value: 60 * 60 * 6, label: "6 Hours" },
   { value: 60 * 60 * 24, label: "1 Day" },
   { value: 60 * 60 * 24 * 7, label: "7 Days" },
-  { value: 60 * 60 * 24 * 30, label: "30 Days" },
+  { value: 60 * 60 * 24 * 30, label: "1 Month" },
+  { value: 60 * 60 * 24 * 30 * 6, label: "6 Months" },
+  { value: 60 * 60 * 24 * 365, label: "1 Year" },
 ];
 
 export function Expiry() {

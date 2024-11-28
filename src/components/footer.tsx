@@ -6,6 +6,7 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import Tooltip from "./tooltip";
 import { Expiry } from "@/components/expiry";
 import { Button } from "@/components/button";
+import { PasteCreatedTime } from "@/components/paste/created-time";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -33,11 +34,7 @@ const pasteDetails: PasteDetails[] = [
       `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
   },
   {
-    render: (paste: Paste) => (
-      <Tooltip display={paste.timestamp.toLocaleString()}>
-        {getRelativeTime(paste.timestamp)}
-      </Tooltip>
-    ),
+    render: (paste: Paste) => <PasteCreatedTime createdAt={paste.timestamp} />,
   },
   {
     render: (paste: Paste) =>

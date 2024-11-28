@@ -2,7 +2,7 @@ export const Config = {
   idLength: Number(process.env.PASTE_ID_LENGTH) ?? 8,
   maxLength: Number(process.env.PASTE_MAX_LENGTH) ?? 500_000,
   maxExpiryLength:
-    Number(process.env.PASTE_MAX_EXPIRY_LENGTH) ?? 60 * 60 * 24 * 30, // 30 days
+    Number(process.env.PASTE_MAX_EXPIRY_LENGTH) ?? 60 * 60 * 24 * 365, // 1 year
   hastebinUploadEndpoint: process.env.HASTEBIN_UPLOAD_ENDPOINT ?? "/documents",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://paste.fascinated.cc",
   siteTitle: process.env.NEXT_PUBLIC_SITE_TITLE ?? "Paste",
