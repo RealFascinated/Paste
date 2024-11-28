@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { withPlausibleProxy } from "next-plausible";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -25,6 +24,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPlausibleProxy({
-  customDomain: "https://analytics.fascinated.cc",
-})(nextConfig);
+export default nextConfig;

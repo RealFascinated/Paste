@@ -2,11 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
-import PlausibleProvider from "next-plausible";
-import Head from "next/head";
 import { defaultMetadata } from "@/common/metadata";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
+import Script from "next/script";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -22,9 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <PlausibleProvider domain="paste.fascinated.cc" selfHosted />
-      </Head>
+      {process.env.NODE_ENV === "production" && (
+        <Script
+          src="https://analytics.fascinated.cc/js/script.js"
+          data-domain="paste.fascinated.cc"
+        />
+      )}
       <body className={`${siteFont.className} antialiased`}>
         <Toaster />
         <TooltipProvider>{children}</TooltipProvider>
