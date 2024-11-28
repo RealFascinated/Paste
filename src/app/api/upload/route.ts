@@ -2,8 +2,32 @@ import { NextRequest } from "next/server";
 import { auth } from "@/common/auth";
 import { Config } from "@/common/config";
 import { createPaste } from "@/common/prisma";
+import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
+import { buildErrorResponse } from "@/common/error";
+
+/**
+ * Configure the rate limit for this route.
+ */
+Ratelimiter.configRoute("/api/upload", {
+  windowMs: 1000 * 60,
+  maxRequests: 15, // 15 requests per minute
+});
 
 export async function POST(req: NextRequest) {
+  // Handle rate limiting
+  const rateLimitResponse: RateLimitResponse | undefined = Ratelimiter.check(
+    req,
+    `/api/upload`,
+  );
+  if (rateLimitResponse) {
+    if (!rateLimitResponse.allowed) {
+      return Ratelimiter.applyHeaders(
+        buildErrorResponse("You have been rate limited!", 429),
+        rateLimitResponse,
+      );
+    }
+  }
+
   const session = await auth.api.getSession({ headers: req.headers });
   const body = await req.text();
 
