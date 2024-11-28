@@ -31,3 +31,13 @@ export function formatBytes(bytes: number, decimals = 2) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
+
+/**
+ * Formats a number as a string.
+ *
+ * @param number The number to format.
+ * @returns The formatted string.
+ */
+export function formatNumber(number: number) {
+  return number.toLocaleString();
+}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Paste } from "@/types/paste";
-import { formatBytes } from "@/common/utils/string.util";
+import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { getRelativeTime } from "@/common/utils/date.util";
 import Tooltip from "./tooltip";
 import { Expiry } from "@/components/expiry";
@@ -29,7 +29,7 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
-    render: (paste: Paste) => `${paste.views} Views`,
+    render: (paste: Paste) => `${formatNumber(paste.views)} Views`,
   },
   {
     render: (paste: Paste) =>
