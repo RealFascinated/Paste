@@ -41,7 +41,7 @@ export function Expiry() {
         defaultValue={expiryOptions[0].label}
         onValueChange={handleExpiryChange}
       >
-        <SelectTrigger className="w-[180px] h-8">
+        <SelectTrigger className="w-[180px] h-7">
           <SelectValue placeholder="Expiry" />
         </SelectTrigger>
         <SelectContent>
