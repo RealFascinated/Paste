@@ -8,6 +8,7 @@ import { Expiry } from "@/components/expiry";
 import { Button } from "@/components/button";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
+import { cn } from "@/common/utils";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -69,7 +70,12 @@ type FooterProps = {
 
 export function Footer({ paste }: FooterProps) {
   return (
-    <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col-reverse md:flex-row justify-between items-center text-sm">
+    <div
+      className={cn(
+        "min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex justify-between items-center text-sm",
+        paste && "flex-col-reverse md:flex-row",
+      )}
+    >
       {paste && <PasteDetails paste={paste} />}
 
       <>
