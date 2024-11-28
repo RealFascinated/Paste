@@ -5,10 +5,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const id = (await params).id;
-
-  const paste = await getPaste(id);
-  if (paste == null) {
+  const foundPaste = await getPaste((await params).id);
+  if (foundPaste == null) {
     return Response.json(
       {
         message: "Paste not found",
@@ -19,5 +17,9 @@ export async function GET(
     );
   }
 
-  return Response.json(paste);
+  const { id, ...paste } = foundPaste;
+  return Response.json({
+    key: id,
+    ...paste,
+  });
 }
