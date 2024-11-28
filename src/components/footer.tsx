@@ -29,8 +29,11 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
+    render: (paste: Paste) => `${paste.views} Views`,
+  },
+  {
     render: (paste: Paste) =>
-      paste.lang === "text" ? "Plain Text" : paste.formattedLang,
+      paste.ext === "txt" ? "Plain Text" : paste.formattedLang,
   },
 ];
 

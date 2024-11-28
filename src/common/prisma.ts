@@ -37,10 +37,23 @@ export async function createPaste(
 /**
  * Gets a paste by ID.
  *
- * @param id The ID of the paste to get.
- * @returns The paste with the given ID.
+ * @param id the ID of the paste to get.
+ * @param incrementViews whether to increment the views of the paste.
+ * @returns the paste with the given ID.
  */
-export function getPaste(id: string) {
+export async function getPaste(id: string, incrementViews = false) {
+  if (incrementViews) {
+    return prismaClient.paste.update({
+      where: {
+        id: id,
+      },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
+  }
   return prismaClient.paste.findUnique({
     where: {
       id: id,

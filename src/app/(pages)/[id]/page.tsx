@@ -44,7 +44,7 @@ Click to view the Paste.
 
 export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
-  const paste = await lookupPaste(id);
+  const paste = await lookupPaste(id, true);
   if (paste == null) {
     return redirect("/");
   }

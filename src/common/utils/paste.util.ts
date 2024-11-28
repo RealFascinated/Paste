@@ -47,20 +47,23 @@ export async function generatePasteId(): Promise<string> {
  * Gets a paste from the cache or the database.
  *
  * @param id The ID of the paste to get.
+ * @param incrementViews Whether to increment the views of the paste.
  * @returns The paste with the given ID.
  */
-export const lookupPaste = cache(async (id: string): Promise<Paste | null> => {
-  const paste = await getPaste(id.split(".")[0]);
-  if (paste == null) {
-    return null;
-  }
+export const lookupPaste = cache(
+  async (id: string, incrementViews = false): Promise<Paste | null> => {
+    const paste = await getPaste(id.split(".")[0], incrementViews);
+    if (paste == null) {
+      return null;
+    }
 
-  return {
-    ...paste,
-    key: id,
-    ext: paste.lang === "text" ? "txt" : paste.lang,
-    formattedLang:
-      (paste.lang === "text" ? "Text" : getLanguageName(paste.lang)) ??
-      paste.lang,
-  };
-});
+    return {
+      ...paste,
+      key: id,
+      ext: paste.lang === "text" ? "txt" : paste.lang,
+      formattedLang:
+        (paste.lang === "text" ? "Text" : getLanguageName(paste.lang)) ??
+        paste.lang,
+    };
+  },
+);

@@ -20,6 +20,9 @@ model Paste {
   // The code language for the content
   lang String
 
+  // The number of views for the paste
+  views Int @default(0)
+
   // The paste's owner
   owner   User?   @relation(fields: [ownerId], references: [id], onDelete: NoAction)
   ownerId String?
