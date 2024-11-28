@@ -20,9 +20,12 @@ export async function Navbar({ loggedInButtons }: NavbarProps) {
 
   return (
     <div>
-      <div className="min-h-[40px] p-1.5 px-3 bg-background-secondary flex justify-between items-center h-full">
-        <div className="flex flex-row gap-3 items-center">
-          <HomeButton />
+      <div className="min-h-[40px] p-1.5 px-2 bg-background-secondary flex justify-between items-center h-full">
+        <div className="flex items-center gap-1">
+          {session && loggedInButtons}
+          <div className="flex flex-row gap-3 items-center">
+            <HomeButton />
+          </div>
         </div>
 
         <div className="flex gap-2 items-center">
@@ -38,7 +41,6 @@ export async function Navbar({ loggedInButtons }: NavbarProps) {
                 <Button>Dashboard</Button>
               </Link>
               <SignoutButton />
-              {loggedInButtons}
             </>
           )}
         </div>
