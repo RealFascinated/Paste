@@ -88,7 +88,7 @@ export async function expirePastes() {
  */
 export async function getUsersPastes(
   user: User,
-  options: {
+  options?: {
     skip?: number;
     take?: number;
     countOnly?: boolean;
@@ -99,7 +99,7 @@ export async function getUsersPastes(
       ownerId: user.id,
     },
   });
-  if (options.countOnly) {
+  if (options?.countOnly) {
     return { pastes: [], totalItems: count };
   }
 
@@ -108,8 +108,8 @@ export async function getUsersPastes(
       where: {
         ownerId: user.id,
       },
-      ...(options.skip && { skip: options.skip }),
-      ...(options.take && { take: options.take }),
+      ...(options?.skip && { skip: options.skip }),
+      ...(options?.take && { take: options.take }),
       orderBy: {
         timestamp: "desc",
       },

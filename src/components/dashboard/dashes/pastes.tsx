@@ -73,9 +73,12 @@ export function PastesDashboard() {
   }, [data, navigateToPage, page]);
 
   return (
-    <div className="flex flex-col gap-4">
-      {isLoading && !pastes && <p>Loading pastes...</p>}
-      {pastes && (
+    <div className="flex flex-col gap-4 select-none">
+      {isLoading && !pastes && <p className="text-center">Loading pastes...</p>}
+      {pastes && pastes.items.length === 0 && (
+        <p className="text-center">You don&apos;t have any pastes yet.</p>
+      )}
+      {pastes && pastes.items.length > 0 && (
         <>
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
             {pastes.items.map((paste) => {
@@ -87,6 +90,7 @@ export function PastesDashboard() {
                   <div className="flex gap-2">
                     <Link
                       href={`/${paste.id}`}
+                      draggable={false}
                       className="hover:text-link transition-all transform-gpu"
                     >
                       <p>{paste.id}</p>
