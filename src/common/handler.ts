@@ -44,6 +44,7 @@ export async function uploadHandler(req: NextRequest) {
   const { id, ...paste } = await createPaste(body, expiresAt);
   return Response.json({
     key: id,
+    ext: paste.lang === "text" ? "txt" : paste.lang,
     ...paste,
   });
 }

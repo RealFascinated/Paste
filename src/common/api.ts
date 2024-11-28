@@ -1,5 +1,5 @@
 import ky from "ky";
-import { Paste } from "@prisma/client";
+import { Paste } from "@/types/paste";
 
 /**
  * Uploads a new paste.

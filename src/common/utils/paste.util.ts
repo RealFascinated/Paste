@@ -1,9 +1,9 @@
 import { cache } from "react";
 import { randomString } from "@/common/utils/string.util";
 import { Config } from "@/common/config";
-import { prismaClient, getPaste } from "@/common/prisma";
-import { PasteWithLang } from "@/types/paste";
+import { getPaste, prismaClient } from "@/common/prisma";
 import { getLanguageName } from "@/common/utils/lang.util";
+import { Paste } from "@/types/paste";
 
 /**
  * Generates a paste ID.
@@ -49,19 +49,18 @@ export async function generatePasteId(): Promise<string> {
  * @param id The ID of the paste to get.
  * @returns The paste with the given ID.
  */
-export const lookupPaste = cache(
-  async (id: string): Promise<PasteWithLang | null> => {
-    const paste = await getPaste(id);
-    if (paste == null) {
-      return null;
-    }
+export const lookupPaste = cache(async (id: string): Promise<Paste | null> => {
+  const paste = await getPaste(id.split(".")[0]);
+  if (paste == null) {
+    return null;
+  }
 
-    return {
-      ...paste,
-      lang: paste.lang === "text" ? "txt" : paste.lang,
-      formattedLang:
-        (paste.lang === "text" ? "Text" : getLanguageName(paste.lang)) ??
-        paste.lang,
-    };
-  },
-);
+  return {
+    ...paste,
+    key: id,
+    ext: paste.lang === "text" ? "txt" : paste.lang,
+    formattedLang:
+      (paste.lang === "text" ? "Text" : getLanguageName(paste.lang)) ??
+      paste.lang,
+  };
+});

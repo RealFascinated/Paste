@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
-import { PasteWithLang } from "@/types/paste";
+import { Paste } from "@/types/paste";
 import { formatBytes } from "@/common/utils/string.util";
 import { getRelativeTime } from "@/common/utils/date.util";
 import Tooltip from "./tooltip";
@@ -9,15 +9,15 @@ import { Button } from "./ui/button";
 import { Config } from "@/common/config";
 
 type PasteDetails = {
-  render: (paste: PasteWithLang) => string | ReactNode;
+  render: (paste: Paste) => string | ReactNode;
 };
 
 const pasteDetails: PasteDetails[] = [
   {
-    render: (paste: PasteWithLang) => formatBytes(paste.size),
+    render: (paste: Paste) => formatBytes(paste.size),
   },
   {
-    render: (paste: PasteWithLang) => {
+    render: (paste: Paste) => {
       if (paste.expiresAt === null) {
         return undefined;
       }
@@ -30,12 +30,12 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
-    render: (paste: PasteWithLang) =>
+    render: (paste: Paste) =>
       paste.lang === "text" ? "Plain Text" : paste.formattedLang,
   },
 ];
 
-function PasteDetails({ paste }: { paste?: PasteWithLang }) {
+function PasteDetails({ paste }: { paste?: Paste }) {
   return (
     <div className="text-xs flex flex-row gap-1 items-center">
       {paste ? (
@@ -62,7 +62,7 @@ function PasteDetails({ paste }: { paste?: PasteWithLang }) {
 }
 
 type NavbarProps = {
-  paste?: PasteWithLang;
+  paste?: Paste;
 };
 
 export function Navbar({ paste }: NavbarProps) {
@@ -83,7 +83,7 @@ export function Navbar({ paste }: NavbarProps) {
         <div className="flex gap-2">
           {paste ? (
             <>
-              <Link href={`/raw/${paste.id}`}>
+              <Link href={`/raw/${paste.id}.${paste.ext}`}>
                 <Button>Raw</Button>
               </Link>
               <Link href="/">
