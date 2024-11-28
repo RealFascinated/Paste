@@ -42,23 +42,27 @@ export async function createPaste(
  * @returns the paste with the given ID.
  */
 export async function getPaste(id: string, incrementViews = false) {
-  if (incrementViews) {
-    return prismaClient.paste.update({
+  try {
+    if (incrementViews) {
+      return await prismaClient.paste.update({
+        where: {
+          id: id,
+        },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+      });
+    }
+    return await prismaClient.paste.findUnique({
       where: {
         id: id,
       },
-      data: {
-        views: {
-          increment: 1,
-        },
-      },
     });
+  } catch {
+    return null;
   }
-  return prismaClient.paste.findUnique({
-    where: {
-      id: id,
-    },
-  });
 }
 
 /**

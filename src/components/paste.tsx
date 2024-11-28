@@ -33,6 +33,13 @@ export function PastePage() {
     let paste: Paste | null = null;
     try {
       paste = await uploadPaste(content, expiry);
+      toast({
+        title: "Success",
+        description: "Paste created successfully, copied to clipboard!",
+      });
+      await navigator.clipboard.writeText(
+        `${Config.siteUrl}/${paste.key}.${paste.ext}`,
+      );
     } catch (error) {
       console.error(error);
       toast({

@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { lookupPaste } from "@/common/utils/paste.util";
 import { defaultMetadata } from "@/common/metadata";
@@ -45,17 +44,21 @@ Click to view the Paste.
 export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
   const paste = await lookupPaste(id, true);
-  if (paste == null) {
-    return redirect("/");
-  }
 
   return (
     <main className="flex flex-col gap-1 h-full flex-grow">
       <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
-        <Highlighter language={paste.lang}>{paste.content}</Highlighter>
+        {paste ? (
+          <Highlighter language={paste.lang}>{paste.content}</Highlighter>
+        ) : (
+          <div className="text-center w-full items-center mt-5">
+            <p className="text-xl text-red-400">404</p>
+            <p>Paste &#39;{id}&#39; not found, maybe it expired?</p>
+          </div>
+        )}
       </div>
 
-      <Footer paste={paste} />
+      {paste && <Footer paste={paste} />}
     </main>
   );
 }
