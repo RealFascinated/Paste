@@ -5,8 +5,8 @@ import { ReactNode } from "react";
 import PlausibleProvider from "next-plausible";
 import Head from "next/head";
 import { defaultMetadata } from "@/common/metadata";
-import { ToastProvider } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -26,9 +26,8 @@ export default function RootLayout({
         <PlausibleProvider domain="paste.fascinated.cc" selfHosted />
       </Head>
       <body className={`${siteFont.className} antialiased`}>
-        <ToastProvider>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ToastProvider>
+        <Toaster />
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );

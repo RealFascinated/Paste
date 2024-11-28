@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { FormEvent } from "react";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { uploadPaste } from "@/common/api";
 import { Navbar } from "./navbar";
 import { Config } from "@/common/config";
@@ -11,7 +11,6 @@ import { Paste } from "@/types/paste";
 
 export function PastePage() {
   const { expiry } = usePasteExpiry();
-  const toast = useToast();
 
   /**
    * Creates a new paste.
@@ -24,6 +23,10 @@ export function PastePage() {
     const form = new FormData(event.target as HTMLFormElement);
     const content = form.get("content") as string;
     if (content == null || content.length == 0) {
+      toast({
+        title: "Error",
+        description: "Paste cannot be empty",
+      });
       return;
     }
 
@@ -32,7 +35,7 @@ export function PastePage() {
       paste = await uploadPaste(content, expiry);
     } catch (error) {
       console.error(error);
-      toast.toast({
+      toast({
         title: "Error",
         description: "Failed to upload paste",
       });
