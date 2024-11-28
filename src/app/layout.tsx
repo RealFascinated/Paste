@@ -6,7 +6,7 @@ import { defaultMetadata } from "@/common/metadata";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import Script from "next/script";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/navbar/navbar";
 import { PasteExpiryProvider } from "@/providers/paste-expiry-provider";
 
 const siteFont = localFont({
