@@ -44,7 +44,7 @@ const pasteDetails: PasteDetails[] = [
 
 function PasteDetails({ paste }: { paste: Paste }) {
   return (
-    <div className="text-xs flex flex-row gap-1 items-center">
+    <div className="text-xs flex gap-1 items-center flex-wrap">
       {pasteDetails.map((detail, index) => {
         const rendered = detail.render(paste);
         if (rendered == undefined) {
