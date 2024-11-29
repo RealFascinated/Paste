@@ -7,7 +7,7 @@ import SuperJSON from "superjson";
 import { Paste } from "@/types/paste";
 import { getPublicPaste } from "@/common/utils/paste.util";
 
-const itemsPerPage = 12;
+const itemsPerPage = 16;
 
 export async function GET(req: NextRequest) {
   const session = await auth.api.getSession({ headers: req.headers });
