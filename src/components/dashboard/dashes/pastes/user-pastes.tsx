@@ -89,7 +89,7 @@ export function UserPastes() {
                   key={paste.id}
                   className="bg-background-secondary p-1.5 rounded-md"
                 >
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-col md:flex-row">
                     <Link
                       href={`/${paste.id}`}
                       draggable={false}
@@ -97,7 +97,7 @@ export function UserPastes() {
                     >
                       <p>{paste.id}</p>
                     </Link>
-                    <div className="text-xs flex items-center justify-center flex-wrap divide-x-2 divide-secondary">
+                    <div className="text-xs flex items-center flex-wrap divide-x-2 divide-secondary">
                       {pasteDetails.map((detail, index) => {
                         const rendered = detail.render(paste);
                         if (rendered == undefined) {
