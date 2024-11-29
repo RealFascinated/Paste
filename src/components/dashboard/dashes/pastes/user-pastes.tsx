@@ -27,17 +27,6 @@ type PasteDetails = {
 
 const pasteDetails: PasteDetails[] = [
   {
-    render: (paste: Paste) => (
-      <div className="flex gap-1 items-center pr-2">
-        <PasteLanguageIcon
-          ext={paste.ext}
-          formattedLang={paste.formattedLang}
-        />
-        {paste.formattedLang}
-      </div>
-    ),
-  },
-  {
     render: (paste: Paste) => formatBytes(paste.size),
   },
   {
@@ -96,7 +85,13 @@ export function UserPastes() {
                   key={paste.id}
                   className="bg-background-secondary p-1.5 rounded-md h-full flex flex-col"
                 >
-                  <div className="flex gap-2 flex-col md:flex-row">
+                  <div className="flex gap-2 flex-col md:flex-row items-center">
+                    <Tooltip display={paste.formattedLang}>
+                      <PasteLanguageIcon
+                        ext={paste.ext}
+                        formattedLang={paste.formattedLang}
+                      />
+                    </Tooltip>
                     <Link
                       href={`/${paste.id}`}
                       draggable={false}
@@ -114,7 +109,7 @@ export function UserPastes() {
                     />
                   </div>
 
-                  <p className="text-xs text-muted-foreground pt-1 flex gap-1 items-center justify-between">
+                  <div className="text-xs text-muted-foreground pt-1 flex gap-1 items-center justify-between">
                     <div className="text-xs flex items-center flex-wrap divide-x-2 divide-secondary">
                       {pasteDetails.map((detail, index) => {
                         const rendered = detail.render(paste);
@@ -125,7 +120,7 @@ export function UserPastes() {
                         return (
                           <div
                             key={index}
-                            className="flex flex-row px-2 first:pl-1 first:pr-0"
+                            className="flex flex-row px-2 first:pl-1"
                           >
                             {rendered}
                           </div>
@@ -133,7 +128,7 @@ export function UserPastes() {
                       })}
                     </div>
                     <PasteCreatedTime createdAt={paste.timestamp} />
-                  </p>
+                  </div>
                 </div>
               );
             })}
