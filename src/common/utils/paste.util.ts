@@ -4,6 +4,7 @@ import { Config } from "@/common/config";
 import { getPaste, prismaClient } from "@/common/prisma";
 import { getLanguageName } from "@/common/utils/lang.util";
 import { Paste } from "@/types/paste";
+import { Paste as PrismaPaste } from "@prisma/client";
 
 /**
  * Generates a paste ID.
@@ -67,3 +68,20 @@ export const lookupPaste = cache(
     };
   },
 );
+
+/**
+ * Adds the additional properties to a paste.
+ *
+ * @param paste the paste to add the properties to.
+ * @returns the paste.
+ */
+export function getPublicPaste(paste: Paste | PrismaPaste): Paste {
+  return {
+    ...paste,
+    key: paste.id,
+    ext: paste.lang === "text" ? "txt" : paste.lang,
+    formattedLang:
+      (paste.lang === "text" ? "Text" : getLanguageName(paste.lang)) ??
+      paste.lang,
+  };
+}

@@ -3,8 +3,9 @@ import { auth } from "@/common/auth";
 import { buildErrorResponse } from "@/common/error";
 import { getUsersPastes } from "@/common/prisma";
 import { Pagination } from "@/common/pagination/pagination";
-import { Paste } from "@prisma/client";
 import SuperJSON from "superjson";
+import { Paste } from "@/types/paste";
+import { getPublicPaste } from "@/common/utils/paste.util";
 
 const itemsPerPage = 12;
 
@@ -30,11 +31,7 @@ export async function GET(req: NextRequest) {
             skip: page > 1 ? (page - 1) * itemsPerPage : 0,
             take: itemsPerPage,
           });
-          return pastes.map((paste) => ({
-            ...paste,
-            key: paste.id,
-            ext: paste.lang === "text" ? "txt" : paste.lang,
-          }));
+          return pastes.map((paste) => getPublicPaste(paste));
         })
       ).toJSON(),
     ),
