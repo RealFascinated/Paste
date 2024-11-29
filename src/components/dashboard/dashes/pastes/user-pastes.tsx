@@ -85,7 +85,7 @@ export function UserPastes() {
                   key={paste.id}
                   className="bg-background-secondary p-1.5 rounded-md h-full flex flex-col"
                 >
-                  <div className="flex gap-2 flex-col md:flex-row items-center">
+                  <div className="flex gap-2 items-center">
                     <Tooltip display={paste.formattedLang}>
                       <PasteLanguageIcon
                         ext={paste.ext}
