@@ -19,7 +19,6 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import { useSearchParams } from "next/navigation";
 import usePageNavigation from "@/hooks/use-page-navigation";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import { NotepadTextIcon } from "lucide-react";
 import { PasteLanguageIcon } from "@/components/paste/language-icon";
 
 type PasteDetails = {
