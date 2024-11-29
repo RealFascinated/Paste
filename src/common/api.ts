@@ -3,6 +3,7 @@ import { Paste } from "@/types/paste";
 import { Config } from "@/common/config";
 import { Page } from "@/common/pagination/pagination";
 import SuperJSON from "superjson";
+import { UserStatistics } from "@/common/types/user/paste-statistics";
 
 /**
  * Uploads a new paste.
@@ -51,4 +52,15 @@ export async function getLoggedInUsersPastes(page: number) {
   }
 
   return SuperJSON.parse<Page<Paste>>(response);
+}
+
+/**
+ * Gets the paste statistics for the logged-in user.
+ *
+ * @returns the statistics for the user.
+ */
+export async function getLoggedInUsersPasteStatistics() {
+  return ky
+    .get<UserStatistics>(`${Config.siteUrl}/api/user/pastes/stats`)
+    .json();
 }

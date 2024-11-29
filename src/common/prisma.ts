@@ -117,3 +117,31 @@ export async function getUsersPastes(
     totalItems: count,
   };
 }
+
+/**
+ * Gets the statistics for a user.
+ *
+ * @param user the user to get the statistics for.
+ * @returns the statistics for the user.
+ */
+export async function getUserPasteStatistics(user: User) {
+  const count = await prismaClient.paste.count({
+    where: {
+      ownerId: user.id,
+    },
+  });
+
+  const views = await prismaClient.paste.aggregate({
+    where: {
+      ownerId: user.id,
+    },
+    _sum: {
+      views: true,
+    },
+  });
+
+  return {
+    totalPastes: count,
+    totalViews: views._sum.views,
+  };
+}
