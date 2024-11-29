@@ -35,11 +35,6 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     render: (paste: Paste) => {
-      return <PasteCreatedTime createdAt={paste.timestamp} />;
-    },
-  },
-  {
-    render: (paste: Paste) => {
       if (paste.expiresAt === null) {
         return undefined;
       }
@@ -98,7 +93,23 @@ export function UserPastes() {
                     >
                       <p>{paste.id}</p>
                     </Link>
+                  </div>
+                  <div className="text-sm flex-grow">
+                    <Highlighter
+                      language={paste.lang}
+                      content={getLines(paste.content, 3).join("\n")}
+                    />
+                  </div>
+
+                  <p className="text-xs text-muted-foreground pt-1 flex gap-1 items-center justify-between">
                     <div className="text-xs flex items-center flex-wrap divide-x-2 divide-secondary">
+                      <div className="flex gap-1 items-center pr-2">
+                        <PasteLanguageIcon
+                          ext={paste.ext}
+                          formattedLang={paste.formattedLang}
+                        />
+                        {paste.formattedLang}
+                      </div>
                       {pasteDetails.map((detail, index) => {
                         const rendered = detail.render(paste);
                         if (rendered == undefined) {
@@ -112,20 +123,7 @@ export function UserPastes() {
                         );
                       })}
                     </div>
-                  </div>
-                  <div className="text-sm flex-grow">
-                    <Highlighter
-                      language={paste.lang}
-                      content={getLines(paste.content, 3).join("\n")}
-                    />
-                  </div>
-
-                  <p className="text-xs text-muted-foreground pt-1 flex gap-1 items-center">
-                    <PasteLanguageIcon
-                      ext={paste.ext}
-                      formattedLang={paste.formattedLang}
-                    />
-                    {paste.formattedLang}
+                    <PasteCreatedTime createdAt={paste.timestamp} />
                   </p>
                 </div>
               );
