@@ -19,6 +19,8 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import { useSearchParams } from "next/navigation";
 import usePageNavigation from "@/hooks/use-page-navigation";
 import { useIsMobile } from "@/hooks/use-is-mobile";
+import { NotepadTextIcon } from "lucide-react";
+import { PasteLanguageIcon } from "@/components/paste/language-icon";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -87,7 +89,7 @@ export function UserPastes() {
               return (
                 <div
                   key={paste.id}
-                  className="bg-background-secondary p-1.5 rounded-md"
+                  className="bg-background-secondary p-1.5 rounded-md h-full flex flex-col"
                 >
                   <div className="flex gap-2 flex-col md:flex-row">
                     <Link
@@ -112,12 +114,20 @@ export function UserPastes() {
                       })}
                     </div>
                   </div>
-                  <div className="text-sm">
+                  <div className="text-sm flex-grow">
                     <Highlighter
                       language={paste.lang}
                       content={getLines(paste.content, 3).join("\n")}
                     />
                   </div>
+
+                  <p className="text-xs text-muted-foreground pt-1 flex gap-1 items-center">
+                    <PasteLanguageIcon
+                      ext={paste.ext}
+                      formattedLang={paste.formattedLang}
+                    />
+                    {paste.formattedLang}
+                  </p>
                 </div>
               );
             })}

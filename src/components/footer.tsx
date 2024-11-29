@@ -9,6 +9,7 @@ import { Button } from "@/components/button";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
 import { cn } from "@/common/utils";
+import { PasteLanguageIcon } from "@/components/paste/language-icon";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -39,8 +40,15 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
-    render: (paste: Paste) =>
-      paste.ext === "txt" ? "Plain Text" : paste.formattedLang,
+    render: (paste: Paste) => (
+      <div className="flex gap-1 items-center">
+        <PasteLanguageIcon
+          ext={paste.ext}
+          formattedLang={paste.formattedLang}
+        />
+        {paste.formattedLang}
+      </div>
+    ),
   },
 ];
 
