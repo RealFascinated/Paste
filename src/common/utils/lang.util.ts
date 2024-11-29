@@ -13,7 +13,7 @@ const languages = await getLanguages();
  */
 export async function getLanguage(content: string) {
   const response = await guessLang.runModel(content);
-  if (!response || response.length === 0 || response[0].confidence < 0.75) {
+  if (!response || response.length === 0 || response[0].confidence < 0.5) {
     return "text";
   }
 
