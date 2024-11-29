@@ -75,7 +75,7 @@ export function UserPastes() {
   }, [data, navigateToPage, page]);
 
   return (
-    <div className="flex flex-col gap-4 select-none">
+    <div className="flex flex-col gap-4 select-none px-2 md:px-5">
       {isLoading && !pastes && <p className="text-center">Loading pastes...</p>}
       {pastes && pastes.items.length === 0 && (
         <p className="text-center">You don&apos;t have any pastes yet.</p>
