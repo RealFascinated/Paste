@@ -100,9 +100,11 @@ export function UserPastes() {
                     <Link
                       href={`/${paste.id}`}
                       draggable={false}
-                      className="hover:text-link transition-all transform-gpu"
+                      className="hover:text-link transition-all transform-gpu text-sm"
                     >
-                      <p>{paste.id}</p>
+                      <p>
+                        {paste.id}.{paste.ext}
+                      </p>
                     </Link>
                   </div>
                   <div className="text-sm flex-grow">
