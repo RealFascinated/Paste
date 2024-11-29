@@ -64,7 +64,7 @@ export function SignIn() {
         <Button onClick={handleSignIn} className="w-full">
           Sign In
         </Button>
-        <Link href="/src/app/(pages)/(app)/auth/signup" className="w-full">
+        <Link href="/auth/signup" className="w-full">
           <Button className="w-full" variant="secondary">
             Sign Up
           </Button>
