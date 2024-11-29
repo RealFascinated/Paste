@@ -127,7 +127,9 @@ export function UserPastes() {
                         );
                       })}
                     </div>
-                    <PasteCreatedTime createdAt={paste.timestamp} />
+                    <div className="min-w-[125px] flex justify-end">
+                      <PasteCreatedTime createdAt={paste.timestamp} />
+                    </div>
                   </div>
                 </div>
               );
