@@ -8,7 +8,7 @@ FROM base AS build
 WORKDIR /app
 COPY . .
 RUN bun install
-RUN bun run prisma:generate
+RUN bunx prisma generate
 RUN bun run build
 
 # Expose the app port
