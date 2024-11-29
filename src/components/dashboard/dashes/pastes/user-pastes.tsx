@@ -27,6 +27,17 @@ type PasteDetails = {
 
 const pasteDetails: PasteDetails[] = [
   {
+    render: (paste: Paste) => (
+      <div className="flex gap-1 items-center pr-2">
+        <PasteLanguageIcon
+          ext={paste.ext}
+          formattedLang={paste.formattedLang}
+        />
+        {paste.formattedLang}
+      </div>
+    ),
+  },
+  {
     render: (paste: Paste) => formatBytes(paste.size),
   },
   {
@@ -103,13 +114,6 @@ export function UserPastes() {
 
                   <p className="text-xs text-muted-foreground pt-1 flex gap-1 items-center justify-between">
                     <div className="text-xs flex items-center flex-wrap divide-x-2 divide-secondary">
-                      <div className="flex gap-1 items-center pr-2">
-                        <PasteLanguageIcon
-                          ext={paste.ext}
-                          formattedLang={paste.formattedLang}
-                        />
-                        {paste.formattedLang}
-                      </div>
                       {pasteDetails.map((detail, index) => {
                         const rendered = detail.render(paste);
                         if (rendered == undefined) {
@@ -117,7 +121,10 @@ export function UserPastes() {
                         }
 
                         return (
-                          <div key={index} className="flex flex-row px-2">
+                          <div
+                            key={index}
+                            className="flex flex-row px-2 first:pl-1 first:pr-0"
+                          >
                             {rendered}
                           </div>
                         );
