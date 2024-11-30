@@ -116,8 +116,8 @@ export function Footer({ paste, editDetails }: FooterProps) {
           {paste ? (
             <div className="flex gap-2">
               <DownloadPasteButton paste={paste} />
-              <Link href={`/?content=${encodeURI(paste.content)}`}>
-                <Button>Copy</Button>
+              <Link href={`/?duplicate=${encodeURI(paste.id)}`}>
+                <Button>Duplicate</Button>
               </Link>
               <Link href={`/src/app/(pages)/(app)/raw/${paste.id}.${paste.ext}`}>
                 <Button>Raw</Button>

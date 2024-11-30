@@ -4,7 +4,7 @@ import {redirect, useSearchParams} from "next/navigation";
 import {FormEvent, Suspense, useEffect, useState} from "react";
 import {usePasteExpiry} from "@/providers/paste-expiry-provider";
 import {toast} from "@/hooks/use-toast";
-import {uploadPaste} from "@/common/api";
+import {getPaste, uploadPaste} from "@/common/api";
 import {Config} from "@/common/config";
 import {Paste} from "@/types/paste";
 import {Footer} from "@/components/footer";
@@ -21,16 +21,19 @@ function Page() {
   const searchParams = useSearchParams();
   const { expiry } = usePasteExpiry();
 
-  const clonedContent = searchParams.get("content");
-  const [content, setContent] = useState<string>(clonedContent ?? "");
+  const duplicate = searchParams.get("duplicate");
+  const [content, setContent] = useState<string>("");
 
   useEffect(() => {
-    if (clonedContent) {
-      const newPage = "/";
-      const newState = { page: newPage };
-      window.history.replaceState(newState, "", newPage);
+    if (duplicate) {
+      getPaste(duplicate).then(paste => {
+        const newPage = "/";
+        const newState = { page: newPage };
+        window.history.replaceState(newState, "", newPage);
+        setContent(paste.content);
+      });
     }
-  }, [clonedContent]);
+  }, [duplicate]);
 
   /**
    * Creates a new paste.
