@@ -88,7 +88,7 @@ export function UserPastes() {
                     <Tooltip display={paste.language}>
                       <PasteLanguageIcon
                         ext={paste.ext}
-                        formattedLang={paste.language}
+                        language={paste.language}
                       />
                     </Tooltip>
                     <Link

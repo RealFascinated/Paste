@@ -51,7 +51,7 @@ const pasteDetails: PasteDetails[] = [
       paste && <div className="flex gap-1 items-center">
         <PasteLanguageIcon
           ext={paste.ext}
-          formattedLang={paste.language}
+          language={paste.language}
         />
         {paste.language}
       </div>
