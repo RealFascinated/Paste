@@ -6,7 +6,6 @@ import {usePasteExpiry} from "@/providers/paste-expiry-provider";
 import {toast} from "@/hooks/use-toast";
 import {getPaste, uploadPaste} from "@/common/api";
 import {Config} from "@/common/config";
-import {Paste} from "@/types/paste";
 import {Footer} from "@/components/footer";
 
 export default function PasteCreatePage() {
@@ -53,27 +52,23 @@ function Page() {
       return;
     }
 
-    let paste: Paste | null = null;
-    try {
-      paste = await uploadPaste(content, expiry);
-      toast({
-        title: "Success",
-        description: "Paste created successfully, copied to clipboard!",
-      });
-      await navigator.clipboard.writeText(
-        `${Config.siteUrl}/${paste.key}.${paste.ext}`,
-      );
-    } catch (error) {
-      console.error(error);
+    const { paste, error } = await uploadPaste(content, expiry);
+    if (error !== null || paste == null) {
       toast({
         title: "Error",
-        description: "Failed to upload paste",
-      });
-    } finally {
-      if (paste != null) {
-        redirect(`/${paste.key}.${paste.ext}`);
-      }
+        description: error?.error ?? "Failed to create your paste :("
+      })
+      return;
     }
+
+    toast({
+      title: "Success",
+      description: "Paste created successfully, copied to clipboard!",
+    });
+    await navigator.clipboard.writeText(
+      `${Config.siteUrl}/${paste.key}.${paste.ext}`,
+    );
+    redirect(`/${paste.key}.${paste.ext}`);
   }
 
   return (

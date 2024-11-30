@@ -4,6 +4,7 @@ import { Config } from "@/common/config";
 import { createPaste } from "@/common/prisma";
 import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
 import { buildErrorResponse } from "@/common/error";
+import {spamFilters} from "@/filter/filters";
 
 /**
  * Configure the rate limit for this route.
@@ -38,6 +39,21 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  // Ensure the body is not too large
+  const bodySize = Buffer.byteLength(body);
+  if (bodySize > Config.maxPasteSize) {
+    return buildErrorResponse(
+      "Your paste exceeds the maximum size",
+      400,
+    );
+  }
+
+  for (const filter of spamFilters) {
+    if (filter.checkFilter(body)) {
+      return buildErrorResponse("Your paste has been filtered by our spam filter", 400);
+    }
+  }
+
   // Parse the expiry date
   const expiresAtRaw = req.nextUrl.searchParams.get("expires");
   const expiresAt = expiresAtRaw
@@ -46,9 +62,7 @@ export async function POST(req: NextRequest) {
 
   // Check if the expiry date is in the past
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
-    return new Response("Expiry date is in the past", {
-      status: 400,
-    });
+    return buildErrorResponse("Expiry date is in the past", 400);
   }
 
   // Check if the expiry date is within the max expiry length
@@ -56,9 +70,10 @@ export async function POST(req: NextRequest) {
     expiresAt &&
     expiresAt.getTime() + Config.maxExpiryLength * 1000 < new Date().getTime()
   ) {
-    return new Response("Max expiry date exceeded", {
-      status: 400,
-    });
+    return buildErrorResponse(
+      "Expiry date is too far in the future",
+      400,
+    );
   }
 
   const { id, ...paste } = await createPaste(body, expiresAt, session?.user);

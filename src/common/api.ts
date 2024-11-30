@@ -4,23 +4,29 @@ import { Config } from "@/common/config";
 import { Page } from "@/common/pagination/pagination";
 import SuperJSON from "superjson";
 import { UserStatistics } from "@/common/types/user/paste-statistics";
+import {ErrorResponse} from "@/common/types/error/error-response";
 
 /**
  * Uploads a new paste.
  *
  * @param content the content of the paste.
  * @param expires the expiration time in seconds.
- * @returns the response from the server.
+ * @returns the response from the server or the error.
  */
-export function uploadPaste(content: string, expires?: number) {
-  return ky
-    .post<Paste>("/api/upload", {
+export async function uploadPaste(content: string, expires?: number): Promise<{ paste: Paste | null, error: ErrorResponse | null }> {
+  const response = await ky
+    .post<Paste | ErrorResponse>("/api/upload", {
       body: content,
       searchParams: {
         ...(expires && expires > 0 ? { expires: expires } : {}),
       },
+      throwHttpErrors: false,
     })
-    .json();
+
+  if (response.status !== 200) {
+    return { paste: null, error: await response.json() as ErrorResponse };
+  }
+  return { paste: await response.json(), error: null };
 }
 
 /**
