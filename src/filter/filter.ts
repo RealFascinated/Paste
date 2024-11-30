@@ -1,5 +1,3 @@
-import { ScamFilter } from "./impl/scam.filter";
-
 export abstract class Filter {
   /**
    * The name of the filter.

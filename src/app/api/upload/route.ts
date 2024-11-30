@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
 
   for (const filter of spamFilters) {
     if (filter.checkFilter(body)) {
+      console.log(`Paste upload has been filtered by our spam filter: ${filter.getName()}`);
       return buildErrorResponse("Your paste has been filtered by our spam filter", 400);
     }
   }
