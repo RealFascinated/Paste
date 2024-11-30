@@ -102,7 +102,7 @@ export function Footer({ paste, editDetails }: FooterProps) {
     <div
       className={"min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col justify-between items-center text-sm w-full"}
     >
-      <div className="flex gap-2 items-center w-full justify-between">
+      <div className="flex gap-2 items-center w-full justify-center md:justify-between">
         <div className="flex gap-2 items-center">
           {!paste && <Expiry />}
           <div className="hidden md:block">
