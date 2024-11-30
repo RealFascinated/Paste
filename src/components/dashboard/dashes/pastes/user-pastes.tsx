@@ -1,25 +1,21 @@
 "use client";
 
-import { getLoggedInUsersPastes } from "@/common/api";
-import { useQuery } from "@tanstack/react-query";
+import {getLoggedInUsersPastes} from "@/common/api";
+import {useQuery} from "@tanstack/react-query";
 import Pagination from "@/components/pagination";
-import { Page } from "@/common/pagination/pagination";
-import { Paste } from "@/types/paste";
-import { ReactNode, useEffect, useState } from "react";
+import {Page} from "@/common/pagination/pagination";
+import {Paste} from "@/types/paste";
+import {ReactNode, useEffect, useState} from "react";
 import Highlighter from "@/components/highlighter";
-import {
-  formatBytes,
-  formatNumber,
-  getLines,
-} from "@/common/utils/string.util";
+import {formatBytes, formatNumber, getLines,} from "@/common/utils/string.util";
 import Link from "next/link";
-import { PasteCreatedTime } from "@/components/paste/created-time";
+import {PasteCreatedTime} from "@/components/paste/created-time";
 import Tooltip from "@/components/tooltip";
-import { getRelativeTime } from "@/common/utils/date.util";
-import { useSearchParams } from "next/navigation";
+import {getRelativeTime} from "@/common/utils/date.util";
+import {useSearchParams} from "next/navigation";
 import usePageNavigation from "@/hooks/use-page-navigation";
-import { useIsMobile } from "@/hooks/use-is-mobile";
-import { PasteLanguageIcon } from "@/components/paste/language-icon";
+import {useIsMobile} from "@/hooks/use-is-mobile";
+import {PasteLanguageIcon} from "@/components/paste/language-icon";
 
 type PasteDetails = {
   render: (paste: Paste) => string | ReactNode;
@@ -89,10 +85,10 @@ export function UserPastes() {
                   className="bg-background-secondary p-1.5 rounded-md h-full flex flex-col"
                 >
                   <div className="flex gap-2 items-center">
-                    <Tooltip display={paste.formattedLang}>
+                    <Tooltip display={paste.language}>
                       <PasteLanguageIcon
                         ext={paste.ext}
-                        formattedLang={paste.formattedLang}
+                        formattedLang={paste.language}
                       />
                     </Tooltip>
                     <Link
@@ -107,7 +103,7 @@ export function UserPastes() {
                   </div>
                   <div className="text-sm flex-grow">
                     <Highlighter
-                      language={paste.lang}
+                      language={paste.ext}
                       content={getLines(paste.content, 3).join("\n")}
                     />
                   </div>

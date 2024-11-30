@@ -1,7 +1,7 @@
-import { Paste, PrismaClient } from "@prisma/client";
-import { generatePasteId } from "@/common/utils/paste.util";
-import { getLanguage } from "@/common/utils/lang.util";
-import { User } from "better-auth";
+import {Paste, PrismaClient} from "@prisma/client";
+import {generatePasteId} from "@/common/utils/paste.util";
+import {getLanguage, getLanguageName} from "@/common/utils/lang.util";
+import {User} from "better-auth";
 
 export const prismaClient = new PrismaClient();
 
@@ -21,12 +21,14 @@ export async function createPaste(
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
   }
+  const ext = await getLanguage(content);
   return prismaClient.paste.create({
     data: {
       id: await generatePasteId(),
       content: content,
       size: Buffer.byteLength(content),
-      lang: await getLanguage(content),
+      ext: ext,
+      language: getLanguageName(ext),
       ...(uploader && { ownerId: uploader.id }),
       expiresAt: expiresAt,
       timestamp: new Date(),

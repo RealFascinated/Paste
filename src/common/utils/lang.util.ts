@@ -1,4 +1,4 @@
-import { GuessLang } from "@ray-d-song/guesslang-js";
+import {GuessLang} from "@ray-d-song/guesslang-js";
 import ky from "ky";
 import YAML from "yaml";
 
@@ -14,7 +14,7 @@ const languages = await getLanguages();
 export async function getLanguage(content: string) {
   const response = await guessLang.runModel(content);
   if (!response || response.length === 0 || response[0].confidence < 0.5) {
-    return "text";
+    return "txt";
   }
 
   return response[0].languageId;
@@ -33,6 +33,10 @@ export async function getLanguage(content: string) {
  * @returns The language name, or "Unknown" if not found.
  */
 export function getLanguageName(extension: string) {
+  if (extension == "txt") {
+    return "Text";
+  }
+
   if (extension && languages) {
     extension = !extension.startsWith(".") ? `.${extension}` : extension;
     for (const [languageName, data] of Object.entries(languages)) {

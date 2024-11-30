@@ -1,9 +1,9 @@
-import { NextRequest } from "next/server";
-import { auth } from "@/common/auth";
-import { Config } from "@/common/config";
-import { createPaste } from "@/common/prisma";
-import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
-import { buildErrorResponse } from "@/common/error";
+import {NextRequest} from "next/server";
+import {auth} from "@/common/auth";
+import {Config} from "@/common/config";
+import {createPaste} from "@/common/prisma";
+import {Ratelimiter, RateLimitResponse} from "@/common/ratelimiter";
+import {buildErrorResponse} from "@/common/error";
 import {spamFilters} from "@/filter/filters";
 import {formatBytes} from "@/common/utils/string.util";
 
@@ -79,12 +79,11 @@ export async function POST(req: NextRequest) {
   }
 
   const { id, ...paste } = await createPaste(body, expiresAt, session?.user);
-  const ext = paste.lang === "text" ? "txt" : paste.lang;
 
-  console.log(`Paste created: ${id}, .${ext}, ${formatBytes(paste.size)}`);
+  console.log(`Paste created: ${id}, ${formatBytes(paste.size)}`);
   return Response.json({
     key: id,
-    ext: ext,
+    ext: paste.ext,
     expiresAt: paste.expiresAt,
   });
 }

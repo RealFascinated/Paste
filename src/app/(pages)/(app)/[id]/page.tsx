@@ -1,10 +1,10 @@
-import { Metadata } from "next";
-import { lookupPaste } from "@/common/utils/paste.util";
-import { defaultMetadata } from "@/common/metadata";
-import { formatBytes } from "@/common/utils/string.util";
-import { getRelativeTime } from "@/common/utils/date.util";
+import {Metadata} from "next";
+import {lookupPaste} from "@/common/utils/paste.util";
+import {defaultMetadata} from "@/common/metadata";
+import {formatBytes} from "@/common/utils/string.util";
+import {getRelativeTime} from "@/common/utils/date.util";
 import Highlighter from "@/components/highlighter";
-import { Footer } from "@/components/footer";
+import {Footer} from "@/components/footer";
 
 type PasteProps = {
   params: Promise<{
@@ -28,7 +28,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
       description: `
 Lines: ${paste.content.split("\n").length}
 Size: ${formatBytes(paste.size)}
-Language: ${paste.formattedLang}
+Language: ${paste.language}
 ${
   paste.expiresAt !== null
     ? `
@@ -49,7 +49,7 @@ export default async function PastePage({ params }: PasteProps) {
     <main className="flex flex-col gap-1 h-full flex-grow">
       <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
         {paste ? (
-          <Highlighter language={paste.lang} content={paste.content} />
+          <Highlighter language={paste.ext} content={paste.content} />
         ) : (
           <div className="text-center w-full items-center mt-5">
             <p className="text-xl text-red-400">404</p>
