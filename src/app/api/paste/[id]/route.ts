@@ -20,11 +20,11 @@ export async function GET(
   const { id, ...paste } = foundPaste;
   return Response.json({
     key: id,
-    ext: paste.lang === "text" ? "txt" : paste.lang,
+    ext: paste.ext,
+    language: paste.language,
     expiresAt: paste.expiresAt,
     content: paste.content,
     size: paste.size,
-    lang: paste.lang,
     timestamp: paste.timestamp,
   });
 }
