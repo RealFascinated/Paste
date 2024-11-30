@@ -25,7 +25,7 @@ function Page() {
   const [content, setContent] = useState<string>("");
 
   useEffect(() => {
-    if (duplicate) {
+    if (duplicate && content == "") {
       getPaste(duplicate).then(paste => {
         const newPage = "/";
         const newState = { page: newPage };
@@ -33,7 +33,7 @@ function Page() {
         setContent(paste.content);
       });
     }
-  }, [duplicate]);
+  }, [content, duplicate]);
 
   /**
    * Creates a new paste.
