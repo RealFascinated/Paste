@@ -1,13 +1,13 @@
 "use client";
 
-import { redirect, useSearchParams } from "next/navigation";
+import {redirect, useSearchParams} from "next/navigation";
 import {FormEvent, Suspense, useEffect, useState} from "react";
-import { usePasteExpiry } from "@/providers/paste-expiry-provider";
-import { toast } from "@/hooks/use-toast";
-import { uploadPaste } from "@/common/api";
-import { Config } from "@/common/config";
-import { Paste } from "@/types/paste";
-import { Footer } from "@/components/footer";
+import {usePasteExpiry} from "@/providers/paste-expiry-provider";
+import {toast} from "@/hooks/use-toast";
+import {uploadPaste} from "@/common/api";
+import {Config} from "@/common/config";
+import {Paste} from "@/types/paste";
+import {Footer} from "@/components/footer";
 
 export default function PasteCreatePage() {
   return (
@@ -95,6 +95,7 @@ function Page() {
       </div>
 
       <Footer editDetails={{
+        content: content,
         lines: content.length == 0 ? 0 : content.split("\n").length,
         words: content.length == 0 ? 0 : content.split(" ").length,
         characters: content.length == 0 ? 0 : content.split("").length

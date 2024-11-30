@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { ReactNode } from "react";
-import { Paste } from "@/types/paste";
-import { formatBytes, formatNumber } from "@/common/utils/string.util";
-import { getRelativeTime } from "@/common/utils/date.util";
+import {ReactNode} from "react";
+import {Paste} from "@/types/paste";
+import {formatBytes, formatNumber} from "@/common/utils/string.util";
+import {getRelativeTime} from "@/common/utils/date.util";
 import Tooltip from "./tooltip";
-import { Expiry } from "@/components/expiry";
-import { Button } from "@/components/button";
-import { PasteCreatedTime } from "@/components/paste/created-time";
-import { DownloadPasteButton } from "@/components/paste/download-button";
-import { cn } from "@/common/utils";
-import { PasteLanguageIcon } from "@/components/paste/language-icon";
+import {Expiry} from "@/components/expiry";
+import {Button} from "@/components/button";
+import {PasteCreatedTime} from "@/components/paste/created-time";
+import {DownloadPasteButton} from "@/components/paste/download-button";
+import {PasteLanguageIcon} from "@/components/paste/language-icon";
 import {PasteEditDetails} from "@/types/paste-edit-details";
 
 type PasteDetails = {
@@ -18,6 +17,7 @@ type PasteDetails = {
 };
 
 const pasteDetails: PasteDetails[] = [
+  // Paste details
   {
     type: "paste",
     render: (paste?: Paste) => paste && formatBytes(paste.size),
@@ -65,6 +65,12 @@ const pasteDetails: PasteDetails[] = [
       !editDetails ? undefined : <p>{editDetails.lines} lines, {editDetails.words} words, {editDetails.characters} characters</p>
     )
   },
+  {
+    type: "edit",
+    render: (paste?: Paste, editDetails?: PasteEditDetails) => (
+      !editDetails ? undefined : <p>{formatBytes(Buffer.byteLength(editDetails.content))}</p>
+    )
+  },
 ];
 
 function PasteDetails({ paste, editDetails }: { paste?: Paste, editDetails?: PasteEditDetails }) {
@@ -94,39 +100,42 @@ type FooterProps = {
 export function Footer({ paste, editDetails }: FooterProps) {
   return (
     <div
-      className={cn(
-        "min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex justify-between items-center text-sm",
-        paste && "flex-col-reverse md:flex-row",
-      )}
+      className={"min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col justify-between items-center text-sm w-full"}
     >
-      <div className="flex gap-2">
-        {!paste && <Expiry />}
+      <div className="flex gap-2 items-center w-full justify-between">
+        <div className="flex gap-2 items-center">
+          {!paste && <Expiry />}
+          <div className="hidden md:block">
+            {paste || editDetails ? (
+              <PasteDetails paste={paste} editDetails={editDetails} />
+            ) : null}
+          </div>
+        </div>
+
+        <>
+          {paste ? (
+            <div className="flex gap-2">
+              <DownloadPasteButton paste={paste} />
+              <Link href={`/?content=${encodeURI(paste.content)}`}>
+                <Button>Copy</Button>
+              </Link>
+              <Link href={`/src/app/(pages)/(app)/raw/${paste.id}.${paste.ext}`}>
+                <Button>Raw</Button>
+              </Link>
+              <Link href="/">
+                <Button>New</Button>
+              </Link>
+            </div>
+          ) : (
+            <Button>Save</Button>
+          )}
+        </>
+      </div>
+      <div className="block md:hidden">
         {paste || editDetails ? (
-          <PasteDetails paste={paste} editDetails={editDetails} />
+          <PasteDetails paste={paste} editDetails={editDetails}/>
         ) : null}
       </div>
-
-      <>
-        {paste ? (
-          <div className="flex gap-2">
-            <DownloadPasteButton paste={paste} />
-            <Link href={`/?content=${encodeURI(paste.content)}`}>
-              <Button>Copy</Button>
-            </Link>
-            <Link href={`/src/app/(pages)/(app)/raw/${paste.id}.${paste.ext}`}>
-              <Button>Raw</Button>
-            </Link>
-            <Link href="/">
-              <Button>New</Button>
-            </Link>
-          </div>
-        ) : (
-          <>
-
-            <Button>Save</Button>
-          </>
-        )}
-      </>
     </div>
   );
 }

@@ -1,5 +1,10 @@
 export type PasteEditDetails = {
   /**
+   * The content of the paste.
+   */
+  content: string;
+
+  /**
    * The number of lines in the paste.
    */
   lines: number;
