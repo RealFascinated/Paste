@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useEffect } from "react";
+import {FormEvent, Suspense, useEffect, useState} from "react";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { toast } from "@/hooks/use-toast";
 import { uploadPaste } from "@/common/api";
@@ -22,6 +22,7 @@ function Page() {
   const { expiry } = usePasteExpiry();
 
   const clonedContent = searchParams.get("content");
+  const [content, setContent] = useState<string>(clonedContent ?? "");
 
   useEffect(() => {
     if (clonedContent) {
@@ -86,11 +87,18 @@ function Page() {
           name="content"
           className="w-full text-white bg-background resize-none select-none outline-none"
           placeholder={Config.pastePlaceholder}
-          defaultValue={searchParams.get("content") ?? ""}
+          value={content}
+          onChange={(event) => {
+            setContent(event.target.value);
+          }}
         />
       </div>
 
-      <Footer />
+      <Footer editDetails={{
+        lines: content.length == 0 ? 0 : content.split("\n").length,
+        words: content.length == 0 ? 0 : content.split(" ").length,
+        characters: content.length == 0 ? 0 : content.split("").length
+      }} />
     </form>
   );
 }

@@ -10,25 +10,31 @@ import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
 import { cn } from "@/common/utils";
 import { PasteLanguageIcon } from "@/components/paste/language-icon";
+import {PasteEditDetails} from "@/types/paste-edit-details";
 
 type PasteDetails = {
-  render: (paste: Paste) => string | ReactNode;
+  type: "paste" | "edit";
+  render: (paste?: Paste, editDetails?: PasteEditDetails) => ReactNode | string;
 };
 
 const pasteDetails: PasteDetails[] = [
   {
-    render: (paste: Paste) => formatBytes(paste.size),
+    type: "paste",
+    render: (paste?: Paste) => paste && formatBytes(paste.size),
   },
   {
-    render: (paste: Paste) =>
-      `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
+    type: "paste",
+    render: (paste?: Paste) =>
+      paste && `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
   },
   {
-    render: (paste: Paste) => <PasteCreatedTime createdAt={paste.timestamp} />,
+    type: "paste",
+    render: (paste?: Paste) => paste && <PasteCreatedTime createdAt={paste.timestamp} />,
   },
   {
-    render: (paste: Paste) => {
-      if (paste.expiresAt === null) {
+    type: "paste",
+    render: (paste?: Paste) => {
+      if (!paste || paste.expiresAt === null) {
         return undefined;
       }
 
@@ -40,8 +46,9 @@ const pasteDetails: PasteDetails[] = [
     },
   },
   {
-    render: (paste: Paste) => (
-      <div className="flex gap-1 items-center">
+    type: "paste",
+    render: (paste?: Paste) => (
+      paste && <div className="flex gap-1 items-center">
         <PasteLanguageIcon
           ext={paste.ext}
           formattedLang={paste.formattedLang}
@@ -50,13 +57,21 @@ const pasteDetails: PasteDetails[] = [
       </div>
     ),
   },
+
+  // Paste edit details
+  {
+    type: "edit",
+    render: (paste?: Paste, editDetails?: PasteEditDetails) => (
+      !editDetails ? undefined : <p>{editDetails.lines} lines, {editDetails.words} words, {editDetails.characters} characters</p>
+    )
+  },
 ];
 
-function PasteDetails({ paste }: { paste: Paste }) {
+function PasteDetails({ paste, editDetails }: { paste?: Paste, editDetails?: PasteEditDetails }) {
   return (
     <div className="text-xs flex items-center justify-center flex-wrap divide-x-2 divide-secondary">
       {pasteDetails.map((detail, index) => {
-        const rendered = detail.render(paste);
+        const rendered = detail.render(paste, editDetails);
         if (rendered == undefined) {
           return undefined;
         }
@@ -73,9 +88,10 @@ function PasteDetails({ paste }: { paste: Paste }) {
 
 type FooterProps = {
   paste?: Paste;
+  editDetails?: PasteEditDetails;
 };
 
-export function Footer({ paste }: FooterProps) {
+export function Footer({ paste, editDetails }: FooterProps) {
   return (
     <div
       className={cn(
@@ -83,7 +99,12 @@ export function Footer({ paste }: FooterProps) {
         paste && "flex-col-reverse md:flex-row",
       )}
     >
-      {paste && <PasteDetails paste={paste} />}
+      <div className="flex gap-2">
+        {!paste && <Expiry />}
+        {paste || editDetails ? (
+          <PasteDetails paste={paste} editDetails={editDetails} />
+        ) : null}
+      </div>
 
       <>
         {paste ? (
@@ -101,7 +122,7 @@ export function Footer({ paste }: FooterProps) {
           </div>
         ) : (
           <>
-            <Expiry />
+
             <Button>Save</Button>
           </>
         )}

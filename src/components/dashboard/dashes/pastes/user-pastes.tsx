@@ -49,9 +49,9 @@ const pasteDetails: PasteDetails[] = [
 ];
 
 export function UserPastes() {
+  const isMobile = useIsMobile();
   const searchParams = useSearchParams();
   const { navigateToPage } = usePageNavigation();
-  const isMobile = useIsMobile();
 
   const [page, setPage] = useState(
     searchParams.get("page") ? Number(searchParams.get("page")) : 1,
@@ -63,6 +63,9 @@ export function UserPastes() {
     queryFn: () => getLoggedInUsersPastes(page),
   });
 
+  /**
+   * Updates the pastes and sets the page URL.
+   */
   useEffect(() => {
     if (data) {
       setPastes(data);
