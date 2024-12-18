@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   // Ensure the body is not too large
   const bodySize = Buffer.byteLength(body);
-  if (bodySize > Config.maxPasteSize) {
+  if ((bodySize / 1024) > Config.maxPasteSize) {
     return buildErrorResponse(
       "Your paste exceeds the maximum size",
       400,
