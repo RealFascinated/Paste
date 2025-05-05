@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 let prismaClientInstance: PrismaClient | null = null;
 
-function getPrismaClient(): PrismaClient {
+export function getPrismaClient(): PrismaClient {
   if (!prismaClientInstance) {
     prismaClientInstance = new PrismaClient();
   }
