@@ -23,6 +23,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Build the app
 RUN bun run build
 
 # Production image, copy all the files and run next
@@ -47,9 +48,6 @@ COPY --from=builder /app/schema.prisma ./
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 COPY --from=builder /app/next.config.ts ./next.config.ts
-
-# Generate Prisma client in production
-RUN bunx prisma@6.7.0 generate
 
 USER nextjs
 

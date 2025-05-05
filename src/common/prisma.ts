@@ -1,7 +1,6 @@
 import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
-import { Paste } from "@/generated/prisma";
-import { PrismaClient } from "@prisma/client";
+import { Paste, PrismaClient } from "@/generated/prisma";
 
 let prismaClientInstance: PrismaClient | null = null;
 
