@@ -8,7 +8,6 @@ FROM base AS build
 WORKDIR /app
 COPY . .
 RUN bun install
-RUN bunx prisma@6.7.0 generate
 RUN bun run build
 
 # Production image

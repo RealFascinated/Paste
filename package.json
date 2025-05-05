@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "bun --bun src/server.ts",
-    "build": "next build",
+    "build": "bunx prisma@6.7.0 generate && next build",
     "start": "bun --bun src/server.ts",
     "next:dev": "next dev --turbopack",
     "prisma:generate": "npx prisma@6.7.0 generate",
     "prisma:migrate": "npx prisma@6.7.0 migrate deploy",
-    "prettier": "bunx prettier -w --config ./prettierrc.json ."
+    "prettier": "bunx prettier -w --config ./prettierrc.json .",
+    "postinstall": "bunx prisma@6.7.0 generate"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
