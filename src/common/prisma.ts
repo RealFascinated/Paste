@@ -3,7 +3,14 @@ import { generatePasteId } from "@/common/utils/paste.util";
 import { Paste } from "@/generated/prisma";
 import { PrismaClient } from "@prisma/client";
 
-export const prismaClient = new PrismaClient();
+let prismaClientInstance: PrismaClient | null = null;
+
+function getPrismaClient(): PrismaClient {
+  if (!prismaClientInstance) {
+    prismaClientInstance = new PrismaClient();
+  }
+  return prismaClientInstance;
+}
 
 /**
  * Creates a new paste with a random ID.
@@ -22,7 +29,7 @@ export async function createPaste(
     expiresAt = undefined;
   }
   const ext = await getLanguage(content, filename);
-  return prismaClient.paste.create({
+  return getPrismaClient().paste.create({
     data: {
       id: await generatePasteId(),
       content: content,
@@ -48,7 +55,7 @@ export async function getPaste(
 ): Promise<Paste | null> {
   try {
     if (incrementViews) {
-      return await prismaClient.paste.update({
+      return await getPrismaClient().paste.update({
         where: {
           id: id,
         },
@@ -59,7 +66,7 @@ export async function getPaste(
         },
       });
     }
-    return (await prismaClient.paste.findUnique({
+    return (await getPrismaClient().paste.findUnique({
       where: {
         id: id,
       },
@@ -73,7 +80,7 @@ export async function getPaste(
  * Expires all pastes that have expired.
  */
 export async function expirePastes() {
-  const { count } = await prismaClient.paste.deleteMany({
+  const { count } = await getPrismaClient().paste.deleteMany({
     where: {
       expiresAt: {
         lt: new Date(),
