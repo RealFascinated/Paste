@@ -9,6 +9,7 @@ export async function Navbar() {
           <Link
             className="font-bold text-lg hover:text-primary transition-colors"
             href="/"
+            prefetch={false}
           >
             {Config.siteTitle}
           </Link>

@@ -132,15 +132,16 @@ export function Footer({ paste, editDetails }: FooterProps) {
           {paste ? (
             <div className="flex gap-2.5">
               <DownloadPasteButton paste={paste} />
-              <Link href={`/?duplicate=${encodeURI(paste.id)}`}>
+              <Link href={`/?duplicate=${encodeURI(paste.id)}`} prefetch={false}>
                 <Button variant="secondary">Duplicate</Button>
               </Link>
               <Link
                 href={`/raw/${paste.id}.${paste.ext}`}
+                prefetch={false}
               >
                 <Button variant="outline">Raw</Button>
               </Link>
-              <Link href="/">
+              <Link href="/" prefetch={false}>
                 <Button className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white">New</Button>
               </Link>
             </div>
