@@ -1,4 +1,8 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
-  "ignorePatterns": ["src/generated/**/*"]
+  "ignorePatterns": ["src/generated/**/*"],
+  "rules": {
+    "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "warn"
+  }
 }

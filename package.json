@@ -7,13 +7,13 @@
     "build": "next build",
     "start": "bun --bun src/server.ts",
     "next:dev": "next dev --turbopack",
-    "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate deploy",
+    "prisma:generate": "npx prisma@6.7.0 generate",
+    "prisma:migrate": "npx prisma@6.7.0 migrate deploy",
     "prettier": "bunx prettier -w --config ./prettierrc.json ."
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "@prisma/client": "^6.7.0",
+    "@prisma/client": "6.7.0",
     "@radix-ui/react-dialog": "^1.1.12",
     "@radix-ui/react-icons": "^1.3.2",
     "@radix-ui/react-select": "^2.2.3",
