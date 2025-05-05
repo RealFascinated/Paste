@@ -2,7 +2,7 @@ import { Config } from "@/common/config";
 import { getPaste, prismaClient } from "@/common/prisma";
 import { randomString } from "@/common/utils/string.util";
 import { Paste } from "@/types/paste";
-import { Paste as PrismaPaste } from "@prisma/client";
+import { Paste as PrismaPaste } from "@/generated/prisma/client";
 import { cache } from "react";
 
 /**

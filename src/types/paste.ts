@@ -1,4 +1,4 @@
-import { Paste as PrismaPaste } from "@prisma/client";
+import { Paste as PrismaPaste } from "@/generated/prisma/client";
 
 export type Paste = PrismaPaste & {
   /**
