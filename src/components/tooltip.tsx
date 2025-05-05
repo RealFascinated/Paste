@@ -1,12 +1,12 @@
 "use client";
 
+import { clsx } from "clsx";
+import { ReactNode } from "react";
 import {
   Tooltip as ShadCnTooltip,
   TooltipContent,
   TooltipTrigger,
 } from "./ui/tooltip";
-import { clsx } from "clsx";
-import { ReactNode } from "react";
 
 type Props = {
   /**

@@ -9,7 +9,7 @@ interface PasteExpiryContextProps {
 }
 
 const PasteExpiryContext = createContext<PasteExpiryContextProps | undefined>(
-  undefined,
+  undefined
 );
 
 export function PasteExpiryProvider({ children }: { children: ReactNode }) {

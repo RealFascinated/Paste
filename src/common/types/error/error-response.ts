@@ -8,4 +8,4 @@ export type ErrorResponse = {
    * The error code.
    */
   code: number;
-}
+};

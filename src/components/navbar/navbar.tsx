@@ -1,48 +1,17 @@
-import { HomeButton } from "@/components/navbar/home-button";
-import { auth } from "@/common/auth";
-import { headers } from "next/headers";
+import { Config } from "@/common/config";
 import Link from "next/link";
-import { Button } from "@/components/button";
-import { SignoutButton } from "@/components/auth/signout-button";
-import { ReactNode } from "react";
 
-type NavbarProps = {
-  /**
-   * Additional buttons to display when logged in.
-   */
-  loggedInButtons?: ReactNode;
-};
-
-export async function Navbar({ loggedInButtons }: NavbarProps) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
+export async function Navbar() {
   return (
     <div>
-      <div className="min-h-[40px] p-1.5 px-2 bg-background-secondary flex justify-between items-center h-full">
-        <div className="flex items-center gap-1">
-          {session && loggedInButtons}
-          <div className="flex flex-row gap-3 items-center">
-            <HomeButton />
-          </div>
-        </div>
-
-        <div className="flex gap-2 items-center">
-          {session == null ? (
-            <>
-              <Link href="/auth/login">
-                <Button>Login</Button>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link href="/dashboard">
-                <Button>Dashboard</Button>
-              </Link>
-              <SignoutButton />
-            </>
-          )}
+      <div className="min-h-[40px] px-4 py-2 bg-background/50 backdrop-blur-sm border-b border-border/50 flex justify-between items-center h-full">
+        <div className="flex items-center gap-2">
+          <Link
+            className="font-bold text-lg hover:text-primary transition-colors"
+            href="/"
+          >
+            {Config.siteTitle}
+          </Link>
         </div>
       </div>
     </div>

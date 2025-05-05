@@ -1,7 +1,7 @@
-import {Paste, PrismaClient} from "@prisma/client";
-import {generatePasteId} from "@/common/utils/paste.util";
-import {getLanguage, getLanguageName} from "@/common/utils/lang.util";
-import {User} from "better-auth";
+import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
+import { generatePasteId } from "@/common/utils/paste.util";
+import { Paste } from "@/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 export const prismaClient = new PrismaClient();
 
@@ -10,26 +10,25 @@ export const prismaClient = new PrismaClient();
  *
  * @param content The content of the paste.
  * @param expiresAt The expiration date of the paste.
- * @param uploader the user who uploaded the paste.
+ * @param filename Optional filename to help with language detection
  * @returns The created paste.
  */
 export async function createPaste(
   content: string,
   expiresAt?: Date,
-  uploader?: User,
-) {
+  filename?: string
+): Promise<Paste> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
   }
-  const ext = await getLanguage(content);
+  const ext = await getLanguage(content, filename);
   return prismaClient.paste.create({
     data: {
       id: await generatePasteId(),
       content: content,
       size: Buffer.byteLength(content),
       ext: ext,
-      language: getLanguageName(ext),
-      ...(uploader && { ownerId: uploader.id }),
+      language: await getLanguageName(ext),
       expiresAt: expiresAt,
       timestamp: new Date(),
     },
@@ -43,7 +42,10 @@ export async function createPaste(
  * @param incrementViews whether to increment the views of the paste.
  * @returns the paste with the given ID.
  */
-export async function getPaste(id: string, incrementViews = false) {
+export async function getPaste(
+  id: string,
+  incrementViews = false
+): Promise<Paste | null> {
   try {
     if (incrementViews) {
       return await prismaClient.paste.update({
@@ -57,11 +59,11 @@ export async function getPaste(id: string, incrementViews = false) {
         },
       });
     }
-    return await prismaClient.paste.findUnique({
+    return (await prismaClient.paste.findUnique({
       where: {
         id: id,
       },
-    });
+    })) as Paste;
   } catch {
     return null;
   }
@@ -79,71 +81,4 @@ export async function expirePastes() {
     },
   });
   console.log(`Expired ${count} pastes`);
-}
-
-/**
- * Gets all pastes for a user.
- *
- * @param user the user to get pastes for.
- * @param options the options to get pastes with.
- * @returns all pastes for the user.
- */
-export async function getUsersPastes(
-  user: User,
-  options?: {
-    skip?: number;
-    take?: number;
-    countOnly?: boolean;
-  },
-): Promise<{ pastes: Paste[]; totalItems: number }> {
-  const count = await prismaClient.paste.count({
-    where: {
-      ownerId: user.id,
-    },
-  });
-  if (options?.countOnly) {
-    return { pastes: [], totalItems: count };
-  }
-
-  return {
-    pastes: await prismaClient.paste.findMany({
-      where: {
-        ownerId: user.id,
-      },
-      ...(options?.skip && { skip: options.skip }),
-      ...(options?.take && { take: options.take }),
-      orderBy: {
-        timestamp: "desc",
-      },
-    }),
-    totalItems: count,
-  };
-}
-
-/**
- * Gets the statistics for a user.
- *
- * @param user the user to get the statistics for.
- * @returns the statistics for the user.
- */
-export async function getUserPasteStatistics(user: User) {
-  const count = await prismaClient.paste.count({
-    where: {
-      ownerId: user.id,
-    },
-  });
-
-  const views = await prismaClient.paste.aggregate({
-    where: {
-      ownerId: user.id,
-    },
-    _sum: {
-      views: true,
-    },
-  });
-
-  return {
-    totalPastes: count,
-    totalViews: views._sum.views,
-  };
 }

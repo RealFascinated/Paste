@@ -15,14 +15,14 @@ export const Config = {
  */
 if (Config.idLength <= 0) {
   console.error(
-    "Invalid paste id length, please set PASTE_ID_LENGTH to a positive integer.",
+    "Invalid paste id length, please set PASTE_ID_LENGTH to a positive integer."
   );
   process.exit(1);
 }
 
 if (Config.maxPasteSize <= 0) {
   console.error(
-    "Invalid paste max size, please set PASTE_MAX_SIZE to a positive integer.",
+    "Invalid paste max size, please set PASTE_MAX_SIZE to a positive integer."
   );
   process.exit(1);
 }

@@ -25,7 +25,7 @@ export function PasteCreatedTime({ createdAt }: PasteCreatedTimeProps) {
       () => {
         setTime(getRelativeTime(createdAt));
       },
-      difference < 60 * 1000 ? 1000 : 60_000,
+      difference < 60 * 1000 ? 1000 : 60_000
     );
 
     return () => clearInterval(timer);

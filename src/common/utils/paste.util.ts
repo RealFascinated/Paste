@@ -1,9 +1,9 @@
-import {cache} from "react";
-import {randomString} from "@/common/utils/string.util";
-import {Config} from "@/common/config";
-import {getPaste, prismaClient} from "@/common/prisma";
-import {Paste} from "@/types/paste";
-import {Paste as PrismaPaste} from "@prisma/client";
+import { Config } from "@/common/config";
+import { getPaste, prismaClient } from "@/common/prisma";
+import { randomString } from "@/common/utils/string.util";
+import { Paste } from "@/types/paste";
+import { Paste as PrismaPaste } from "@prisma/client";
+import { cache } from "react";
 
 /**
  * Generates a paste ID.
@@ -34,7 +34,7 @@ export async function generatePasteId(): Promise<string> {
     // if it fails, return null
     if (iterations > 100) {
       console.error(
-        "Failed to generate a unique paste ID after 100 attempts, please increase your paste id length.",
+        "Failed to generate a unique paste ID after 100 attempts, please increase your paste id length."
       );
       throw new Error("Failed to generate a unique paste ID");
     }
@@ -61,7 +61,7 @@ export const lookupPaste = cache(
       ...paste,
       key: id,
     };
-  },
+  }
 );
 
 /**

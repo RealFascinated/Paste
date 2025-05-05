@@ -50,7 +50,7 @@ export function formatNumber(number: number) {
  */
 export function truncateText(
   text: string | undefined,
-  maxLength: number,
+  maxLength: number
 ): string | undefined {
   if (!text) {
     return undefined;

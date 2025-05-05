@@ -1,10 +1,10 @@
-import {Metadata} from "next";
-import {lookupPaste} from "@/common/utils/paste.util";
-import {defaultMetadata} from "@/common/metadata";
-import {formatBytes} from "@/common/utils/string.util";
-import {getRelativeTime} from "@/common/utils/date.util";
+import { defaultMetadata } from "@/common/metadata";
+import { getRelativeTime } from "@/common/utils/date.util";
+import { lookupPaste } from "@/common/utils/paste.util";
+import { formatBytes } from "@/common/utils/string.util";
+import { Footer } from "@/components/footer";
 import Highlighter from "@/components/highlighter";
-import {Footer} from "@/components/footer";
+import { Metadata } from "next";
 
 type PasteProps = {
   params: Promise<{
@@ -46,8 +46,8 @@ export default async function PastePage({ params }: PasteProps) {
   const paste = await lookupPaste(id, true);
 
   return (
-    <main className="flex flex-col gap-1 h-full flex-grow">
-      <div className="overflow-x-auto h-full flex flex-grow w-full text-sm">
+    <main className="flex flex-col gap-1 h-full grow">
+      <div className="overflow-x-auto h-full flex grow w-full text-sm">
         {paste ? (
           <Highlighter language={paste.ext} content={paste.content} />
         ) : (

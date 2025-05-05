@@ -1,6 +1,4 @@
-import {ScamFilter} from "@/filter/impl/scam.filter";
-import {Filter} from "@/filter/filter";
+import { Filter } from "@/filter/filter";
+import { ScamFilter } from "@/filter/impl/scam.filter";
 
-export const spamFilters: Filter[] = [
-  new ScamFilter(),
-];
+export const spamFilters: Filter[] = [new ScamFilter()];

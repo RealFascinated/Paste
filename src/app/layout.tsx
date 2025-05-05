@@ -1,12 +1,12 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { ReactNode } from "react";
 import { defaultMetadata } from "@/common/metadata";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/toaster";
-import Script from "next/script";
 import { QueryProvider } from "@/providers/query-provider";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import Script from "next/script";
+import { ReactNode } from "react";
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -22,14 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {process.env.NODE_ENV === "production" && (
-        <Script
-          src="https://analytics.fascinated.cc/js/script.js"
-          data-domain="paste.fascinated.cc"
-        />
-      )}
+      {process.env.ANALYTICS_SERVICE === "umami" &&
+        process.env.NODE_ENV === "production" && (
+          <Script
+            src={process.env.ANALYTICS_UMAMI_SCRIPT}
+            data-domain={process.env.ANALYTICS_UMAMI_DOMAIN}
+          />
+        )}
       <body className={`${siteFont.className} antialiased w-full h-full`}>
-        <Toaster />
+      <Toaster />
         <TooltipProvider>
           <QueryProvider>
             <main className="flex flex-col min-h-screen text-white w-full">

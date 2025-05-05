@@ -1,4 +1,4 @@
-import {Filter} from "@/filter/filter";
+import { Filter } from "@/filter/filter";
 
 export class ScamFilter extends Filter {
   constructor() {
@@ -6,6 +6,8 @@ export class ScamFilter extends Filter {
   }
 
   checkFilter(content: string): boolean {
-    return ["bitcoin", "ethereum", "monero", "ripple"].some(word => content.toLowerCase().includes(word));
+    return ["bitcoin", "ethereum", "monero", "ripple"].some(word =>
+      content.toLowerCase().includes(word)
+    );
   }
 }

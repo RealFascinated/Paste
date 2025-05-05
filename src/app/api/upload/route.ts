@@ -1,11 +1,10 @@
-import {NextRequest} from "next/server";
-import {auth} from "@/common/auth";
-import {Config} from "@/common/config";
-import {createPaste} from "@/common/prisma";
-import {Ratelimiter, RateLimitResponse} from "@/common/ratelimiter";
-import {buildErrorResponse} from "@/common/error";
-import {spamFilters} from "@/filter/filters";
-import {formatBytes} from "@/common/utils/string.util";
+import { Config } from "@/common/config";
+import { buildErrorResponse } from "@/common/error";
+import { createPaste } from "@/common/prisma";
+import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
+import { formatBytes } from "@/common/utils/string.util";
+import { spamFilters } from "@/filter/filters";
+import { NextRequest } from "next/server";
 
 /**
  * Configure the rate limit for this route.
@@ -19,18 +18,17 @@ export async function POST(req: NextRequest) {
   // Handle rate limiting
   const rateLimitResponse: RateLimitResponse | undefined = Ratelimiter.check(
     req,
-    `/api/upload`,
+    `/api/upload`
   );
   if (rateLimitResponse) {
     if (!rateLimitResponse.allowed) {
       return Ratelimiter.applyHeaders(
         buildErrorResponse("You have been rate limited!", 429),
-        rateLimitResponse,
+        rateLimitResponse
       );
     }
   }
 
-  const session = await auth.api.getSession({ headers: req.headers });
   const body = await req.text();
 
   // Validate the request body
@@ -42,17 +40,19 @@ export async function POST(req: NextRequest) {
 
   // Ensure the body is not too large
   const bodySize = Buffer.byteLength(body);
-  if ((bodySize / 1024) > Config.maxPasteSize) {
-    return buildErrorResponse(
-      "Your paste exceeds the maximum size",
-      400,
-    );
+  if (bodySize / 1024 > Config.maxPasteSize) {
+    return buildErrorResponse("Your paste exceeds the maximum size", 400);
   }
 
   for (const filter of spamFilters) {
     if (filter.checkFilter(body)) {
-      console.log(`Paste upload has been filtered by our spam filter: ${filter.getName()}`);
-      return buildErrorResponse("Your paste has been filtered by our spam filter", 400);
+      console.log(
+        `Paste upload has been filtered by our spam filter: ${filter.getName()}`
+      );
+      return buildErrorResponse(
+        "Your paste has been filtered by our spam filter",
+        400
+      );
     }
   }
 
@@ -72,13 +72,10 @@ export async function POST(req: NextRequest) {
     expiresAt &&
     expiresAt.getTime() + Config.maxExpiryLength * 1000 < new Date().getTime()
   ) {
-    return buildErrorResponse(
-      "Expiry date is too far in the future",
-      400,
-    );
+    return buildErrorResponse("Expiry date is too far in the future", 400);
   }
 
-  const { id, ...paste } = await createPaste(body, expiresAt, session?.user);
+  const { id, ...paste } = await createPaste(body, expiresAt);
 
   console.log(`Paste created: ${id}, ${formatBytes(paste.size)}`);
   return Response.json({

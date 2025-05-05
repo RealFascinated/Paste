@@ -54,7 +54,7 @@ const PaginationLink = ({
         size,
       }),
       className,
-      "min-w-fit px-2",
+      "min-w-fit px-2"
     )}
     {...props}
   />

@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Clock } from "lucide-react";
 
 type ExpiryOption = {
   value: number;
@@ -30,32 +31,33 @@ export function Expiry() {
   const { setExpiry } = usePasteExpiry();
 
   const handleExpiryChange = (value: string) => {
-    const expiry = expiryOptions.find(
-      (option) => option.label === value,
-    )?.value;
+    const expiry = expiryOptions.find(option => option.label === value)?.value;
     if (expiry != null) {
       setExpiry(expiry);
     }
   };
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <Clock className="w-4 h-4" />
+        <span>Expires in</span>
+      </div>
       <Select
         defaultValue={expiryOptions[0].label}
         onValueChange={handleExpiryChange}
       >
-        <SelectTrigger className="w-[180px] h-7">
-          <SelectValue placeholder="Expiry" />
+        <SelectTrigger className="w-[120px] h-7 bg-background-secondary/50 hover:bg-background-secondary">
+          <SelectValue placeholder="Select expiry" />
         </SelectTrigger>
         <SelectContent>
-          {expiryOptions.map((option) => (
+          {expiryOptions.map(option => (
             <SelectItem key={option.value} value={option.label}>
               {option.label}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
-      <p className="text-sm">Expiry</p>
     </div>
   );
 }

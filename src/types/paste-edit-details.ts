@@ -18,4 +18,4 @@ export type PasteEditDetails = {
    * The number of characters in the paste.
    */
   characters: number;
-}
+};

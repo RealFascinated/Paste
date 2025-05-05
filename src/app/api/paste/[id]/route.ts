@@ -1,9 +1,9 @@
-import { NextRequest } from "next/server";
 import { getPaste } from "@/common/prisma";
+import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const foundPaste = await getPaste((await params).id);
   if (foundPaste == null) {
@@ -13,7 +13,7 @@ export async function GET(
       },
       {
         status: 404,
-      },
+      }
     );
   }
 

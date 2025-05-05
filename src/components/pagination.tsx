@@ -1,20 +1,20 @@
-import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { cn } from "@/common/utils";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
 } from "@heroicons/react/16/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import {
-  Pagination as ShadCnPagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  Pagination as ShadCnPagination,
 } from "./ui/pagination";
-import { cn } from "@/common/utils";
 
 type PaginationItemWrapperProps = {
   isLoadingPage: boolean;
@@ -91,17 +91,17 @@ export default function Pagination({
         <PaginationItemWrapper key="start" isLoadingPage={isLoading}>
           <PaginationLink
             href={generatePageUrl?.(1) || ""}
-            onClick={(e) => handleLinkClick(1, e)}
+            onClick={e => handleLinkClick(1, e)}
           >
             1
           </PaginationLink>
-        </PaginationItemWrapper>,
+        </PaginationItemWrapper>
       );
       if (startPage > 2)
         pageNumbers.push(
           <PaginationItemWrapper key="ellipsis-start" isLoadingPage={isLoading}>
             <PaginationEllipsis />
-          </PaginationItemWrapper>,
+          </PaginationItemWrapper>
         );
     }
 
@@ -111,7 +111,7 @@ export default function Pagination({
           <PaginationLink
             isActive={i === currentPage}
             href={generatePageUrl?.(i) || ""}
-            onClick={(e) => handleLinkClick(i, e)}
+            onClick={e => handleLinkClick(i, e)}
           >
             {loadingPage === i ? (
               <ArrowPathIcon className="w-4 h-4 animate-spin" />
@@ -119,7 +119,7 @@ export default function Pagination({
               i
             )}
           </PaginationLink>
-        </PaginationItemWrapper>,
+        </PaginationItemWrapper>
       );
     }
 
@@ -128,17 +128,17 @@ export default function Pagination({
         pageNumbers.push(
           <PaginationItemWrapper key="ellipsis-end" isLoadingPage={isLoading}>
             <PaginationEllipsis />
-          </PaginationItemWrapper>,
+          </PaginationItemWrapper>
         );
       pageNumbers.push(
         <PaginationItemWrapper key="end" isLoadingPage={isLoading}>
           <PaginationLink
             href={generatePageUrl?.(totalPages) || ""}
-            onClick={(e) => handleLinkClick(totalPages, e)}
+            onClick={e => handleLinkClick(totalPages, e)}
           >
             {totalPages}
           </PaginationLink>
-        </PaginationItemWrapper>,
+        </PaginationItemWrapper>
       );
     }
 
@@ -149,7 +149,7 @@ export default function Pagination({
     <div
       className={cn(
         "flex w-full items-center justify-between lg:justify-center relative",
-        statsBelow && "flex-col-reverse gap-2",
+        statsBelow && "flex-col-reverse gap-2"
       )}
     >
       {/* Pagination Info */}
@@ -167,7 +167,7 @@ export default function Pagination({
             <PaginationItemWrapper key="mobile-start" isLoadingPage={isLoading}>
               <PaginationLink
                 href={generatePageUrl?.(1) || ""}
-                onClick={(e) => handleLinkClick(1, e)}
+                onClick={e => handleLinkClick(1, e)}
                 className={clsx(currentPage === 1 && "cursor-not-allowed")}
               >
                 <ChevronDoubleLeftIcon className="h-4 w-4" />
@@ -179,7 +179,7 @@ export default function Pagination({
               href={
                 currentPage > 1 ? generatePageUrl?.(currentPage - 1) || "" : ""
               }
-              onClick={(e) => handleLinkClick(currentPage - 1, e)}
+              onClick={e => handleLinkClick(currentPage - 1, e)}
               aria-disabled={currentPage === 1}
               className={clsx(currentPage === 1 && "cursor-not-allowed", "p-3")}
             />
@@ -192,11 +192,11 @@ export default function Pagination({
                   ? generatePageUrl?.(currentPage + 1) || ""
                   : ""
               }
-              onClick={(e) => handleLinkClick(currentPage + 1, e)}
+              onClick={e => handleLinkClick(currentPage + 1, e)}
               aria-disabled={currentPage === totalPages}
               className={clsx(
                 currentPage === totalPages && "cursor-not-allowed",
-                "p-3",
+                "p-3"
               )}
             />
           </PaginationItemWrapper>
@@ -204,9 +204,9 @@ export default function Pagination({
             <PaginationItemWrapper key="mobile-end" isLoadingPage={isLoading}>
               <PaginationLink
                 href={generatePageUrl?.(totalPages) || ""}
-                onClick={(e) => handleLinkClick(totalPages, e)}
+                onClick={e => handleLinkClick(totalPages, e)}
                 className={clsx(
-                  currentPage === totalPages && "cursor-not-allowed",
+                  currentPage === totalPages && "cursor-not-allowed"
                 )}
               >
                 <ChevronDoubleRightIcon className="h-4 w-4" />
