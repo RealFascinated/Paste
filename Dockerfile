@@ -8,7 +8,7 @@ RUN apk add --no-cache libc6-compat
 RUN apk update
 
 # Install dependencies based on the preferred package manager
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -47,9 +47,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Copy all source files
 COPY --from=builder /app/src ./src
-COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/migrations ./migrations
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/bun.lockb ./bun.lockb
 
 USER nextjs
 
