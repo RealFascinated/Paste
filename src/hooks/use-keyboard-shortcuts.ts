@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { toastUtil } from "@/common/utils/toast.util";
+import { useEffect } from "react";
 
 interface KeyboardShortcutsOptions {
   onSave?: () => void;
@@ -31,7 +31,7 @@ export function useKeyboardShortcuts({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Ctrl+S or Cmd+S to save
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
         if (onSave && canSave) {
           onSave();
@@ -45,7 +45,7 @@ export function useKeyboardShortcuts({
       }
 
       // Ctrl+N or Cmd+N for new paste
-      if ((event.ctrlKey || event.metaKey) && event.key === 'n') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "n") {
         event.preventDefault();
         if (onNew) {
           onNew();
@@ -54,7 +54,7 @@ export function useKeyboardShortcuts({
       }
 
       // Ctrl+D or Cmd+D for duplicate
-      if ((event.ctrlKey || event.metaKey) && event.key === 'd') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "d") {
         event.preventDefault();
         if (onDuplicate && canDuplicate) {
           onDuplicate();
@@ -68,7 +68,7 @@ export function useKeyboardShortcuts({
       }
 
       // Ctrl+R or Cmd+R for raw view
-      if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "r") {
         event.preventDefault();
         if (onRaw && canRaw) {
           onRaw();
@@ -82,7 +82,11 @@ export function useKeyboardShortcuts({
       }
 
       // Ctrl+Shift+C or Cmd+Shift+C to copy paste URL
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'C') {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
+        event.key === "C"
+      ) {
         event.preventDefault();
         if (onCopyUrl && canCopyUrl) {
           onCopyUrl();
@@ -96,7 +100,7 @@ export function useKeyboardShortcuts({
       }
 
       // Escape to go back
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault();
         if (onBack) {
           onBack();
@@ -107,9 +111,20 @@ export function useKeyboardShortcuts({
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onSave, onNew, onDuplicate, onRaw, onCopyUrl, onBack, canSave, canDuplicate, canRaw, canCopyUrl]);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [
+    onSave,
+    onNew,
+    onDuplicate,
+    onRaw,
+    onCopyUrl,
+    onBack,
+    canSave,
+    canDuplicate,
+    canRaw,
+    canCopyUrl,
+  ]);
 }
 
 // Helper hook for create page

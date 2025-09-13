@@ -3,9 +3,9 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import { lookupPaste } from "@/common/utils/paste.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { LoadingState } from "@/components/loading-states";
+import { PasteViewPage } from "@/components/paste-view-page";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { PasteViewPage } from "@/components/paste-view-page";
 
 type PasteProps = {
   params: Promise<{

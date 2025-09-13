@@ -29,7 +29,9 @@ export default function RootLayout({
             data-domain={process.env.ANALYTICS_UMAMI_DOMAIN}
           />
         )}
-      <body className={`${siteFont.className} antialiased w-full h-screen overflow-hidden`}>
+      <body
+        className={`${siteFont.className} antialiased w-full h-screen overflow-hidden`}
+      >
         <Toaster />
         <TooltipProvider>
           <QueryProvider>

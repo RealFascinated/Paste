@@ -30,7 +30,7 @@ export function CodeEditor({
     if (content.trim().length > 10) {
       setIsDetecting(true);
       getLanguage(content)
-        .then((lang) => {
+        .then(lang => {
           setDetectedLanguage(lang);
         })
         .catch(() => {
@@ -71,7 +71,7 @@ export function CodeEditor({
       const textarea = textareaRef.current;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      
+
       // Create a temporary element to measure text position
       const temp = document.createElement("div");
       temp.style.position = "absolute";
@@ -82,11 +82,11 @@ export function CodeEditor({
       temp.style.border = window.getComputedStyle(textarea).border;
       temp.style.width = textarea.offsetWidth + "px";
       temp.textContent = textarea.value.substring(0, start);
-      
+
       document.body.appendChild(temp);
       const rect = temp.getBoundingClientRect();
       document.body.removeChild(temp);
-      
+
       // Sync scroll position
       highlightRef.current.scrollTop = textarea.scrollTop;
       highlightRef.current.scrollLeft = textarea.scrollLeft;

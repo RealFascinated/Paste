@@ -32,11 +32,14 @@ export default function Highlighter({ content, language }: HighlighterProps) {
                   key={i}
                   {...getLineProps({ line })}
                   className="group relative flex w-full hover:bg-[#161b22] transition-colors"
-                  style={{ 
+                  style={{
                     minHeight: "18px",
                     margin: 0,
                     padding: 0,
-                    ...(i === tokens.length - 1 && { marginBottom: 0, paddingBottom: 0 })
+                    ...(i === tokens.length - 1 && {
+                      marginBottom: 0,
+                      paddingBottom: 0,
+                    }),
                   }}
                 >
                   {/* Line Number */}
@@ -60,7 +63,6 @@ export default function Highlighter({ content, language }: HighlighterProps) {
                       <span key={key} {...getTokenProps({ token })} />
                     ))}
                   </span>
-
                 </div>
               );
             })}

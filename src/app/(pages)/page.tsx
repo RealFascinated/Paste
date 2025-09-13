@@ -6,10 +6,10 @@ import { toastUtil } from "@/common/utils/toast.util";
 import { CodeEditor } from "@/components/editor/code-editor";
 import { Footer } from "@/components/footer";
 import { LoadingState } from "@/components/loading-states";
+import { useCreatePageShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { redirect, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
-import { useCreatePageShortcuts } from "@/hooks/use-keyboard-shortcuts";
 
 export default function PasteCreatePage() {
   return (
@@ -63,7 +63,11 @@ function Page() {
     });
   };
 
-  useCreatePageShortcuts(handleSave, handleNew, content.trim().length > 0 && !isLoading);
+  useCreatePageShortcuts(
+    handleSave,
+    handleNew,
+    content.trim().length > 0 && !isLoading
+  );
 
   /**
    * Creates a new paste.
@@ -116,15 +120,15 @@ function Page() {
 
   return (
     <>
-       <form
-         id="paste-form"
-         ref={formRef}
-         onSubmit={async event => {
-           event.preventDefault();
-           await createPaste(event);
-         }}
-         className="flex flex-col h-full w-full pb-[54px] sm:pb-[64px]"
-       >
+      <form
+        id="paste-form"
+        ref={formRef}
+        onSubmit={async event => {
+          event.preventDefault();
+          await createPaste(event);
+        }}
+        className="flex flex-col h-full w-full pb-[54px] sm:pb-[64px]"
+      >
         <div className="flex flex-row h-full text-sm z-10 min-h-0">
           <div className="w-full h-full relative min-h-0">
             <CodeEditor
@@ -134,11 +138,7 @@ function Page() {
               disabled={isLoading}
               className="w-full h-full min-h-0"
             />
-            <input
-              type="hidden"
-              name="content"
-              value={content}
-            />
+            <input type="hidden" name="content" value={content} />
           </div>
         </div>
       </form>

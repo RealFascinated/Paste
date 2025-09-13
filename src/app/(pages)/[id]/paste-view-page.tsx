@@ -3,8 +3,8 @@
 import { toastUtil } from "@/common/utils/toast.util";
 import { Footer } from "@/components/footer";
 import Highlighter from "@/components/highlighter";
-import { PasteWithContent } from "@/types/paste";
 import { usePasteViewShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { PasteWithContent } from "@/types/paste";
 
 type PasteViewPageProps = {
   paste: PasteWithContent | null;
