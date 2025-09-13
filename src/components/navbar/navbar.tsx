@@ -1,5 +1,5 @@
 import { Config } from "@/common/config";
-import { Code2, Sparkles } from "lucide-react";
+import { Code2, Sparkles, BarChart3 } from "lucide-react";
 import Link from "next/link";
 
 export async function Navbar() {
@@ -25,11 +25,20 @@ export async function Navbar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="hidden sm:block w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span className="text-xs text-muted-foreground hidden sm:inline">
-            Online
-          </span>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/stats"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span className="hidden sm:inline">Stats</span>
+          </Link>
+          <div className="hidden sm:flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span className="text-xs text-muted-foreground">
+              Online
+            </span>
+          </div>
         </div>
       </div>
     </div>
