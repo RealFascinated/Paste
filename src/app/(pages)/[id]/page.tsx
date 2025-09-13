@@ -48,13 +48,13 @@ export default async function PastePage({ params }: PasteProps) {
 
   return (
     <main className="flex flex-col gap-1 h-full grow">
-      <div className="overflow-x-auto h-full flex grow w-full text-sm">
+      <div className="overflow-x-auto h-full flex grow w-full text-sm px-2 sm:px-0">
         {paste ? (
           <Highlighter language={ext} content={paste.content} />
         ) : (
-          <div className="text-center w-full items-center mt-5">
+          <div className="text-center w-full items-center mt-5 px-4">
             <p className="text-xl text-red-400">404</p>
-            <p>Paste &#39;{id}&#39; not found, maybe it expired?</p>
+            <p className="text-sm sm:text-base">Paste &#39;{id}&#39; not found, maybe it expired?</p>
           </div>
         )}
       </div>

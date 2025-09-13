@@ -86,7 +86,7 @@ function PasteDetails({
   editDetails?: PasteEditDetails;
 }) {
   return (
-    <div className="text-xs flex items-center justify-center flex-wrap gap-1">
+    <div className="text-xs flex items-center justify-center flex-wrap gap-1 sm:gap-1.5">
       {pasteDetails.map((detail, index) => {
         const rendered = detail.render(paste, editDetails);
         if (rendered == undefined) {
@@ -96,7 +96,7 @@ function PasteDetails({
         return (
           <div 
             key={index} 
-            className="flex flex-row items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/30 hover:bg-secondary/40 transition-colors"
+            className="flex flex-row items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-secondary/30 hover:bg-secondary/40 transition-colors text-xs sm:text-xs"
           >
             {rendered}
           </div>
@@ -115,11 +115,11 @@ export function Footer({ paste, editDetails }: FooterProps) {
   return (
     <div
       className={
-        "fixed bottom-0 left-0 right-0 px-4 py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full isolate"
+        "fixed bottom-0 left-0 right-0 px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full isolate"
       }
     >
-      <div className="flex gap-4 items-center w-full justify-between">
-        <div className="flex gap-4 items-center">
+      <div className="flex gap-2 sm:gap-4 items-center w-full justify-between">
+        <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
           {!paste && <Expiry />}
           <div className="hidden md:block">
             {paste || editDetails ? (
@@ -128,29 +128,29 @@ export function Footer({ paste, editDetails }: FooterProps) {
           </div>
         </div>
 
-        <>
+        <div className="flex-shrink-0">
           {paste ? (
-            <div className="flex gap-2.5">
+            <div className="flex gap-1 sm:gap-2.5 flex-wrap">
               <DownloadPasteButton paste={paste} />
               <Link href={`/?duplicate=${encodeURI(paste.id)}`} prefetch={false}>
-                <Button variant="secondary">Duplicate</Button>
+                <Button variant="secondary" size="sm" className="text-xs sm:text-sm">Duplicate</Button>
               </Link>
               <Link
                 href={`/raw/${paste.id}.${paste.ext}`}
                 prefetch={false}
               >
-                <Button variant="outline">Raw</Button>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm">Raw</Button>
               </Link>
               <Link href="/" prefetch={false}>
-                <Button className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white">New</Button>
+                <Button size="sm" className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white text-xs sm:text-sm">New</Button>
               </Link>
             </div>
           ) : (
-            <Button>Save</Button>
+            <Button size="sm" className="text-xs sm:text-sm">Save</Button>
           )}
-        </>
+        </div>
       </div>
-      <div className="block md:hidden w-full pt-3 border-t border-border/50 mt-2">
+      <div className="block md:hidden w-full pt-2 sm:pt-3 border-t border-border/50 mt-2">
         {paste || editDetails ? (
           <PasteDetails paste={paste} editDetails={editDetails} />
         ) : null}

@@ -68,13 +68,13 @@ function Page() {
         event.preventDefault();
         await createPaste(event);
       }}
-      className="flex flex-col h-[calc(100vh-120px)] w-full"
+      className="flex flex-col h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] w-full"
     >
-      <div className="flex flex-row h-full pl-4 pt-4 gap-2 text-sm z-10">
+      <div className="flex flex-row h-full pl-2 sm:pl-4 pt-2 sm:pt-4 gap-2 text-sm z-10">
         <span className="hidden sm:block text-gray-500">{">"}</span>
         <textarea
           name="content"
-          className="w-full h-full text-white bg-background resize-none select-none outline-none font-mono text-sm overflow-auto"
+          className="w-full h-full text-white bg-background resize-none select-none outline-none font-mono text-sm sm:text-sm overflow-auto px-1 sm:px-0"
           placeholder={Config.pastePlaceholder}
           value={content}
           onChange={event => {

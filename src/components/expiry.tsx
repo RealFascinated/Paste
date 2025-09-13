@@ -38,21 +38,22 @@ export function Expiry() {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <Clock className="w-4 h-4" />
-        <span>Expires in</span>
+    <div className="flex items-center gap-1 sm:gap-2">
+      <div className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-muted-foreground">
+        <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+        <span className="hidden sm:inline">Expires in</span>
+        <span className="sm:hidden">Expires</span>
       </div>
       <Select
         defaultValue={expiryOptions[0].label}
         onValueChange={handleExpiryChange}
       >
-        <SelectTrigger className="w-[120px] h-7 bg-background-secondary/50 hover:bg-background-secondary">
+        <SelectTrigger className="w-[100px] sm:w-[120px] h-6 sm:h-7 bg-background-secondary/50 hover:bg-background-secondary text-xs sm:text-sm">
           <SelectValue placeholder="Select expiry" />
         </SelectTrigger>
         <SelectContent>
           {expiryOptions.map(option => (
-            <SelectItem key={option.value} value={option.label}>
+            <SelectItem key={option.value} value={option.label} className="text-xs sm:text-sm">
               {option.label}
             </SelectItem>
           ))}
