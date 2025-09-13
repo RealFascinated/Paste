@@ -67,7 +67,15 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
         )}
       </main>
 
-      {paste && <Footer paste={paste} />}
+      {paste && (
+        <Footer
+          paste={paste}
+          onDuplicate={handleDuplicate}
+          onRaw={handleRaw}
+          onNew={handleNew}
+          onCopyUrl={handleCopyUrl}
+        />
+      )}
     </div>
   );
 }

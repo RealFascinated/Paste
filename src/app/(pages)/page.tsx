@@ -151,6 +151,8 @@ function Page() {
           characters: content.length == 0 ? 0 : content.split("").length,
         }}
         isLoading={isLoading}
+        onNew={handleNew}
+        onSave={handleSave}
       />
     </div>
   );
