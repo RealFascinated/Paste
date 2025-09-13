@@ -186,11 +186,11 @@ export function Footer({ paste, editDetails, isLoading = false }: FooterProps) {
           )}
         </div>
       </div>
-      <div className="block md:hidden w-full pt-2 sm:pt-3 border-t border-border/50 mt-2">
-        {paste || editDetails ? (
+      {paste && (
+        <div className="block md:hidden w-full pt-2 sm:pt-3 border-t border-border/50 mt-2">
           <PasteDetails paste={paste} editDetails={editDetails} />
-        ) : null}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

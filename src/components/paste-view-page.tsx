@@ -54,8 +54,8 @@ export function PasteViewPage({ paste, id, ext }: PasteViewPageProps) {
   );
 
   return (
-    <main className="flex flex-col gap-1 h-full grow">
-      <div className="overflow-x-auto h-full flex grow w-full text-sm px-2 sm:px-0">
+    <div className="h-full flex flex-col">
+      <main className="flex-1 overflow-auto">
         {paste ? (
           <Highlighter language={ext} content={paste.content} />
         ) : (
@@ -66,9 +66,9 @@ export function PasteViewPage({ paste, id, ext }: PasteViewPageProps) {
             </p>
           </div>
         )}
-      </div>
+      </main>
 
       {paste && <Footer paste={paste} />}
-    </main>
+    </div>
   );
 }

@@ -7,7 +7,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     <PasteExpiryProvider>
       <div className="flex flex-col h-full">
         <Navbar />
-        <div className="flex-1 pb-[80px] sm:pb-[60px] min-h-0 overflow-hidden">{children}</div>
+        <div className="flex-1 min-h-0">{children}</div>
       </div>
     </PasteExpiryProvider>
   );
