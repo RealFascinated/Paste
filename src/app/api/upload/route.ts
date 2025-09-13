@@ -1,7 +1,9 @@
 import { Config } from "@/common/config";
 import { buildErrorResponse } from "@/common/error";
+import Logger from "@/common/logger";
 import { createPaste } from "@/common/prisma";
 import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
+import { getLanguage } from "@/common/utils/lang.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { spamFilters } from "@/filter/filters";
 import { NextRequest } from "next/server";
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   for (const filter of spamFilters) {
     if (filter.checkFilter(body)) {
-      console.log(
+      Logger.info(
         `Paste upload has been filtered by our spam filter: ${filter.getName()}`
       );
       return buildErrorResponse(
@@ -74,10 +76,9 @@ export async function POST(req: NextRequest) {
   ) {
     return buildErrorResponse("Expiry date is too far in the future", 400);
   }
-
   const { id, ...paste } = await createPaste(body, expiresAt);
 
-  console.log(`Paste created: ${id}, ${formatBytes(paste.size)}`);
+  Logger.info(`Paste created: ${id}, ${formatBytes(paste.size)}`);
   return Response.json({
     key: id,
     ext: paste.ext,

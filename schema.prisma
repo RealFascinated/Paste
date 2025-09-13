@@ -12,9 +12,6 @@ model Paste {
   // The paste's ID
   id String @id
 
-  // The paste's content
-  content String
-
   // The size of the paste in bytes
   size Int
 

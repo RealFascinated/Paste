@@ -43,13 +43,14 @@ Click to view the Paste.
 
 export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
+  const ext = id.split(".")[1] ?? "Text";
   const paste = await lookupPaste(id, true);
 
   return (
     <main className="flex flex-col gap-1 h-full grow">
       <div className="overflow-x-auto h-full flex grow w-full text-sm">
         {paste ? (
-          <Highlighter language={paste.ext} content={paste.content} />
+          <Highlighter language={ext} content={paste.content} />
         ) : (
           <div className="text-center w-full items-center mt-5">
             <p className="text-xl text-red-400">404</p>

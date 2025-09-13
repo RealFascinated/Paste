@@ -1,8 +1,8 @@
 -- CreateTable
-CREATE TABLE "pastes" (
+CREATE TABLE "public"."pastes" (
     "id" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
+    "views" INTEGER NOT NULL DEFAULT 0,
     "expiresAt" TIMESTAMP(3),
     "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

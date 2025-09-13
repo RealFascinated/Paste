@@ -1,6 +1,7 @@
 import { GuessLang } from "@ray-d-song/guesslang-js";
 import ky from "ky";
 import YAML from "yaml";
+import Logger from "../logger";
 
 let guessLangInstance: GuessLang | null = null;
 let languagesCache: Record<string, {
@@ -109,7 +110,7 @@ export async function getLanguages(): Promise<Record<
     return languagesCache;
   }
 
-  console.log("Getting languages...");
+  Logger.info("Getting languages...");
   const response = await ky
     .get(
       "https://raw.githubusercontent.com/github-linguist/linguist/refs/heads/main/lib/linguist/languages.yml"

@@ -3,7 +3,7 @@ import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
 import { PasteLanguageIcon } from "@/components/paste/language-icon";
-import { Paste } from "@/types/paste";
+import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -13,29 +13,29 @@ import { Button } from "./ui/button";
 
 type PasteDetails = {
   type: "paste" | "edit";
-  render: (paste?: Paste, editDetails?: PasteEditDetails) => ReactNode | string;
+  render: (paste?: PasteWithContent, editDetails?: PasteEditDetails) => ReactNode | string;
 };
 
 const pasteDetails: PasteDetails[] = [
   // Paste details
   {
     type: "paste",
-    render: (paste?: Paste) => paste && formatBytes(paste.size),
+    render: (paste?: PasteWithContent) => paste && formatBytes(paste.size),
   },
   {
     type: "paste",
-    render: (paste?: Paste) =>
+    render: (paste?: PasteWithContent) =>
       paste &&
       `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
   },
   {
     type: "paste",
-    render: (paste?: Paste) =>
+    render: (paste?: PasteWithContent) =>
       paste && <PasteCreatedTime createdAt={paste.timestamp} />,
   },
   {
     type: "paste",
-    render: (paste?: Paste) => {
+    render: (paste?: PasteWithContent) => {
       if (!paste || paste.expiresAt === null) {
         return undefined;
       }
@@ -49,7 +49,7 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     type: "paste",
-    render: (paste?: Paste) =>
+    render: (paste?: PasteWithContent) =>
       paste && (
         <div className="flex gap-1 items-center">
           <PasteLanguageIcon ext={paste.ext} language={paste.language} />
@@ -61,7 +61,7 @@ const pasteDetails: PasteDetails[] = [
   // Paste edit details
   {
     type: "edit",
-    render: (paste?: Paste, editDetails?: PasteEditDetails) =>
+    render: (paste?: PasteWithContent, editDetails?: PasteEditDetails) =>
       !editDetails ? undefined : (
         <p>
           {editDetails.lines} lines, {editDetails.words} words,{" "}
@@ -71,7 +71,7 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     type: "edit",
-    render: (paste?: Paste, editDetails?: PasteEditDetails) =>
+    render: (paste?: PasteWithContent, editDetails?: PasteEditDetails) =>
       !editDetails ? undefined : (
         <p>{formatBytes(Buffer.byteLength(editDetails.content))}</p>
       ),
@@ -82,7 +82,7 @@ function PasteDetails({
   paste,
   editDetails,
 }: {
-  paste?: Paste;
+  paste?: PasteWithContent;
   editDetails?: PasteEditDetails;
 }) {
   return (
@@ -107,7 +107,7 @@ function PasteDetails({
 }
 
 type FooterProps = {
-  paste?: Paste;
+  paste?: PasteWithContent;
   editDetails?: PasteEditDetails;
 };
 

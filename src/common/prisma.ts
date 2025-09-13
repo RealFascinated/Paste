@@ -1,6 +1,10 @@
 import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { Paste, PrismaClient } from "@/generated/prisma";
+import S3Service from "./s3";
+import { PasteWithContent } from "@/types/paste";
+import { formatDuration } from "./utils/date.util";
+import Logger from "./logger";
 
 let prismaClientInstance: PrismaClient | null = null;
 
@@ -27,18 +31,26 @@ export async function createPaste(
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
   }
+
+  const id = await generatePasteId();
   const ext = await getLanguage(content, filename);
-  return getPrismaClient().paste.create({
-    data: {
-      id: await generatePasteId(),
-      content: content,
-      size: Buffer.byteLength(content),
-      ext: ext,
-      language: await getLanguageName(ext),
-      expiresAt: expiresAt,
-      timestamp: new Date(),
-    },
-  });
+  try {
+    await S3Service.saveFile(`${id}.${ext}`, Buffer.from(content)); // Save the paste to S3
+
+    // Create the paste in the database
+    return getPrismaClient().paste.create({
+      data: {
+        id: id,
+        size: Buffer.byteLength(content),
+        expiresAt: expiresAt,
+        language: await getLanguageName(ext),
+        ext: ext,
+        timestamp: new Date(),
+      },
+    });
+  } catch {
+    throw new Error("Failed to save paste to S3");
+  }
 }
 
 /**
@@ -51,34 +63,71 @@ export async function createPaste(
 export async function getPaste(
   id: string,
   incrementViews = false
-): Promise<Paste | null> {
-  try {
-    if (incrementViews) {
-      return await getPrismaClient().paste.update({
-        where: {
-          id: id,
-        },
-        data: {
-          views: {
-            increment: 1,
-          },
-        },
-      });
-    }
-    return (await getPrismaClient().paste.findUnique({
+): Promise<PasteWithContent | null> {
+  const before = performance.now();
+  
+  let paste: Paste | null;
+  
+  if (incrementViews) {
+    // Use update with increment to both update and return data in one call
+    paste = await getPrismaClient().paste.update({
       where: {
         id: id,
       },
-    })) as Paste;
-  } catch {
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
+  } else {
+    // Use findUnique for read-only access
+    paste = await getPrismaClient().paste.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+  
+  if (!paste) {
     return null;
   }
+  
+  const content = (await S3Service.getFile(`${paste.id}.${paste.ext}`))?.toString("utf-8") ?? "";
+  Logger.info(`Got paste ${id} in ${formatDuration(performance.now() - before)}`);
+  return {
+    ...paste,
+    content: content,
+  } as PasteWithContent;
 }
 
 /**
  * Expires all pastes that have expired.
  */
 export async function expirePastes() {
+  // First, get the pastes that will be deleted to clean up S3 files
+  const expiredPastes = await getPrismaClient().paste.findMany({
+    where: {
+      expiresAt: {
+        lt: new Date(),
+      },
+    },
+    select: {
+      id: true,
+      ext: true,
+    },
+  });
+
+  // Delete files from S3
+  for (const paste of expiredPastes) {
+    try {
+      await S3Service.deleteFile(`${paste.id}.${paste.ext}`);
+    } catch (error) {
+      Logger.error(`Failed to delete S3 file for paste ${paste.id}: ${error}`);
+    }
+  }
+
+  // Delete database records
   const { count } = await getPrismaClient().paste.deleteMany({
     where: {
       expiresAt: {
@@ -86,5 +135,6 @@ export async function expirePastes() {
       },
     },
   });
-  console.log(`Expired ${count} pastes`);
+  
+  Logger.info(`Expired ${count} pastes and cleaned up S3 files`);
 }
