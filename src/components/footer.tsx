@@ -117,7 +117,7 @@ export function Footer({ paste, editDetails, isLoading = false }: FooterProps) {
   return (
     <div
       className={
-        "fixed bottom-0 left-0 right-0 px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full isolate"
+        "px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full"
       }
     >
       <div className="flex gap-2 sm:gap-4 items-center w-full justify-between">

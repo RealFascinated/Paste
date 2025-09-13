@@ -119,7 +119,7 @@ function Page() {
   }
 
   return (
-    <>
+    <div className="flex flex-col h-full">
       <form
         id="paste-form"
         ref={formRef}
@@ -127,7 +127,7 @@ function Page() {
           event.preventDefault();
           await createPaste(event);
         }}
-        className="flex flex-col h-full w-full pb-[54px] sm:pb-[64px]"
+        className="flex-1 min-h-0 overflow-hidden"
       >
         <div className="flex flex-row h-full text-sm z-10 min-h-0 overflow-hidden">
           <div className="w-full h-full relative min-h-0">
@@ -152,6 +152,6 @@ function Page() {
         }}
         isLoading={isLoading}
       />
-    </>
+    </div>
   );
 }
