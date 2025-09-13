@@ -1,4 +1,3 @@
-import { formatBytes } from "@/common/utils/string.util";
 import { formatNumber } from "@/common/utils/string.util";
 import { LanguageData } from "@/types/stats";
 
@@ -17,17 +16,20 @@ export function LanguageChart({ data }: LanguageChartProps) {
       </p>
       <div className="space-y-3">
         {data.map((item, index) => {
-          const percentage = totalPastes > 0 ? (item._count.language / totalPastes) * 100 : 0;
-          
+          const percentage =
+            totalPastes > 0 ? (item._count.language / totalPastes) * 100 : 0;
+
           return (
             <div key={index} className="space-y-2">
               <div className="flex justify-between items-start sm:items-center gap-2">
-                <span className="font-medium text-sm sm:text-base truncate">{item.language || 'Unknown'}</span>
+                <span className="font-medium text-sm sm:text-base truncate">
+                  {item.language || "Unknown"}
+                </span>
                 <div className="text-right text-xs sm:text-sm text-muted-foreground flex-shrink-0">
                   <div>{formatNumber(item._count.language)} pastes</div>
                 </div>
               </div>
-              
+
               {/* Paste count bar */}
               <div className="w-full bg-muted rounded-full h-2">
                 <div
@@ -35,7 +37,7 @@ export function LanguageChart({ data }: LanguageChartProps) {
                   style={{ width: `${percentage}%` }}
                 />
               </div>
-              
+
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>{percentage.toFixed(1)}% of pastes</span>
               </div>

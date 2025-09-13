@@ -1,7 +1,14 @@
-import { FileText, Database, Eye, TrendingUp, Clock, Calendar, CalendarDays } from "lucide-react";
-import { formatBytes } from "@/common/utils/string.util";
-import { formatNumber } from "@/common/utils/string.util";
+import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { StatsOverview as StatsOverviewType } from "@/types/stats";
+import {
+  Calendar,
+  CalendarDays,
+  Clock,
+  Database,
+  Eye,
+  FileText,
+  TrendingUp,
+} from "lucide-react";
 
 interface StatsOverviewProps {
   data: StatsOverviewType;
@@ -84,9 +91,13 @@ export function StatsOverview({ data }: StatsOverviewProps) {
                     <p className="text-xs sm:text-sm font-medium text-muted-foreground truncate">
                       {card.title}
                     </p>
-                    <p className="text-xl sm:text-2xl font-bold mt-1">{card.value}</p>
+                    <p className="text-xl sm:text-2xl font-bold mt-1">
+                      {card.value}
+                    </p>
                   </div>
-                  <div className={`p-2 sm:p-3 rounded-full ${card.bgColor} flex-shrink-0 ml-2`}>
+                  <div
+                    className={`p-2 sm:p-3 rounded-full ${card.bgColor} flex-shrink-0 ml-2`}
+                  >
                     <Icon className={`h-4 w-4 sm:h-6 sm:w-6 ${card.color}`} />
                   </div>
                 </div>
@@ -120,14 +131,19 @@ export function StatsOverview({ data }: StatsOverviewProps) {
                     <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                       {card.title}
                     </p>
-                    <p className="text-xl sm:text-2xl font-bold mt-1">{card.value}</p>
+                    <p className="text-xl sm:text-2xl font-bold mt-1">
+                      {card.value}
+                    </p>
                     <p className="text-xs text-muted-foreground mt-1 leading-tight">
-                      {card.title === "Last 24 Hours" && "Pastes created in last 24 hours"}
+                      {card.title === "Last 24 Hours" &&
+                        "Pastes created in last 24 hours"}
                       {card.title === "Today" && "Pastes created today"}
                       {card.title === "This Week" && "Pastes created this week"}
                     </p>
                   </div>
-                  <div className={`p-2 sm:p-3 rounded-full ${card.bgColor} flex-shrink-0 ml-2`}>
+                  <div
+                    className={`p-2 sm:p-3 rounded-full ${card.bgColor} flex-shrink-0 ml-2`}
+                  >
                     <Icon className={`h-4 w-4 sm:h-6 sm:w-6 ${card.color}`} />
                   </div>
                 </div>

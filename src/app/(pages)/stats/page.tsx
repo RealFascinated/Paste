@@ -1,6 +1,6 @@
-import { Suspense } from "react";
-import { StatsPageContent } from "@/components/stats/stats-page-content";
 import { LoadingState } from "@/components/loading-states";
+import { StatsPageContent } from "@/components/stats/stats-page-content";
+import { Suspense } from "react";
 
 export default function StatsPage() {
   return (
@@ -8,7 +8,9 @@ export default function StatsPage() {
       <div className="flex-1 overflow-y-auto">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Site Statistics</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Site Statistics
+            </h1>
             <p className="text-muted-foreground">
               Real-time insights into our paste sharing platform
             </p>

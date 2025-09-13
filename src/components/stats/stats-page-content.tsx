@@ -1,23 +1,23 @@
 "use client";
 
+import { StatsResponse } from "@/types/stats";
 import { useQuery } from "@tanstack/react-query";
-import { StatsOverview } from "./stats-overview";
+import { ActivityMetrics } from "./activity-metrics";
 import { LanguageChart } from "./language-chart";
 import { MonthlyChart } from "./monthly-chart";
-import { ActivityMetrics } from "./activity-metrics";
-import { StatsResponse } from "@/types/stats";
+import { StatsOverview } from "./stats-overview";
 
 async function fetchStats(): Promise<StatsResponse> {
-  const response = await fetch('/api/stats');
+  const response = await fetch("/api/stats");
   if (!response.ok) {
-    throw new Error('Failed to fetch statistics');
+    throw new Error("Failed to fetch statistics");
   }
   return response.json();
 }
 
 export function StatsPageContent() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ['stats'],
+    queryKey: ["stats"],
     queryFn: fetchStats,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: false,

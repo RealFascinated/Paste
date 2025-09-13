@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Info, Download, Copy, FileText, Plus, Save } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PasteCreatedTime } from "@/components/paste/created-time";
+import { DownloadPasteButton } from "@/components/paste/download-button";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
+import { Button } from "@/components/ui/button";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { DownloadPasteButton } from "@/components/paste/download-button";
-import { PasteCreatedTime } from "@/components/paste/created-time";
+import { Copy, FileText, Info, Plus, Save } from "lucide-react";
+import { useState } from "react";
 
 interface MobilePasteDetailsProps {
   paste?: PasteWithContent;
@@ -36,21 +36,21 @@ export function MobilePasteDetails({
     {
       type: "language",
       render: (paste?: PasteWithContent) =>
-        paste && <div className="flex gap-1 items-center">{paste.language}</div>,
+        paste && (
+          <div className="flex gap-1 items-center">{paste.language}</div>
+        ),
     },
     {
       type: "size",
       render: (paste?: PasteWithContent) =>
-        paste && <div className="flex gap-1 items-center">{paste.size} bytes</div>,
+        paste && (
+          <div className="flex gap-1 items-center">{paste.size} bytes</div>
+        ),
     },
     {
       type: "created",
-      render: (paste?: PasteWithContent, editDetails?: PasteEditDetails) =>
-        paste && (
-          <PasteCreatedTime
-            createdAt={paste.timestamp}
-          />
-        ),
+      render: (paste?: PasteWithContent) =>
+        paste && <PasteCreatedTime createdAt={paste.timestamp} />,
     },
   ];
 
@@ -77,7 +77,9 @@ export function MobilePasteDetails({
           {/* Paste Info */}
           {(paste || editDetails) && (
             <div className="space-y-3">
-              <h4 className="text-sm font-medium text-muted-foreground">Information</h4>
+              <h4 className="text-sm font-medium text-muted-foreground">
+                Information
+              </h4>
               <div className="flex flex-wrap gap-2">
                 {pasteDetails.map((detail, index) => {
                   const rendered = detail.render(paste, editDetails);
@@ -100,7 +102,9 @@ export function MobilePasteDetails({
 
           {/* Actions */}
           <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">Actions</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Actions
+            </h4>
             <div className="grid grid-cols-2 gap-2">
               {onDuplicate && (
                 <Button

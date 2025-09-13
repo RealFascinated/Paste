@@ -8,12 +8,22 @@ interface MonthlyChartProps {
 export function MonthlyChart({ data }: MonthlyChartProps) {
   const maxCount = Math.max(...data.map(item => item.count));
   const monthNames = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
 
   const formatMonth = (monthStr: string) => {
-    const [year, month] = monthStr.split('-');
+    const [year, month] = monthStr.split("-");
     const monthIndex = parseInt(month) - 1;
     return `${monthNames[monthIndex]} ${year}`;
   };
@@ -27,12 +37,14 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
       <div className="space-y-3 sm:space-y-4">
         {data.map((item, index) => {
           const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
-          
+
           return (
             <div key={index} className="flex items-end space-x-2">
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs sm:text-sm font-medium">{formatMonth(item.month)}</span>
+                  <span className="text-xs sm:text-sm font-medium">
+                    {formatMonth(item.month)}
+                  </span>
                   <span className="text-xs sm:text-sm text-muted-foreground">
                     {formatNumber(item.count)}
                   </span>
@@ -52,7 +64,9 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
                   </div>
                 ) : (
                   <div className="w-full bg-muted/30 rounded-full h-6 sm:h-8 relative flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">No pastes</span>
+                    <span className="text-xs text-muted-foreground">
+                      No pastes
+                    </span>
                   </div>
                 )}
               </div>

@@ -1,7 +1,6 @@
-import { formatBytes } from "@/common/utils/string.util";
-import { formatNumber } from "@/common/utils/string.util";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { StatsOverview } from "@/types/stats";
+import { Minus, TrendingUp } from "lucide-react";
 
 interface ActivityMetricsProps {
   data: StatsOverview;
@@ -9,9 +8,11 @@ interface ActivityMetricsProps {
 
 export function ActivityMetrics({ data }: ActivityMetricsProps) {
   // Calculate some derived metrics
-  const avgViewsPerPaste = data.totalPastes > 0 ? data.totalViews / data.totalPastes : 0;
+  const avgViewsPerPaste =
+    data.totalPastes > 0 ? data.totalViews / data.totalPastes : 0;
   const avgPastesPerDay = data.pastesThisWeek / 7;
-  const avgSizePerView = data.totalViews > 0 ? data.totalSize / data.totalViews : 0;
+  const avgSizePerView =
+    data.totalViews > 0 ? data.totalSize / data.totalViews : 0;
 
   const metrics = [
     {
@@ -61,7 +62,9 @@ export function ActivityMetrics({ data }: ActivityMetricsProps) {
                   {metric.title}
                 </span>
               </div>
-              <p className="text-xl sm:text-2xl font-bold mb-1">{metric.value}</p>
+              <p className="text-xl sm:text-2xl font-bold mb-1">
+                {metric.value}
+              </p>
               <p className="text-xs text-muted-foreground leading-tight">
                 {metric.description}
               </p>
