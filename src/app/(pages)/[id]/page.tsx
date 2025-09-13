@@ -44,12 +44,11 @@ Click to view the Paste.
 
 export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
-  const ext = id.split(".")[1] ?? "Text";
   const paste = await lookupPaste(id, true);
 
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>
-      <PasteViewPage paste={paste} id={id} ext={ext} />
+      <PasteViewPage paste={paste} id={id} />
     </Suspense>
   );
 }

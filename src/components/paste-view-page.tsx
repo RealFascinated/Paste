@@ -9,10 +9,9 @@ import { PasteWithContent } from "@/types/paste";
 type PasteViewPageProps = {
   paste: PasteWithContent | null;
   id: string;
-  ext: string;
 };
 
-export function PasteViewPage({ paste, id, ext }: PasteViewPageProps) {
+export function PasteViewPage({ paste, id }: PasteViewPageProps) {
   // Keyboard shortcuts for paste view
   const handleNew = () => {
     window.location.href = "/";
@@ -57,7 +56,7 @@ export function PasteViewPage({ paste, id, ext }: PasteViewPageProps) {
     <div className="h-full flex flex-col">
       <main className="flex-1 min-h-0 overflow-auto">
         {paste ? (
-          <Highlighter language={ext} content={paste.content} />
+          <Highlighter language={paste.ext} content={paste.content} />
         ) : (
           <div className="text-center w-full items-center mt-5 px-4">
             <p className="text-xl text-red-400">404</p>
