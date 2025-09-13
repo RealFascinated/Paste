@@ -69,23 +69,6 @@ export function CodeEditor({
   const handleSelectionChange = () => {
     if (textareaRef.current && highlightRef.current) {
       const textarea = textareaRef.current;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-
-      // Create a temporary element to measure text position
-      const temp = document.createElement("div");
-      temp.style.position = "absolute";
-      temp.style.visibility = "hidden";
-      temp.style.whiteSpace = "pre-wrap";
-      temp.style.font = window.getComputedStyle(textarea).font;
-      temp.style.padding = window.getComputedStyle(textarea).padding;
-      temp.style.border = window.getComputedStyle(textarea).border;
-      temp.style.width = textarea.offsetWidth + "px";
-      temp.textContent = textarea.value.substring(0, start);
-
-      document.body.appendChild(temp);
-      const rect = temp.getBoundingClientRect();
-      document.body.removeChild(temp);
 
       // Sync scroll position
       highlightRef.current.scrollTop = textarea.scrollTop;
