@@ -20,7 +20,7 @@ export function PasteViewPage({ paste, id, ext }: PasteViewPageProps) {
 
   const handleDuplicate = () => {
     if (paste) {
-      window.location.href = `/?duplicate=${encodeURI(paste.id)}`;
+      window.location.href = `/?duplicate=${paste.id}`;
     }
   };
 

@@ -5,7 +5,7 @@ import Link from "next/link";
 export async function Navbar() {
   return (
     <div className="sticky top-0 z-50">
-      <div className="min-h-[36px] px-2 sm:px-4 py-1.5 bg-background/80 backdrop-blur-md border-b border-border/60 flex justify-between items-center h-full shadow-sm">
+      <div className="min-h-[48px] px-2 sm:px-4 py-2.5 bg-background/80 backdrop-blur-md border-b border-border/60 flex justify-between items-center h-full shadow-sm">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5">
             <div className="p-1 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20">

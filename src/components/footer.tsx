@@ -124,7 +124,7 @@ export function Footer({ paste, editDetails, isLoading = false }: FooterProps) {
         <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
           {!paste && <Expiry />}
           <div className="hidden md:block">
-            {paste || editDetails ? (
+            {(paste || editDetails) ? (
               <PasteDetails paste={paste} editDetails={editDetails} />
             ) : null}
           </div>
@@ -184,11 +184,11 @@ export function Footer({ paste, editDetails, isLoading = false }: FooterProps) {
           )}
         </div>
       </div>
-      {paste && (
-        <div className="block md:hidden w-full pt-2 sm:pt-3 border-t border-border/50 mt-2">
-          <PasteDetails paste={paste} editDetails={editDetails} />
-        </div>
-      )}
+        {(paste || editDetails) && (
+          <div className="block md:hidden w-full pt-2 sm:pt-3 border-t border-border/50 mt-2">
+            <PasteDetails paste={paste} editDetails={editDetails} />
+          </div>
+        )}
     </div>
   );
 }
