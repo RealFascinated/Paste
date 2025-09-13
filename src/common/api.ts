@@ -13,16 +13,13 @@ export async function uploadPaste(
   content: string,
   expires?: number
 ): Promise<{ paste: PasteWithContent | null; error: ErrorResponse | null }> {
-  const response = await ky.post<PasteWithContent | ErrorResponse>(
-    "/api/upload",
-    {
-      body: content,
-      searchParams: {
-        ...(expires && expires > 0 ? { expires: expires } : {}),
-      },
-      throwHttpErrors: false,
-    }
-  );
+  const response = await ky.post<PasteWithContent | ErrorResponse>("/api/upload", {
+    body: content,
+    searchParams: {
+      ...(expires && expires > 0 ? { expires: expires } : {}),
+    },
+    throwHttpErrors: false,
+  });
 
   if (response.status !== 200) {
     return { paste: null, error: (await response.json()) as ErrorResponse };
@@ -37,5 +34,5 @@ export async function uploadPaste(
  * @returns The response from the server.
  */
 export function getPaste(id: string) {
-  return ky.get<Paste>(`/api/paste/${id}`).json();
+  return ky.get<PasteWithContent>(`/api/paste/${id}`).json();
 }
