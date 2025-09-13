@@ -82,7 +82,7 @@ export function MobilePasteDetails({
               </h4>
               <div className="flex flex-wrap gap-2">
                 {pasteDetails.map((detail, index) => {
-                  const rendered = detail.render(paste, editDetails);
+                  const rendered = detail.render(paste);
                   if (rendered == undefined) {
                     return undefined;
                   }
