@@ -5,14 +5,14 @@ import Link from "next/link";
 export async function Navbar() {
   return (
     <div className="sticky top-0 z-50">
-      <div className="min-h-[48px] px-3 sm:px-6 py-3 bg-background/80 backdrop-blur-md border-b border-border/60 flex justify-between items-center h-full shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20">
-              <Code2 className="w-4 h-4 text-primary" />
+      <div className="min-h-[36px] px-2 sm:px-4 py-1.5 bg-background/80 backdrop-blur-md border-b border-border/60 flex justify-between items-center h-full shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <div className="p-1 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20">
+              <Code2 className="w-3.5 h-3.5 text-primary" />
             </div>
             <Link
-              className="font-bold text-lg sm:text-xl hover:text-primary transition-colors duration-200 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text"
+              className="font-bold text-base sm:text-lg hover:text-primary transition-colors duration-200 bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text"
               href="/"
               prefetch={false}
             >

@@ -2,9 +2,10 @@ import { defaultMetadata } from "@/common/metadata";
 import { getRelativeTime } from "@/common/utils/date.util";
 import { lookupPaste } from "@/common/utils/paste.util";
 import { formatBytes } from "@/common/utils/string.util";
-import { Footer } from "@/components/footer";
-import Highlighter from "@/components/highlighter";
+import { LoadingState } from "@/components/loading-states";
 import { Metadata } from "next";
+import { Suspense } from "react";
+import { PasteViewPage } from "@/components/paste-view-page";
 
 type PasteProps = {
   params: Promise<{
@@ -47,21 +48,8 @@ export default async function PastePage({ params }: PasteProps) {
   const paste = await lookupPaste(id, true);
 
   return (
-    <main className="flex flex-col gap-1 h-full grow">
-      <div className="overflow-x-auto h-full flex grow w-full text-sm px-2 sm:px-0">
-        {paste ? (
-          <Highlighter language={ext} content={paste.content} />
-        ) : (
-          <div className="text-center w-full items-center mt-5 px-4">
-            <p className="text-xl text-red-400">404</p>
-            <p className="text-sm sm:text-base">
-              Paste &#39;{id}&#39; not found, maybe it expired?
-            </p>
-          </div>
-        )}
-      </div>
-
-      {paste && <Footer paste={paste} />}
-    </main>
+    <Suspense fallback={<LoadingState type="paste-view" />}>
+      <PasteViewPage paste={paste} id={id} ext={ext} />
+    </Suspense>
   );
 }

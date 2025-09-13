@@ -48,7 +48,9 @@ export async function createPaste(
           ext: ext,
           timestamp: new Date(),
         },
-      })), key: id, content: content
+      })),
+      key: id,
+      content: content,
     } as PasteWithContent;
   } catch {
     throw new Error("Failed to save paste to S3");

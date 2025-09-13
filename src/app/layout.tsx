@@ -29,11 +29,11 @@ export default function RootLayout({
             data-domain={process.env.ANALYTICS_UMAMI_DOMAIN}
           />
         )}
-      <body className={`${siteFont.className} antialiased w-full h-full`}>
+      <body className={`${siteFont.className} antialiased w-full h-[95vh] overflow-hidden`}>
         <Toaster />
         <TooltipProvider>
           <QueryProvider>
-            <main className="flex flex-col min-h-screen text-white w-full">
+            <main className="flex flex-col h-full text-white w-full">
               {children}
             </main>
           </QueryProvider>

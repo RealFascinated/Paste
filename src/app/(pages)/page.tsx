@@ -2,11 +2,14 @@
 
 import { getPaste, uploadPaste } from "@/common/api";
 import { Config } from "@/common/config";
+import { toastUtil } from "@/common/utils/toast.util";
+import { CodeEditor } from "@/components/editor/code-editor";
 import { Footer } from "@/components/footer";
+import { LoadingState } from "@/components/loading-states";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import { useCreatePageShortcuts } from "@/hooks/use-keyboard-shortcuts";
 
 export default function PasteCreatePage() {
   return (
@@ -22,17 +25,45 @@ function Page() {
 
   const duplicate = searchParams.get("duplicate");
   const [content, setContent] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingDuplicate, setIsLoadingDuplicate] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (duplicate && content == "") {
-      getPaste(duplicate).then(paste => {
-        const newPage = "/";
-        const newState = { page: newPage };
-        window.history.replaceState(newState, "", newPage);
-        setContent(paste.content);
-      });
+      setIsLoadingDuplicate(true);
+      getPaste(duplicate)
+        .then(paste => {
+          const newPage = "/";
+          const newState = { page: newPage };
+          window.history.replaceState(newState, "", newPage);
+          setContent(paste.content);
+        })
+        .catch(() => {
+          toastUtil.pasteNotFound();
+        })
+        .finally(() => {
+          setIsLoadingDuplicate(false);
+        });
     }
   }, [content, duplicate]);
+
+  // Keyboard shortcuts
+  const handleSave = () => {
+    if (content.trim() && !isLoading) {
+      formRef.current?.requestSubmit();
+    }
+  };
+
+  const handleNew = () => {
+    setContent("");
+    toastUtil.info("Editor cleared", {
+      title: "New Paste",
+      description: "Ready to create a new paste",
+    });
+  };
+
+  useCreatePageShortcuts(handleSave, handleNew, content.trim().length > 0 && !isLoading);
 
   /**
    * Creates a new paste.
@@ -45,43 +76,72 @@ function Page() {
     const form = new FormData(event.target as HTMLFormElement);
     const content = form.get("content") as string;
     if (content == null || content.length == 0) {
-      toast.error("Paste cannot be empty");
+      toastUtil.pasteEmpty();
       return;
     }
 
-    const { paste, error } = await uploadPaste(content, expiry);
-    if (error !== null || paste == null) {
-      toast.error(error?.error ?? "Failed to create your paste :(");
-      return;
-    }
+    setIsLoading(true);
+    toastUtil.loading("Creating your paste...");
 
-    toast.success("Paste created successfully, copied to clipboard!");
-    await navigator.clipboard.writeText(
-      `${Config.siteUrl}/${paste.key}.${paste.ext}`
-    );
-    redirect(`/${paste.key}.${paste.ext}`);
+    try {
+      const { paste, error } = await uploadPaste(content, expiry);
+
+      if (error !== null || paste == null) {
+        toastUtil.dismissLoading();
+        toastUtil.serverError(error?.error ?? "Failed to create your paste");
+        return;
+      }
+
+      const pasteUrl = `${Config.siteUrl}/${paste.key}.${paste.ext}`;
+      await navigator.clipboard.writeText(pasteUrl);
+
+      toastUtil.dismissLoading();
+      toastUtil.pasteCreated(pasteUrl);
+
+      // Small delay to let the toast show before redirect
+      setTimeout(() => {
+        redirect(`/${paste.key}.${paste.ext}`);
+      }, 100);
+    } catch (error) {
+      toastUtil.dismissLoading();
+      toastUtil.networkError();
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  if (isLoadingDuplicate) {
+    return <LoadingState type="paste-edit" />;
   }
 
   return (
-    <form
-      onSubmit={async event => {
-        event.preventDefault();
-        await createPaste(event);
-      }}
-      className="flex flex-col h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] w-full"
-    >
-      <div className="flex flex-row h-full pl-2 sm:pl-4 pt-2 sm:pt-4 gap-2 text-sm z-10">
-        <span className="hidden sm:block text-gray-500">{">"}</span>
-        <textarea
-          name="content"
-          className="w-full h-full text-white bg-background resize-none select-none outline-none font-mono text-sm sm:text-sm overflow-auto px-1 sm:px-0"
-          placeholder={Config.pastePlaceholder}
-          value={content}
-          onChange={event => {
-            setContent(event.target.value);
-          }}
-        />
-      </div>
+    <>
+       <form
+         id="paste-form"
+         ref={formRef}
+         onSubmit={async event => {
+           event.preventDefault();
+           await createPaste(event);
+         }}
+         className="flex flex-col h-full w-full"
+       >
+        <div className="flex flex-row h-full text-sm z-10 min-h-0">
+          <div className="w-full h-full relative min-h-0">
+            <CodeEditor
+              content={content}
+              onChange={setContent}
+              placeholder={Config.pastePlaceholder}
+              disabled={isLoading}
+              className="w-full h-full min-h-0"
+            />
+            <input
+              type="hidden"
+              name="content"
+              value={content}
+            />
+          </div>
+        </div>
+      </form>
 
       <Footer
         editDetails={{
@@ -90,7 +150,8 @@ function Page() {
           words: content.length == 0 ? 0 : content.split(" ").length,
           characters: content.length == 0 ? 0 : content.split("").length,
         }}
+        isLoading={isLoading}
       />
-    </form>
+    </>
   );
 }

@@ -89,7 +89,7 @@ function PasteDetails({
   editDetails?: PasteEditDetails;
 }) {
   return (
-    <div className="text-xs flex items-center justify-center flex-wrap gap-1 sm:gap-1.5">
+    <div className="text-xs flex items-center justify-center flex-wrap gap-1.5 sm:gap-2">
       {pasteDetails.map((detail, index) => {
         const rendered = detail.render(paste, editDetails);
         if (rendered == undefined) {
@@ -99,7 +99,7 @@ function PasteDetails({
         return (
           <div
             key={index}
-            className="flex flex-row items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-secondary/30 hover:bg-secondary/40 transition-colors text-xs sm:text-xs"
+            className="flex flex-row items-center gap-1 px-2 py-1 rounded-md bg-muted/60 hover:bg-muted/80 transition-colors text-xs text-foreground/90"
           >
             {rendered}
           </div>
@@ -112,9 +112,10 @@ function PasteDetails({
 type FooterProps = {
   paste?: PasteWithContent;
   editDetails?: PasteEditDetails;
+  isLoading?: boolean;
 };
 
-export function Footer({ paste, editDetails }: FooterProps) {
+export function Footer({ paste, editDetails, isLoading = false }: FooterProps) {
   return (
     <div
       className={
@@ -133,7 +134,7 @@ export function Footer({ paste, editDetails }: FooterProps) {
 
         <div className="flex-shrink-0">
           {paste ? (
-            <div className="flex gap-1 sm:gap-2.5 flex-wrap">
+            <div className="flex gap-2 sm:gap-3 flex-wrap">
               <DownloadPasteButton paste={paste} />
               <Link
                 href={`/?duplicate=${encodeURI(paste.id)}`}
@@ -141,8 +142,8 @@ export function Footer({ paste, editDetails }: FooterProps) {
               >
                 <Button
                   variant="secondary"
-                  size="sm"
-                  className="text-xs sm:text-sm"
+                  size="default"
+                  className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white border-0"
                 >
                   Duplicate
                 </Button>
@@ -150,24 +151,37 @@ export function Footer({ paste, editDetails }: FooterProps) {
               <Link href={`/raw/${paste.id}.${paste.ext}`} prefetch={false}>
                 <Button
                   variant="outline"
-                  size="sm"
-                  className="text-xs sm:text-sm"
+                  size="default"
+                  className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white border-0"
                 >
                   Raw
                 </Button>
               </Link>
               <Link href="/" prefetch={false}>
                 <Button
-                  size="sm"
-                  className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white text-xs sm:text-sm"
+                  size="default"
+                  className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0"
                 >
                   New
                 </Button>
               </Link>
             </div>
           ) : (
-            <Button size="sm" className="text-xs sm:text-sm">
-              Save
+            <Button
+              type="submit"
+              form="paste-form"
+              size="default"
+              className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  <span>Saving...</span>
+                </div>
+              ) : (
+                "Save"
+              )}
             </Button>
           )}
         </div>

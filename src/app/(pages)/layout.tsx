@@ -5,9 +5,9 @@ import { ReactNode } from "react";
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <PasteExpiryProvider>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-full">
         <Navbar />
-        <div className="flex-1 pb-[80px] sm:pb-[60px]">{children}</div>
+        <div className="flex-1 pb-[80px] sm:pb-[60px] min-h-0 overflow-hidden">{children}</div>
       </div>
     </PasteExpiryProvider>
   );
