@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "bun --bun src/server.ts",
-    "build": "bunx prisma@6.7.0 generate --schema=./schema.prisma && next build",
+    "build": "prisma generate --schema=./schema.prisma && next build",
     "start": "bun --bun src/server.ts",
     "next:dev": "next dev --turbopack",
-    "prisma:generate": "bunx prisma@6.7.0 generate --schema=./schema.prisma",
-    "prisma:migrate": "bunx prisma@6.7.0 migrate deploy --schema=./schema.prisma",
+    "prisma:generate": "prisma generate --schema=./schema.prisma",
+    "prisma:migrate": "prisma migrate deploy --schema=./schema.prisma",
     "prettier": "bunx prettier -w --config ./prettierrc.json ."
   },
   "dependencies": {
@@ -56,6 +56,7 @@
     "eslint": "^9.35.0",
     "eslint-config-next": "15.3.1",
     "postcss": "^8.5.6",
+    "prisma": "6.16.1",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2"
   }
