@@ -1,12 +1,14 @@
 import { formatNumber } from "@/common/utils/string.util";
-import { MonthlyData } from "@/types/stats";
 
 interface MonthlyChartProps {
-  data: MonthlyData[];
+  data: Record<string, number>;
 }
 
 export function MonthlyChart({ data }: MonthlyChartProps) {
-  const maxCount = Math.max(...data.map(item => item.count));
+  // Convert object to array and sort by month (most recent first)
+  const monthlyEntries = Object.entries(data).sort(([a], [b]) => b.localeCompare(a));
+  const maxCount = Math.max(...monthlyEntries.map(([, count]) => count));
+  
   const monthNames = [
     "Jan",
     "Feb",
@@ -35,21 +37,21 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
         Monthly paste creation trends over the last 12 months
       </p>
       <div className="space-y-3 sm:space-y-4">
-        {data.map((item, index) => {
-          const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
+        {monthlyEntries.map(([month, count], index) => {
+          const height = maxCount > 0 ? (count / maxCount) * 100 : 0;
 
           return (
             <div key={index} className="flex items-end space-x-2">
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-xs sm:text-sm font-medium">
-                    {formatMonth(item.month)}
+                    {formatMonth(month)}
                   </span>
                   <span className="text-xs sm:text-sm text-muted-foreground">
-                    {formatNumber(item.count)}
+                    {formatNumber(count)}
                   </span>
                 </div>
-                {item.count > 0 ? (
+                {count > 0 ? (
                   <div className="w-full bg-muted rounded-full h-6 sm:h-8 relative">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-6 sm:h-8 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
@@ -57,7 +59,7 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
                     >
                       {height > 20 && (
                         <span className="text-white text-xs font-medium">
-                          {formatNumber(item.count)}
+                          {formatNumber(count)}
                         </span>
                       )}
                     </div>

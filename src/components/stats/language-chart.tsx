@@ -1,12 +1,13 @@
 import { formatNumber } from "@/common/utils/string.util";
-import { LanguageData } from "@/types/stats";
 
 interface LanguageChartProps {
-  data: LanguageData[];
+  data: Record<string, number>;
 }
 
 export function LanguageChart({ data }: LanguageChartProps) {
-  const totalPastes = data.reduce((sum, item) => sum + item._count.language, 0);
+  // Convert object to array and sort by count (descending)
+  const languageEntries = Object.entries(data).sort(([, a], [, b]) => b - a);
+  const totalPastes = languageEntries.reduce((sum, [, count]) => sum + count, 0);
 
   return (
     <div className="p-4 sm:p-6 rounded-lg border bg-card text-card-foreground shadow-sm">
@@ -15,18 +16,17 @@ export function LanguageChart({ data }: LanguageChartProps) {
         Most popular programming languages used in pastes
       </p>
       <div className="space-y-3">
-        {data.map((item, index) => {
-          const percentage =
-            totalPastes > 0 ? (item._count.language / totalPastes) * 100 : 0;
+        {languageEntries.map(([language, count], index) => {
+          const percentage = totalPastes > 0 ? (count / totalPastes) * 100 : 0;
 
           return (
             <div key={index} className="space-y-2">
               <div className="flex justify-between items-start sm:items-center gap-2">
                 <span className="font-medium text-sm sm:text-base truncate">
-                  {item.language || "Unknown"}
+                  {language || "Unknown"}
                 </span>
                 <div className="text-right text-xs sm:text-sm text-muted-foreground flex-shrink-0">
-                  <div>{formatNumber(item._count.language)} pastes</div>
+                  <div>{formatNumber(count)} pastes</div>
                 </div>
               </div>
 
