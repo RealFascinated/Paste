@@ -75,9 +75,9 @@ export async function getLanguage(
 
   // Sort by confidence and get the highest
   const sortedResponse = response
-    .filter(r => r.confidence > 0.8) // 80% confidence or higher
+    .filter(r => r.confidence > 0.85) // 85% confidence or higher
     .sort((a, b) => b.confidence - a.confidence); // Sort by confidence
-  return sortedResponse[0].languageId;
+  return sortedResponse[0].languageId || "txt";
 }
 
 /**
