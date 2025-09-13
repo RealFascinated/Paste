@@ -27,7 +27,7 @@ export async function createPaste(
   content: string,
   expiresAt?: Date,
   filename?: string
-): Promise<Paste> {
+): Promise<PasteWithContent> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
   }
@@ -38,16 +38,18 @@ export async function createPaste(
     await S3Service.saveFile(`${id}.${ext}`, Buffer.from(content)); // Save the paste to S3
 
     // Create the paste in the database
-    return getPrismaClient().paste.create({
-      data: {
-        id: id,
-        size: Buffer.byteLength(content),
-        expiresAt: expiresAt,
-        language: await getLanguageName(ext),
-        ext: ext,
-        timestamp: new Date(),
-      },
-    });
+    return {
+      ...(await getPrismaClient().paste.create({
+        data: {
+          id: id,
+          size: Buffer.byteLength(content),
+          expiresAt: expiresAt,
+          language: await getLanguageName(ext),
+          ext: ext,
+          timestamp: new Date(),
+        },
+      })), key: id, content: content
+    } as PasteWithContent;
   } catch {
     throw new Error("Failed to save paste to S3");
   }

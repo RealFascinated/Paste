@@ -1,8 +1,8 @@
 "use client";
 
 import { downloadFile } from "@/common/utils/browser.util";
-import { Button } from "../ui/button";
 import { PasteWithContent } from "@/types/paste";
+import { Button } from "../ui/button";
 
 export function DownloadPasteButton({ paste }: { paste: PasteWithContent }) {
   return (
