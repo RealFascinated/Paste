@@ -1,5 +1,5 @@
 import { ErrorResponse } from "@/common/types/error/error-response";
-import { Paste } from "@/types/paste";
+import { PasteWithContent } from "@/types/paste";
 import ky from "ky";
 
 /**
@@ -12,8 +12,8 @@ import ky from "ky";
 export async function uploadPaste(
   content: string,
   expires?: number
-): Promise<{ paste: Paste | null; error: ErrorResponse | null }> {
-  const response = await ky.post<Paste | ErrorResponse>("/api/upload", {
+): Promise<{ paste: PasteWithContent | null; error: ErrorResponse | null }> {
+  const response = await ky.post<PasteWithContent | ErrorResponse>("/api/upload", {
     body: content,
     searchParams: {
       ...(expires && expires > 0 ? { expires: expires } : {}),
