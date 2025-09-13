@@ -129,7 +129,7 @@ function Page() {
         }}
         className="flex flex-col h-full w-full pb-[54px] sm:pb-[64px]"
       >
-        <div className="flex flex-row h-full text-sm z-10 min-h-0">
+        <div className="flex flex-row h-full text-sm z-10 min-h-0 overflow-hidden">
           <div className="w-full h-full relative min-h-0">
             <CodeEditor
               content={content}

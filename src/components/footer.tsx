@@ -2,7 +2,6 @@ import { getRelativeTime } from "@/common/utils/date.util";
 import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
-import { PasteLanguageIcon } from "@/components/paste/language-icon";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
 import Link from "next/link";
@@ -55,7 +54,6 @@ const pasteDetails: PasteDetails[] = [
     render: (paste?: PasteWithContent) =>
       paste && (
         <div className="flex gap-1 items-center">
-          <PasteLanguageIcon ext={paste.ext} language={paste.language} />
           {paste.language}
         </div>
       ),

@@ -97,11 +97,11 @@ export function CodeEditor({
   const lineCount = lines.length;
 
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Line Numbers */}
       <div
         ref={lineNumbersRef}
-        className="absolute left-0 top-0 bottom-0 w-10 sm:w-12 pr-1 sm:pr-4 text-right text-[#7d8590] select-none font-mono text-xs z-10 pointer-events-none overflow-hidden"
+        className="absolute left-0 top-0 bottom-0 w-10 sm:w-16 pr-1 sm:pr-4 text-right text-[#7d8590] select-none font-mono text-xs z-10 pointer-events-none overflow-hidden"
         style={{
           lineHeight: "1.5",
           fontVariantNumeric: "tabular-nums",
@@ -118,7 +118,7 @@ export function CodeEditor({
       {/* Syntax Highlighting Background */}
       <div
         ref={highlightRef}
-        className="absolute left-10 sm:left-12 right-0 top-0 bottom-0 overflow-hidden pointer-events-none z-0"
+        className="absolute left-10 sm:left-16 right-0 top-0 bottom-0 overflow-hidden pointer-events-none z-0"
         style={{ lineHeight: "1.5" }}
       >
         <Highlight
@@ -170,7 +170,7 @@ export function CodeEditor({
         autoCapitalize="off"
         spellCheck="false"
         autoComplete="off"
-        className="absolute left-10 sm:left-12 right-0 top-0 bottom-0 text-transparent bg-transparent resize-none outline-none font-mono text-xs overflow-auto px-0 z-20 caret-white"
+        className="absolute left-10 sm:left-16 right-0 top-0 bottom-0 text-transparent bg-transparent resize-none outline-none font-mono text-xs overflow-auto px-0 z-20 caret-white"
         style={{
           lineHeight: "1.5",
           fontFamily: "inherit",
