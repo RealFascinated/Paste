@@ -1,10 +1,10 @@
 import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { Paste, PrismaClient } from "@/generated/prisma";
-import S3Service from "./s3";
 import { PasteWithContent } from "@/types/paste";
-import { formatDuration } from "./utils/date.util";
 import Logger from "./logger";
+import S3Service from "./s3";
+import { formatDuration } from "./utils/date.util";
 
 let prismaClientInstance: PrismaClient | null = null;
 
@@ -65,9 +65,9 @@ export async function getPaste(
   incrementViews = false
 ): Promise<PasteWithContent | null> {
   const before = performance.now();
-  
+
   let paste: Paste | null;
-  
+
   if (incrementViews) {
     // Use update with increment to both update and return data in one call
     paste = await getPrismaClient().paste.update({
@@ -88,13 +88,17 @@ export async function getPaste(
       },
     });
   }
-  
+
   if (!paste) {
     return null;
   }
-  
-  const content = (await S3Service.getFile(`${paste.id}.${paste.ext}`))?.toString("utf-8") ?? "";
-  Logger.info(`Got paste ${id} in ${formatDuration(performance.now() - before)}`);
+
+  const content =
+    (await S3Service.getFile(`${paste.id}.${paste.ext}`))?.toString("utf-8") ??
+    "";
+  Logger.info(
+    `Got paste ${id} in ${formatDuration(performance.now() - before)}`
+  );
   return {
     ...paste,
     content: content,
@@ -135,6 +139,6 @@ export async function expirePastes() {
       },
     },
   });
-  
+
   Logger.info(`Expired ${count} pastes and cleaned up S3 files`);
 }

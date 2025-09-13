@@ -1,6 +1,7 @@
 "use client";
 
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
+import { Clock } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -8,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Clock } from "lucide-react";
 
 type ExpiryOption = {
   value: number;
@@ -53,7 +53,11 @@ export function Expiry() {
         </SelectTrigger>
         <SelectContent>
           {expiryOptions.map(option => (
-            <SelectItem key={option.value} value={option.label} className="text-xs sm:text-sm">
+            <SelectItem
+              key={option.value}
+              value={option.label}
+              className="text-xs sm:text-sm"
+            >
               {option.label}
             </SelectItem>
           ))}

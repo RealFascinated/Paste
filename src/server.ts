@@ -4,8 +4,8 @@ import { createServer } from "http";
 import next from "next";
 import { schedule } from "node-cron";
 import { parse } from "url";
-import S3Service from "./common/s3";
 import Logger from "./common/logger";
+import S3Service from "./common/s3";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";

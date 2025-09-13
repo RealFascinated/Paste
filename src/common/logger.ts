@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { env } from "./env";
 import { ConsoleColors } from "./consts/console-colors";
+import { env } from "./env";
 
 export default class Logger {
   private static readonly LogLevel = {
@@ -24,7 +24,11 @@ export default class Logger {
    * @param message the message to log
    * @param args the arguments to log
    */
-  public static log(level: keyof typeof Logger.LogLevel, message: string, ...args: unknown[]) {
+  public static log(
+    level: keyof typeof Logger.LogLevel,
+    message: string,
+    ...args: unknown[]
+  ) {
     if (!Logger.shouldLog(level)) {
       return;
     }
@@ -83,7 +87,8 @@ export default class Logger {
    * @returns true if the log level should be logged, false otherwise
    */
   private static shouldLog(level: keyof typeof Logger.LogLevel): boolean {
-    const configuredLevel = (typeof window === "undefined" ? env.LOG_LEVEL : undefined) || "info";
+    const configuredLevel =
+      (typeof window === "undefined" ? env.LOG_LEVEL : undefined) || "info";
     return Logger.LogLevel[level] >= Logger.LogLevel[configuredLevel];
   }
 }

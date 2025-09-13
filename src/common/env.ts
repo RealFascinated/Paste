@@ -20,7 +20,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
-    
+
     // S3
     S3_ENDPOINT: process.env.S3_ENDPOINT,
     S3_USE_SSL: Boolean(process.env.S3_USE_SSL),

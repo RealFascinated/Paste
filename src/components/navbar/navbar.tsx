@@ -1,6 +1,6 @@
 import { Config } from "@/common/config";
-import Link from "next/link";
 import { Code2, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export async function Navbar() {
   return (
@@ -24,10 +24,12 @@ export async function Navbar() {
             <span>Paste & Share</span>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <div className="hidden sm:block w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          <span className="text-xs text-muted-foreground hidden sm:inline">Online</span>
+          <span className="text-xs text-muted-foreground hidden sm:inline">
+            Online
+          </span>
         </div>
       </div>
     </div>

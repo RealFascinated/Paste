@@ -54,7 +54,9 @@ export default async function PastePage({ params }: PasteProps) {
         ) : (
           <div className="text-center w-full items-center mt-5 px-4">
             <p className="text-xl text-red-400">404</p>
-            <p className="text-sm sm:text-base">Paste &#39;{id}&#39; not found, maybe it expired?</p>
+            <p className="text-sm sm:text-base">
+              Paste &#39;{id}&#39; not found, maybe it expired?
+            </p>
           </div>
         )}
       </div>

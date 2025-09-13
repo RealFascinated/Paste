@@ -18,7 +18,7 @@ export function PasteCreatedTime({ createdAt }: PasteCreatedTimeProps) {
   useEffect(() => {
     setIsClient(true);
     setTime(getRelativeTime(createdAt));
-    
+
     const difference = new Date().getTime() - createdAt.getTime();
     // Don't update if the difference is more than 1 hour
     if (difference > 60 * 60 * 1000) {
@@ -35,5 +35,9 @@ export function PasteCreatedTime({ createdAt }: PasteCreatedTimeProps) {
     return () => clearInterval(timer);
   }, [createdAt]);
 
-  return <Tooltip display={createdAt.toLocaleString()}>{isClient ? time : "..."}</Tooltip>;
+  return (
+    <Tooltip display={createdAt.toLocaleString()}>
+      {isClient ? time : "..."}
+    </Tooltip>
+  );
 }

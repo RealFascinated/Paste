@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const paste = await lookupPaste((await params).id);
-  
+
   if (paste == null) {
     return new NextResponse("Paste not found", { status: 404 });
   }
@@ -16,4 +16,4 @@ export async function GET(
       "Content-Type": "text/plain",
     },
   });
-} 
+}

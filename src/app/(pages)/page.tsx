@@ -3,10 +3,10 @@
 import { getPaste, uploadPaste } from "@/common/api";
 import { Config } from "@/common/config";
 import { Footer } from "@/components/footer";
-import { toast } from "sonner"
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { redirect, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function PasteCreatePage() {
   return (

@@ -6,9 +6,9 @@ import { Button } from "../ui/button";
 
 export function DownloadPasteButton({ paste }: { paste: Paste }) {
   return (
-    <Button 
+    <Button
       onClick={() => downloadFile(`${paste.key}`, paste.content)}
-      size="sm" 
+      size="sm"
       className="text-xs sm:text-sm"
     >
       Download

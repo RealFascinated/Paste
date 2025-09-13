@@ -4,14 +4,17 @@ import YAML from "yaml";
 import Logger from "../logger";
 
 let guessLangInstance: GuessLang | null = null;
-let languagesCache: Record<string, {
-  type: string;
-  color: string;
-  extensions: string[];
-  tm_scope: string;
-  ace_mode: string;
-  language_id: number;
-}> | null = null;
+let languagesCache: Record<
+  string,
+  {
+    type: string;
+    color: string;
+    extensions: string[];
+    tm_scope: string;
+    ace_mode: string;
+    language_id: number;
+  }
+> | null = null;
 
 function getGuessLangInstance(): GuessLang {
   if (!guessLangInstance) {
@@ -51,10 +54,13 @@ const extensionToLanguage: Record<string, string> = {
  * @param filename Optional filename to help with detection
  * @returns The language of the content.
  */
-export async function getLanguage(content: string, filename?: string): Promise<string> {
+export async function getLanguage(
+  content: string,
+  filename?: string
+): Promise<string> {
   // Try to detect from filename extension
   if (filename) {
-    const ext = filename.split('.').pop()?.toLowerCase();
+    const ext = filename.split(".").pop()?.toLowerCase();
     if (ext && extensionToLanguage[ext]) {
       return extensionToLanguage[ext];
     }

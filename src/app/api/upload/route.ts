@@ -3,7 +3,6 @@ import { buildErrorResponse } from "@/common/error";
 import Logger from "@/common/logger";
 import { createPaste } from "@/common/prisma";
 import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
-import { getLanguage } from "@/common/utils/lang.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { spamFilters } from "@/filter/filters";
 import { NextRequest } from "next/server";

@@ -1,4 +1,5 @@
 import { defaultMetadata } from "@/common/metadata";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/providers/query-provider";
 import type { Metadata } from "next";
@@ -6,7 +7,6 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { ReactNode } from "react";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -30,7 +30,7 @@ export default function RootLayout({
           />
         )}
       <body className={`${siteFont.className} antialiased w-full h-full`}>
-      <Toaster />
+        <Toaster />
         <TooltipProvider>
           <QueryProvider>
             <main className="flex flex-col min-h-screen text-white w-full">

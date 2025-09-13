@@ -7,13 +7,16 @@ import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
 import Link from "next/link";
 import { ReactNode } from "react";
-import Tooltip from "./tooltip";
 import { Expiry } from "./expiry";
+import Tooltip from "./tooltip";
 import { Button } from "./ui/button";
 
 type PasteDetails = {
   type: "paste" | "edit";
-  render: (paste?: PasteWithContent, editDetails?: PasteEditDetails) => ReactNode | string;
+  render: (
+    paste?: PasteWithContent,
+    editDetails?: PasteEditDetails
+  ) => ReactNode | string;
 };
 
 const pasteDetails: PasteDetails[] = [
@@ -94,8 +97,8 @@ function PasteDetails({
         }
 
         return (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="flex flex-row items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-secondary/30 hover:bg-secondary/40 transition-colors text-xs sm:text-xs"
           >
             {rendered}
@@ -132,21 +135,40 @@ export function Footer({ paste, editDetails }: FooterProps) {
           {paste ? (
             <div className="flex gap-1 sm:gap-2.5 flex-wrap">
               <DownloadPasteButton paste={paste} />
-              <Link href={`/?duplicate=${encodeURI(paste.id)}`} prefetch={false}>
-                <Button variant="secondary" size="sm" className="text-xs sm:text-sm">Duplicate</Button>
-              </Link>
               <Link
-                href={`/raw/${paste.id}.${paste.ext}`}
+                href={`/?duplicate=${encodeURI(paste.id)}`}
                 prefetch={false}
               >
-                <Button variant="outline" size="sm" className="text-xs sm:text-sm">Raw</Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs sm:text-sm"
+                >
+                  Duplicate
+                </Button>
+              </Link>
+              <Link href={`/raw/${paste.id}.${paste.ext}`} prefetch={false}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs sm:text-sm"
+                >
+                  Raw
+                </Button>
               </Link>
               <Link href="/" prefetch={false}>
-                <Button size="sm" className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white text-xs sm:text-sm">New</Button>
+                <Button
+                  size="sm"
+                  className="bg-[hsl(160_60%_45%)] hover:bg-[hsl(160_60%_40%)] text-white text-xs sm:text-sm"
+                >
+                  New
+                </Button>
               </Link>
             </div>
           ) : (
-            <Button size="sm" className="text-xs sm:text-sm">Save</Button>
+            <Button size="sm" className="text-xs sm:text-sm">
+              Save
+            </Button>
           )}
         </div>
       </div>

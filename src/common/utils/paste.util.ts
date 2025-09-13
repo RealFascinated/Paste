@@ -1,8 +1,8 @@
 import { Config } from "@/common/config";
 import { getPaste, getPrismaClient } from "@/common/prisma";
 import { randomString } from "@/common/utils/string.util";
-import { PasteWithContent } from "@/types/paste";
 import { Paste as PrismaPaste } from "@/generated/prisma/client";
+import { PasteWithContent } from "@/types/paste";
 import { cache } from "react";
 
 /**
@@ -32,7 +32,10 @@ export async function generatePasteId(): Promise<string> {
  * @returns The paste with the given ID.
  */
 export const lookupPaste = cache(
-  async (id: string, incrementViews = false): Promise<PasteWithContent | null> => {
+  async (
+    id: string,
+    incrementViews = false
+  ): Promise<PasteWithContent | null> => {
     const paste = await getPaste(id.split(".")[0], incrementViews);
     if (paste == null) {
       return null;
