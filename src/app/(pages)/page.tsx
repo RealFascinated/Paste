@@ -106,7 +106,7 @@ function Page() {
       setTimeout(() => {
         redirect(`/${paste.key}.${paste.ext}`);
       }, 100);
-    } catch (error) {
+    } catch {
       toastUtil.dismissLoading();
       toastUtil.networkError();
     } finally {
