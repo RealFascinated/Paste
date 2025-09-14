@@ -6,7 +6,7 @@ import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Info, Plus, Save } from "lucide-react";
+import { Copy, FileText, Info, Plus, Save, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface MobilePasteDetailsProps {
@@ -53,6 +53,16 @@ export function MobilePasteDetails({
       type: "created",
       render: (paste?: PasteWithContent) =>
         paste && <PasteCreatedTime createdAt={paste.timestamp} />,
+    },
+    {
+      type: "self-destructing",
+      render: (paste?: PasteWithContent) =>
+        paste && paste.deleteAfterRead ? (
+          <div className="flex gap-1 items-center text-red-400">
+            <Trash2 className="w-3 h-3" />
+            <span className="text-xs font-medium">Self-destructing</span>
+          </div>
+        ) : undefined,
     },
   ];
 

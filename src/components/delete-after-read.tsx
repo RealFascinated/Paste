@@ -21,8 +21,8 @@ export function DeleteAfterRead({
   };
 
   return (
-    <div className="flex items-center gap-1 sm:gap-2">
-      <div className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-muted-foreground">
+    <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
         <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
         <span className="hidden sm:inline">Self-destruct after view</span>
         <span className="sm:hidden">Self-destruct</span>
@@ -47,11 +47,6 @@ export function DeleteAfterRead({
           }`}
         />
       </button>
-      {enabled && (
-        <div className="text-xs text-red-400 bg-red-500/10 px-2 py-1 rounded-md border border-red-500/20">
-          No redirect
-        </div>
-      )}
     </div>
   );
 }

@@ -151,8 +151,8 @@ export function Footer({
         "px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full"
       }
     >
-      <div className="flex gap-2 sm:gap-4 items-center w-full justify-between">
-        <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center w-full">
+        <div className="flex flex-wrap gap-3 sm:gap-6 items-center justify-center sm:justify-start min-w-0 flex-1">
           {!paste && (
             <>
               <Expiry />
@@ -171,7 +171,7 @@ export function Footer({
           </div>
         </div>
 
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 w-full sm:w-auto flex justify-center sm:justify-end">
           {/* Mobile Actions */}
           <div className="md:hidden">
             {paste ? (
@@ -187,7 +187,7 @@ export function Footer({
                 isLoading={isLoading}
               />
             ) : (
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-3">
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (
@@ -207,16 +207,19 @@ export function Footer({
                   type="submit"
                   form="paste-form"
                   size="default"
-                  className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                  className="text-sm font-semibold px-6 py-3 h-12 shadow-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 rounded-lg flex-1 min-w-0"
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center justify-center space-x-2">
                       <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                       <span>Saving...</span>
                     </div>
                   ) : (
-                    "Save"
+                    <div className="flex items-center justify-center space-x-2">
+                      <Save className="h-4 w-4" />
+                      <span>Save Paste</span>
+                    </div>
                   )}
                 </Button>
               </div>
@@ -226,7 +229,7 @@ export function Footer({
           {/* Desktop Actions */}
           <div className="hidden md:block">
             {paste ? (
-              <div className="flex gap-2 sm:gap-3 flex-wrap">
+              <div className="flex flex-wrap gap-3 sm:gap-4">
                 <DownloadPasteButton paste={paste} />
                 {onCopyContent && (
                   <Button
@@ -273,7 +276,7 @@ export function Footer({
                 </Link>
               </div>
             ) : (
-              <div className="flex gap-2 sm:gap-3">
+              <div className="flex flex-wrap gap-3 sm:gap-4">
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (
@@ -293,7 +296,7 @@ export function Footer({
                   type="submit"
                   form="paste-form"
                   size="default"
-                  className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                  className="text-sm font-semibold px-6 py-2 h-9 shadow-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 rounded-lg"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -302,10 +305,10 @@ export function Footer({
                       <span>Saving...</span>
                     </div>
                   ) : (
-                    <>
-                      <Save className="h-3 w-3 mr-1" />
-                      Save
-                    </>
+                    <div className="flex items-center space-x-2">
+                      <Save className="h-4 w-4" />
+                      <span>Save</span>
+                    </div>
                   )}
                 </Button>
               </div>
