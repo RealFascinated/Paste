@@ -21,6 +21,20 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
   }
 
   const formattedId = `${paste.id}.${paste.ext}`;
+  
+  // Return minimal metadata for self-destructing pastes
+  if (paste.deleteAfterRead) {
+    return {
+      ...defaultMetadata(false),
+      title: "Self-Destructing Paste",
+      description: "This paste will be deleted after viewing. Click to view.",
+      openGraph: {
+        title: "Self-Destructing Paste",
+        description: "This paste will be deleted after viewing. Click to view.",
+      },
+    };
+  }
+
   return {
     ...defaultMetadata(false),
     title: formattedId,
