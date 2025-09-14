@@ -27,7 +27,6 @@ function getGuessLangInstance(): GuessLang {
  * Gets the language of the given content.
  *
  * @param content The content to get the language of.
- * @param filename Optional filename to help with detection
  * @returns The language of the content.
  */
 export async function getLanguage(content: string): Promise<string> {
