@@ -17,6 +17,7 @@ interface MobilePasteDetailsProps {
   onNew?: () => void;
   onSave?: () => void;
   onCopyUrl?: () => void;
+  onCopyContent?: () => void;
   isLoading?: boolean;
 }
 
@@ -28,6 +29,7 @@ export function MobilePasteDetails({
   onNew,
   onSave,
   onCopyUrl,
+  onCopyContent,
   isLoading = false,
 }: MobilePasteDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,6 +108,20 @@ export function MobilePasteDetails({
               Actions
             </h4>
             <div className="grid grid-cols-2 gap-2">
+              {onCopyContent && (
+                <Button
+                  onClick={() => {
+                    onCopyContent();
+                    setIsOpen(false);
+                  }}
+                  size="sm"
+                  className="text-xs font-medium px-3 py-2 h-9 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                >
+                  <Copy className="h-3 w-3 mr-1" />
+                  Copy
+                </Button>
+              )}
+
               {onDuplicate && (
                 <Button
                   onClick={() => {

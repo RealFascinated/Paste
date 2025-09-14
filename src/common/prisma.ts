@@ -1,6 +1,6 @@
 import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
-import { Paste, PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "@/generated/prisma";
 import { PasteWithContent } from "@/types/paste";
 import Logger from "./logger";
 import S3Service from "./s3";
@@ -21,12 +21,14 @@ export function getPrismaClient(): PrismaClient {
  * @param content The content of the paste.
  * @param expiresAt The expiration date of the paste.
  * @param filename Optional filename to help with language detection
+ * @param deleteAfterRead Whether to delete the paste after first read
  * @returns The created paste.
  */
 export async function createPaste(
   content: string,
   expiresAt?: Date,
-  filename?: string
+  filename?: string,
+  deleteAfterRead?: boolean
 ): Promise<PasteWithContent> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
@@ -47,6 +49,7 @@ export async function createPaste(
           language: await getLanguageName(ext),
           ext: ext,
           timestamp: new Date(),
+          deleteAfterRead: deleteAfterRead || false,
         },
       })),
       key: id,
@@ -61,20 +64,28 @@ export async function createPaste(
  * Gets a paste by ID.
  *
  * @param id the ID of the paste to get.
- * @param incrementViews whether to increment the views of the paste.
+ * @param isViewing whether this is a view request (increments views and triggers delete after read).
  * @returns the paste with the given ID.
  */
 export async function getPaste(
   id: string,
-  incrementViews = false
+  isViewing = false
 ): Promise<PasteWithContent | null> {
   const before = performance.now();
 
-  let paste: Paste | null;
+  // Check if the paste exists
+  const paste = await getPrismaClient().paste.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  if (paste == null) {
+    return null;
+  }
 
-  if (incrementViews) {
+  if (isViewing) {
     // Use update with increment to both update and return data in one call
-    paste = await getPrismaClient().paste.update({
+    await getPrismaClient().paste.update({
       where: {
         id: id,
       },
@@ -84,22 +95,17 @@ export async function getPaste(
         },
       },
     });
-  } else {
-    // Use findUnique for read-only access
-    paste = await getPrismaClient().paste.findUnique({
-      where: {
-        id: id,
-      },
-    });
-  }
-
-  if (!paste) {
-    return null;
   }
 
   const content =
-    (await S3Service.getFile(`${paste.id}.${paste.ext}`))?.toString("utf-8") ??
-    "";
+    (await S3Service.getFile(`${id}.${paste.ext}`))?.toString("utf-8") ?? "";
+
+  // Handle delete after read pastes - they get deleted after first view
+  if (paste.deleteAfterRead && isViewing) {
+    Logger.info(`Triggering delete after read for paste ${id}`);
+    await handleDeleteAfterReadPaste(id, paste.ext);
+  }
+
   Logger.info(
     `Got paste ${id} in ${formatDuration(performance.now() - before)}`
   );
@@ -107,6 +113,37 @@ export async function getPaste(
     ...paste,
     content: content,
   } as PasteWithContent;
+}
+
+/**
+ * Handles deletion of a paste that was marked for delete after read.
+ * This function is called after the paste content has been served to the user.
+ *
+ * @param id The paste ID to delete
+ * @param ext The paste file extension
+ */
+async function handleDeleteAfterReadPaste(
+  id: string,
+  ext: string
+): Promise<void> {
+  Logger.info(`Processing delete after read for paste ${id}`);
+
+  try {
+    // Delete S3 file first
+    await S3Service.deleteFile(`${id}.${ext}`);
+    Logger.info(`S3 file deleted for paste ${id}`);
+
+    // Delete database record
+    await getPrismaClient().paste.delete({
+      where: { id },
+    });
+    Logger.info(`Database record deleted for paste ${id}`);
+
+    Logger.info(`Paste ${id} successfully deleted after read`);
+  } catch (error) {
+    Logger.error(`Failed to delete paste ${id} after read: ${error}`);
+    // Don't throw - we don't want to break the user experience
+  }
 }
 
 /**

@@ -27,6 +27,7 @@ function Page() {
   const [content, setContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingDuplicate, setIsLoadingDuplicate] = useState<boolean>(false);
+  const [deleteAfterRead, setDeleteAfterRead] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -57,10 +58,20 @@ function Page() {
 
   const handleNew = () => {
     setContent("");
+    setDeleteAfterRead(false);
     toastUtil.info("Editor cleared", {
       title: "New Paste",
       description: "Ready to create a new paste",
     });
+  };
+
+  const handleDeleteAfterReadToggle = (enabled: boolean) => {
+    setDeleteAfterRead(enabled);
+    if (enabled) {
+      toastUtil.deleteAfterReadEnabled();
+    } else {
+      toastUtil.deleteAfterReadDisabled();
+    }
   };
 
   useCreatePageShortcuts(
@@ -88,7 +99,11 @@ function Page() {
     toastUtil.loading("Creating your paste...");
 
     try {
-      const { paste, error } = await uploadPaste(content, expiry);
+      const { paste, error } = await uploadPaste(
+        content,
+        expiry,
+        deleteAfterRead
+      );
 
       if (error !== null || paste == null) {
         toastUtil.dismissLoading();
@@ -100,12 +115,29 @@ function Page() {
       await navigator.clipboard.writeText(pasteUrl);
 
       toastUtil.dismissLoading();
-      toastUtil.pasteCreated(pasteUrl);
 
-      // Small delay to let the toast show before redirect
-      setTimeout(() => {
-        redirect(`/${paste.key}.${paste.ext}`);
-      }, 100);
+      // Don't redirect if it's a delete after read paste - show success message instead
+      if (deleteAfterRead) {
+        // Clear the editor for self-destructing pastes
+        setContent("");
+        setDeleteAfterRead(false);
+
+        toastUtil.success("Self-destructing paste created!", {
+          title: "⚠️ Paste Created",
+          description:
+            "Your paste has been created and will self-destruct after first view. The URL has been copied to your clipboard.",
+          action: {
+            label: "Copy Link",
+            onClick: () => navigator.clipboard.writeText(pasteUrl),
+          },
+        });
+      } else {
+        toastUtil.pasteCreated(pasteUrl);
+        // Small delay to let the toast show before redirect
+        setTimeout(() => {
+          redirect(`/${paste.key}.${paste.ext}`);
+        }, 100);
+      }
     } catch {
       toastUtil.dismissLoading();
       toastUtil.networkError();
@@ -153,6 +185,9 @@ function Page() {
         isLoading={isLoading}
         onNew={handleNew}
         onSave={handleSave}
+        onClear={handleNew}
+        onDeleteAfterReadToggle={handleDeleteAfterReadToggle}
+        deleteAfterRead={deleteAfterRead}
       />
     </div>
   );

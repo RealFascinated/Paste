@@ -7,7 +7,10 @@ interface LanguageChartProps {
 export function LanguageChart({ data }: LanguageChartProps) {
   // Convert object to array and sort by count (descending)
   const languageEntries = Object.entries(data).sort(([, a], [, b]) => b - a);
-  const totalPastes = languageEntries.reduce((sum, [, count]) => sum + count, 0);
+  const totalPastes = languageEntries.reduce(
+    (sum, [, count]) => sum + count,
+    0
+  );
 
   return (
     <div className="p-4 sm:p-6 rounded-lg border bg-card text-card-foreground shadow-sm">

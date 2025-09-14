@@ -6,9 +6,11 @@ interface MonthlyChartProps {
 
 export function MonthlyChart({ data }: MonthlyChartProps) {
   // Convert object to array and sort by month (most recent first)
-  const monthlyEntries = Object.entries(data).sort(([a], [b]) => b.localeCompare(a));
+  const monthlyEntries = Object.entries(data).sort(([a], [b]) =>
+    b.localeCompare(a)
+  );
   const maxCount = Math.max(...monthlyEntries.map(([, count]) => count));
-  
+
   const monthNames = [
     "Jan",
     "Feb",

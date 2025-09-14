@@ -5,9 +5,10 @@ import { DownloadPasteButton } from "@/components/paste/download-button";
 import { MobilePasteDetails } from "@/components/paste/mobile-paste-details";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Plus, Save } from "lucide-react";
+import { Copy, FileText, Plus, Save, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { DeleteAfterRead } from "./delete-after-read";
 import { Expiry } from "./expiry";
 import Tooltip from "./tooltip";
 import { Button } from "./ui/button";
@@ -55,6 +56,16 @@ const pasteDetails: PasteDetails[] = [
     type: "paste",
     render: (paste?: PasteWithContent) =>
       paste && <div className="flex gap-1 items-center">{paste.language}</div>,
+  },
+  {
+    type: "paste",
+    render: (paste?: PasteWithContent) =>
+      paste && paste.deleteAfterRead ? (
+        <div className="flex gap-1 items-center text-red-400">
+          <Trash2 className="w-3 h-3" />
+          <span className="text-xs font-medium">Self-destructing</span>
+        </div>
+      ) : undefined,
   },
 
   // Paste edit details
@@ -114,6 +125,10 @@ type FooterProps = {
   onNew?: () => void;
   onSave?: () => void;
   onCopyUrl?: () => void;
+  onCopyContent?: () => void;
+  onClear?: () => void;
+  onDeleteAfterReadToggle?: (enabled: boolean) => void;
+  deleteAfterRead?: boolean;
 };
 
 export function Footer({
@@ -125,6 +140,10 @@ export function Footer({
   onNew,
   onSave,
   onCopyUrl,
+  onCopyContent,
+  onClear,
+  onDeleteAfterReadToggle,
+  deleteAfterRead = false,
 }: FooterProps) {
   return (
     <div
@@ -134,7 +153,17 @@ export function Footer({
     >
       <div className="flex gap-2 sm:gap-4 items-center w-full justify-between">
         <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
-          {!paste && <Expiry />}
+          {!paste && (
+            <>
+              <Expiry />
+              {onDeleteAfterReadToggle && (
+                <DeleteAfterRead
+                  onToggle={onDeleteAfterReadToggle}
+                  defaultEnabled={deleteAfterRead}
+                />
+              )}
+            </>
+          )}
           <div className="hidden md:block">
             {paste || editDetails ? (
               <PasteDetails paste={paste} editDetails={editDetails} />
@@ -154,25 +183,43 @@ export function Footer({
                 onNew={onNew}
                 onSave={onSave}
                 onCopyUrl={onCopyUrl}
+                onCopyContent={onCopyContent}
                 isLoading={isLoading}
               />
             ) : (
-              <Button
-                type="submit"
-                form="paste-form"
-                size="default"
-                className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                    <span>Saving...</span>
-                  </div>
-                ) : (
-                  "Save"
-                )}
-              </Button>
+              <div className="flex gap-2">
+                {onClear &&
+                  editDetails?.content &&
+                  editDetails.content.trim().length > 0 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="default"
+                      className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0"
+                      onClick={onClear}
+                      disabled={isLoading}
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                <Button
+                  type="submit"
+                  form="paste-form"
+                  size="default"
+                  className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      <span>Saving...</span>
+                    </div>
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+              </div>
             )}
           </div>
 
@@ -181,6 +228,17 @@ export function Footer({
             {paste ? (
               <div className="flex gap-2 sm:gap-3 flex-wrap">
                 <DownloadPasteButton paste={paste} />
+                {onCopyContent && (
+                  <Button
+                    onClick={onCopyContent}
+                    variant="outline"
+                    size="default"
+                    className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                  >
+                    <Copy className="h-3 w-3 mr-1" />
+                    Copy
+                  </Button>
+                )}
                 <Link
                   href={`/?duplicate=${encodeURI(paste.id)}`}
                   prefetch={false}
@@ -215,25 +273,42 @@ export function Footer({
                 </Link>
               </div>
             ) : (
-              <Button
-                type="submit"
-                form="paste-form"
-                size="default"
-                className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                    <span>Saving...</span>
-                  </div>
-                ) : (
-                  <>
-                    <Save className="h-3 w-3 mr-1" />
-                    Save
-                  </>
-                )}
-              </Button>
+              <div className="flex gap-2 sm:gap-3">
+                {onClear &&
+                  editDetails?.content &&
+                  editDetails.content.trim().length > 0 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="default"
+                      className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0"
+                      onClick={onClear}
+                      disabled={isLoading}
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  )}
+                <Button
+                  type="submit"
+                  form="paste-form"
+                  size="default"
+                  className="text-sm font-medium px-6 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      <span>Saving...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <Save className="h-3 w-3 mr-1" />
+                      Save
+                    </>
+                  )}
+                </Button>
+              </div>
             )}
           </div>
         </div>

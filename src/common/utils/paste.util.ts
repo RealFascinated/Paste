@@ -28,15 +28,12 @@ export async function generatePasteId(): Promise<string> {
  * Gets a paste from the cache or the database.
  *
  * @param id The ID of the paste to get.
- * @param incrementViews Whether to increment the views of the paste.
+ * @param isViewing Whether this is a view request (increments views and triggers delete after read).
  * @returns The paste with the given ID.
  */
 export const lookupPaste = cache(
-  async (
-    id: string,
-    incrementViews = false
-  ): Promise<PasteWithContent | null> => {
-    const paste = await getPaste(id.split(".")[0], incrementViews);
+  async (id: string, isViewing = false): Promise<PasteWithContent | null> => {
+    const paste = await getPaste(id.split(".")[0], isViewing);
     if (paste == null) {
       return null;
     }
@@ -47,3 +44,18 @@ export const lookupPaste = cache(
     };
   }
 );
+
+// Non-cached version for viewing (to ensure delete after read works)
+export async function lookupPasteForViewing(
+  id: string
+): Promise<PasteWithContent | null> {
+  const paste = await getPaste(id.split(".")[0], true);
+  if (paste == null) {
+    return null;
+  }
+
+  return {
+    ...paste,
+    key: id,
+  };
+}

@@ -5,7 +5,7 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const paste = await lookupPaste((await params).id);
+  const paste = await lookupPaste((await params).id, true);
 
   if (paste == null) {
     return new NextResponse("Paste not found", { status: 404 });

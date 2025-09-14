@@ -87,11 +87,14 @@ export async function GET() {
     const totalViews = totalViewsResult._sum.views || 0;
 
     // Process languages data into object format
-    const languages = pastesByLanguage.reduce((acc, item) => {
-      const language = item.language || 'Unknown';
-      acc[language] = item._count.language;
-      return acc;
-    }, {} as Record<string, number>);
+    const languages = pastesByLanguage.reduce(
+      (acc, item) => {
+        const language = item.language || "Unknown";
+        acc[language] = item._count.language;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     // Process monthly data (most recent first)
     const monthlyData: Record<string, number> = {};

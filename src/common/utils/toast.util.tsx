@@ -21,10 +21,10 @@ const toastIcons = {
 };
 
 const toastColors = {
-  success: "text-green-500",
-  error: "text-red-500",
-  info: "text-blue-500",
-  warning: "text-yellow-500",
+  success: "text-green-300",
+  error: "text-red-300",
+  info: "text-blue-300",
+  warning: "text-yellow-300",
 };
 
 function createToast(
@@ -155,4 +155,19 @@ export const toastUtil = {
     }),
 
   dismissLoading: () => toast.dismiss("loading"),
+
+  // Delete after read specific toasts
+  deleteAfterReadEnabled: () =>
+    toastUtil.warning("Self-destruct mode enabled", {
+      title: "⚠️ Self-Destructing Paste",
+      description:
+        "This paste will be automatically deleted after the first view",
+      duration: 5000,
+    }),
+
+  deleteAfterReadDisabled: () =>
+    toastUtil.info("Self-destruct mode disabled", {
+      title: "Paste Saved Normally",
+      description: "This paste will remain available until it expires",
+    }),
 };

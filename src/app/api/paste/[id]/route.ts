@@ -5,7 +5,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const foundPaste = await getPaste((await params).id);
+  const foundPaste = await getPaste((await params).id, false);
   if (foundPaste == null) {
     return Response.json(
       {

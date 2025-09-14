@@ -63,6 +63,10 @@ export async function POST(req: NextRequest) {
     ? new Date(new Date().getTime() + Number(expiresAtRaw) * 1000)
     : undefined;
 
+  // Parse the delete after read flag
+  const deleteAfterReadRaw = req.nextUrl.searchParams.get("deleteAfterRead");
+  const deleteAfterRead = deleteAfterReadRaw === "true";
+
   // Check if the expiry date is in the past
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     return buildErrorResponse("Expiry date is in the past", 400);
@@ -75,7 +79,12 @@ export async function POST(req: NextRequest) {
   ) {
     return buildErrorResponse("Expiry date is too far in the future", 400);
   }
-  const { id, ...paste } = await createPaste(body, expiresAt);
+  const { id, ...paste } = await createPaste(
+    body,
+    expiresAt,
+    undefined,
+    deleteAfterRead
+  );
 
   Logger.info(`Paste created: ${id}, ${formatBytes(paste.size)}`);
   return Response.json({
