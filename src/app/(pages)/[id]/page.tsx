@@ -1,6 +1,6 @@
 import { defaultMetadata } from "@/common/metadata";
 import { getRelativeTime } from "@/common/utils/date.util";
-import { lookupPaste, lookupPasteForViewing } from "@/common/utils/paste.util";
+import { lookupPaste } from "@/common/utils/paste.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { LoadingState } from "@/components/loading-states";
 import { PasteViewPage } from "@/components/paste/paste-view-page";
@@ -44,7 +44,7 @@ Click to view the Paste.
 
 export default async function PastePage({ params }: PasteProps) {
   const id = (await params).id;
-  const paste = await lookupPasteForViewing(id);
+  const paste = await lookupPaste(id, true);
 
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>
