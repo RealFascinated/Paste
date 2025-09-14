@@ -118,7 +118,6 @@ export function CodeEditor({
                 margin: 0,
                 fontSize: "12px",
                 lineHeight: "1.5",
-                fontFamily: "inherit",
               }}
               className="font-mono w-full"
             >
