@@ -79,12 +79,7 @@ export async function POST(req: NextRequest) {
   ) {
     return buildErrorResponse("Expiry date is too far in the future", 400);
   }
-  const { id, ...paste } = await createPaste(
-    body,
-    expiresAt,
-    undefined,
-    deleteAfterRead
-  );
+  const { id, ...paste } = await createPaste(body, expiresAt, deleteAfterRead);
 
   Logger.info(`Paste created: ${id}, ${formatBytes(paste.size)}`);
   return Response.json({

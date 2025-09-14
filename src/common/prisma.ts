@@ -27,7 +27,6 @@ export function getPrismaClient(): PrismaClient {
 export async function createPaste(
   content: string,
   expiresAt?: Date,
-  filename?: string,
   deleteAfterRead?: boolean
 ): Promise<PasteWithContent> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
@@ -35,7 +34,7 @@ export async function createPaste(
   }
 
   const id = await generatePasteId();
-  const ext = await getLanguage(content, filename);
+  const ext = await getLanguage(content);
   try {
     await S3Service.saveFile(`${id}.${ext}`, Buffer.from(content)); // Save the paste to S3
 
