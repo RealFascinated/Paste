@@ -21,6 +21,9 @@ model Paste {
   // When the paste will expire
   expiresAt DateTime?
 
+  // Whether the paste has expired
+  expired Boolean @default(false)
+
   // When the paste was created
   timestamp DateTime @default(now())
 

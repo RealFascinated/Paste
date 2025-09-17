@@ -8,6 +8,7 @@ import {
   Eye,
   FileText,
   TrendingUp,
+  Clock3,
 } from "lucide-react";
 
 interface StatsOverviewProps {
@@ -44,6 +45,13 @@ export function StatsOverview({ data }: StatsOverviewProps) {
       color: "text-orange-500",
       bgColor: "bg-orange-50 dark:bg-orange-950/20",
     },
+    {
+      title: "Expired Pastes",
+      value: formatNumber(data.expiredPastes),
+      icon: Clock3,
+      color: "text-red-500",
+      bgColor: "bg-red-50 dark:bg-red-950/20",
+    },
   ];
 
   const activityCards = [
@@ -78,7 +86,7 @@ export function StatsOverview({ data }: StatsOverviewProps) {
         <p className="text-sm text-muted-foreground mb-4">
           Key metrics about all pastes on the platform
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
           {cards.map((card, index) => {
             const Icon = card.icon;
             return (

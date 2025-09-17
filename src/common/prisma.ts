@@ -71,10 +71,11 @@ export async function getPaste(
   const pasteId = id.split(".")[0];
   const ext = id.split(".")[1]?.toLowerCase() ?? "txt";
 
-  // Check if the paste exists
+  // Check if the paste exists and has not expired
   const paste = await getPrismaClient().paste.findUnique({
     where: {
       id: pasteId,
+      expired: false,
     },
   });
   if (paste == null) {
@@ -86,6 +87,7 @@ export async function getPaste(
     await getPrismaClient().paste.update({
       where: {
         id: pasteId,
+        expired: false,
       },
       data: {
         views: {
@@ -126,6 +128,7 @@ export async function expirePastes() {
       expiresAt: {
         lt: new Date(),
       },
+      expired: false,
     },
     select: {
       id: true,
@@ -142,11 +145,14 @@ export async function expirePastes() {
   }
 
   // Delete database records
-  const { count } = await getPrismaClient().paste.deleteMany({
+  const { count } = await getPrismaClient().paste.updateMany({
     where: {
       expiresAt: {
         lt: new Date(),
       },
+    },
+    data: {
+      expired: true,
     },
   });
 

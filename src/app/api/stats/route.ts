@@ -5,9 +5,6 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const startTime = performance.now();
-
-  Logger.info("Stats request started");
-
   try {
     const prisma = getPrismaClient();
 
@@ -36,12 +33,14 @@ export async function GET() {
       totalViewsResult,
       pastesToday,
       pastesThisWeek,
+      expiredPastes,
     ] = await Promise.all([
       // Basic counts
       prisma.paste.count(),
 
       // Total size
       prisma.paste.aggregate({
+        where: { expired: false },
         _sum: { size: true },
       }),
 
@@ -58,6 +57,7 @@ export async function GET() {
 
       // Average paste size
       prisma.paste.aggregate({
+        where: { expired: false },
         _avg: { size: true },
       }),
 
@@ -74,6 +74,11 @@ export async function GET() {
       // Pastes created this week
       prisma.paste.count({
         where: { timestamp: { gte: weekAgo } },
+      }),
+
+      // Expired pastes
+      prisma.paste.count({
+        where: { expired: true },
       }),
     ]);
 
@@ -108,6 +113,7 @@ export async function GET() {
         recentPastes,
         pastesToday,
         pastesThisWeek,
+        expiredPastes,
       },
       monthlyData,
     };
@@ -120,6 +126,7 @@ export async function GET() {
       recentPastes,
       pastesToday,
       pastesThisWeek,
+      expiredPastes,
       monthlyDataPoints: Object.keys(monthlyData).length,
     });
 

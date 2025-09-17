@@ -6,6 +6,7 @@ export interface StatsOverview {
   recentPastes: number;
   pastesToday: number;
   pastesThisWeek: number;
+  expiredPastes: number;
 }
 
 export interface StatsResponse {
