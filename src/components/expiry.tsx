@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export const expiryOptions: Record<string, number> = {
+export const EXPIRY_OPTIONS: Record<string, number> = {
   Never: -1,
   "5 Minutes": 60 * 5,
   "15 Minutes": 60 * 15,
@@ -22,12 +22,13 @@ export const expiryOptions: Record<string, number> = {
   "1 Month": 60 * 60 * 24 * 30,
   "1 Year": 60 * 60 * 24 * 365,
 } as const;
+const DEFAULT_EXPIRY = EXPIRY_OPTIONS["1 Month"];
 
 export function Expiry() {
-  const { setExpiry } = usePasteExpiry(expiryOptions["1 Month"]);
+  const { setExpiry } = usePasteExpiry(DEFAULT_EXPIRY);
 
   const handleExpiryChange = (value: string) => {
-    const expiry = expiryOptions[value];
+    const expiry = EXPIRY_OPTIONS[value];
     if (expiry != null) {
       setExpiry(expiry);
     }
@@ -41,14 +42,14 @@ export function Expiry() {
         <span className="sm:hidden">Expires</span>
       </div>
       <Select
-        defaultValue={Object.keys(expiryOptions)[8]}
+        defaultValue={Object.keys(EXPIRY_OPTIONS).find(key => EXPIRY_OPTIONS[key] === DEFAULT_EXPIRY)}
         onValueChange={handleExpiryChange}
       >
         <SelectTrigger className="w-[100px] sm:w-[120px] h-6 sm:h-7 bg-background-secondary/50 hover:bg-background-secondary text-xs sm:text-sm">
           <SelectValue placeholder="Select expiry" />
         </SelectTrigger>
         <SelectContent>
-          {Object.entries(expiryOptions).map(([label, value]) => (
+          {Object.entries(EXPIRY_OPTIONS).map(([label, value]) => (
             <SelectItem
               key={value}
               value={label}
