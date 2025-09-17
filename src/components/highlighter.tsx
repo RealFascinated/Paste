@@ -1,7 +1,7 @@
 "use client";
 
-import { Highlight, themes } from "prism-react-renderer";
 import { calculateLineNumberWidth } from "@/common/utils/line-number.util";
+import { Highlight, themes } from "prism-react-renderer";
 
 type HighlighterProps = {
   content: string;
@@ -9,7 +9,7 @@ type HighlighterProps = {
 };
 
 export default function Highlighter({ content, language }: HighlighterProps) {
-  const lineCountWidth = calculateLineNumberWidth(content.split('\n').length);
+  const lineCountWidth = calculateLineNumberWidth(content.split("\n").length);
 
   return (
     <div className="relative w-full" style={{ padding: 0, margin: 0 }}>
@@ -18,7 +18,7 @@ export default function Highlighter({ content, language }: HighlighterProps) {
         className="absolute top-0 bottom-0 w-px bg-[#30363d] z-10 pointer-events-none"
         style={{ left: `${lineCountWidth}px` }}
       />
-      
+
       <Highlight theme={themes.oneDark} code={content} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre

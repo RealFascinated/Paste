@@ -48,8 +48,7 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     type: "paste",
-    render: (paste?: PasteWithContent) =>
-      paste && <p>{paste.language}</p>,
+    render: (paste?: PasteWithContent) => paste && <p>{paste.language}</p>,
   },
 
   // Paste edit details

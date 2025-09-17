@@ -1,3 +1,4 @@
+import { Config } from "@/common/config";
 import { defaultMetadata } from "@/common/metadata";
 import { getPaste } from "@/common/prisma";
 import { getRelativeTime } from "@/common/utils/date.util";
@@ -20,23 +21,55 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     return defaultMetadata();
   }
 
+  const title = `Paste ${queryId}`;
+  const description = `Code snippet in ${paste.language} • ${paste.lineCount} lines • ${formatBytes(paste.size)}${paste.expiresAt ? ` • Expires ${getRelativeTime(paste.expiresAt)}` : ""}`;
+  const url = `${Config.siteUrl}/${queryId}`;
+
   return {
     ...defaultMetadata(false),
-    title: queryId,
+    title,
+    description,
+    keywords: [
+      "paste",
+      "code",
+      paste.language.toLowerCase(),
+      "snippet",
+      "share",
+    ],
     openGraph: {
-      title: `Paste - ${queryId}`,
-      description: `
-Lines: ${paste.lineCount}
-Size: ${formatBytes(paste.size)}
-Language: ${paste.language}
-${
-  paste.expiresAt !== null
-    ? `
-Expires ${getRelativeTime(paste.expiresAt)}`
-    : ""
-}
-Click to view the Paste.
-`,
+      type: "article",
+      url,
+      title,
+      description,
+      siteName: Config.siteTitle,
+      locale: "en_US",
+      images: [
+        {
+          url: `${Config.siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&language=${encodeURIComponent(paste.language)}&lines=${paste.lineCount}&size=${encodeURIComponent(formatBytes(paste.size))}`,
+          width: 1200,
+          height: 630,
+          alt: `${paste.language} code snippet`,
+        },
+      ],
+      publishedTime: paste.timestamp.toISOString(),
+      authors: ["Paste"],
+      tags: [paste.language, "code", "snippet"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@paste",
+      creator: "@paste",
+      title,
+      description,
+      images: [
+        `${Config.siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&language=${encodeURIComponent(paste.language)}&lines=${paste.lineCount}&size=${encodeURIComponent(formatBytes(paste.size))}`,
+      ],
+    },
+    other: {
+      "og:image:alt": `${paste.language} code snippet`,
+      "article:author": "Paste",
+      "article:section": "Code",
+      "article:tag": paste.language,
     },
   };
 }
@@ -44,6 +77,10 @@ Click to view the Paste.
 export default async function PastePage({ params }: PasteProps) {
   const queryId = (await params).id;
   const paste = await getPaste(queryId, true);
+
+  if (!paste) {
+    return <div>Paste not found</div>;
+  }
 
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>

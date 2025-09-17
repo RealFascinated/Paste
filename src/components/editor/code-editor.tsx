@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { calculateLineNumberWidth } from "@/common/utils/line-number.util";
+import { useEffect, useRef } from "react";
 
 type CodeEditorProps = {
   content: string;
@@ -43,8 +43,8 @@ export function CodeEditor({
   const handleSelectionChange = () => {
     // No additional logic needed for plain text editor
   };
-  
-  const lineCount = content.split('\n').length;
+
+  const lineCount = content.split("\n").length;
   const lineCountWidth = calculateLineNumberWidth(lineCount);
 
   return (
