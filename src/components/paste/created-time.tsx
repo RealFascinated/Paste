@@ -37,7 +37,7 @@ export function PasteCreatedTime({ createdAt }: PasteCreatedTimeProps) {
 
   return (
     <Tooltip display={createdAt.toLocaleString()}>
-      {isClient ? time : "..."}
+      Created {isClient ? time : "..."}
     </Tooltip>
   );
 }
