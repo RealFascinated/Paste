@@ -135,8 +135,8 @@ function Page() {
         toastUtil.pasteCreated(pasteUrl);
         // Small delay to let the toast show before redirect
         setTimeout(() => {
-          redirect(`/${paste.key}.${paste.ext}`);
-        }, 100);
+          redirect(`/${paste.key}`);
+        }, 150);
       }
     } catch {
       toastUtil.dismissLoading();

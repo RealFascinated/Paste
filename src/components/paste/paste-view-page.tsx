@@ -26,13 +26,13 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
 
   const handleRaw = () => {
     if (paste) {
-      window.location.href = `/raw/${paste.id}.${paste.ext}`;
+      window.location.href = `/raw/${paste.id}`;
     }
   };
 
   const handleCopyUrl = () => {
     if (paste) {
-      const pasteUrl = `${window.location.origin}/${paste.id}.${paste.ext}`;
+      const pasteUrl = `${window.location.origin}/${paste.id}`;
       navigator.clipboard.writeText(pasteUrl);
       toastUtil.pasteCopied(pasteUrl);
     }

@@ -3,6 +3,7 @@ import { buildErrorResponse } from "@/common/error";
 import Logger from "@/common/logger";
 import { createPaste } from "@/common/prisma";
 import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
+import { getLanguage } from "@/common/utils/lang.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { spamFilters } from "@/filter/filters";
 import { NextRequest } from "next/server";
@@ -124,6 +125,7 @@ export async function POST(req: NextRequest) {
       expiresAt,
       deleteAfterRead
     );
+    const ext = await getLanguage(body);
 
     Logger.infoWithTiming(
       `Paste created: ${id}, ${formatBytes(paste.size)}`,
@@ -131,7 +133,7 @@ export async function POST(req: NextRequest) {
       {
         pasteId: id,
         size: paste.size,
-        ext: paste.ext,
+        ext: ext,
         language: paste.language,
         deleteAfterRead,
         expiresAt: paste.expiresAt?.toISOString(),
@@ -139,8 +141,8 @@ export async function POST(req: NextRequest) {
     );
 
     return Response.json({
-      key: `${id}.${paste.ext}`,
-      ext: paste.ext,
+      key: `${id}.${ext}`,
+      ext: ext,
       expiresAt: paste.expiresAt,
     });
   } catch (error) {
