@@ -78,10 +78,6 @@ export default async function PastePage({ params }: PasteProps) {
   const queryId = (await params).id;
   const paste = await getPaste(queryId, true);
 
-  if (!paste) {
-    return <div>Paste not found</div>;
-  }
-
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>
       <PasteViewPage paste={paste} id={queryId} />
