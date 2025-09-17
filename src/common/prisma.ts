@@ -135,20 +135,24 @@ export async function expirePastes() {
     },
   });
 
+  // Track which pastes were successfully deleted from S3
+  const successfullyDeletedPasteIds: string[] = [];
+
   // Delete files from S3
   for (const paste of expiredPastes) {
     try {
       await S3Service.deleteFile(`${paste.id}.txt`);
+      successfullyDeletedPasteIds.push(paste.id);
     } catch (error) {
       Logger.error(`Failed to delete S3 file for paste ${paste.id}: ${error}`);
     }
   }
 
-  // Delete database records
+  // Only mark as expired the pastes that were successfully deleted from S3
   const { count } = await getPrismaClient().paste.updateMany({
     where: {
-      expiresAt: {
-        lt: new Date(),
+      id: {
+        in: successfullyDeletedPasteIds,
       },
     },
     data: {
@@ -159,5 +163,6 @@ export async function expirePastes() {
   Logger.info(`Expired ${count} pastes and cleaned up S3 files`, {
     expiredCount: count,
     pastesToCleanup: expiredPastes.length,
+    successfullyDeleted: successfullyDeletedPasteIds.length,
   });
 }
