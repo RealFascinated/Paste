@@ -35,9 +35,11 @@ function getGuessLangInstance(): GuessLang {
  * @returns The language of the content.
  */
 export async function getLanguage(content: string): Promise<string> {
-  // Fall back to ML-based detection
   const guessLang = getGuessLangInstance();
-  const response = await guessLang.runModel(content);
+  // Limit the content to 1000 characters to make the detection faster
+  const response = await guessLang.runModel(
+    content.length > 1000 ? content.substring(0, 1000) : content
+  );
   if (!response || response.length === 0) {
     return "txt";
   }

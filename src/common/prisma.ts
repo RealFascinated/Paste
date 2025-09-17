@@ -1,4 +1,4 @@
-import { getLanguageName } from "@/common/utils/lang.util";
+import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { PrismaClient } from "@/generated/prisma";
 import { PasteWithContent } from "@/types/paste";
@@ -33,7 +33,10 @@ export async function createPaste(
 
   const id = await generatePasteId();
   try {
-    await S3Service.saveFile(`${id}.txt`, Buffer.from(content)); // Save the paste to S3
+    const [ext] = await Promise.all([
+      getLanguage(content),
+      S3Service.saveFile(`${id}.txt`, Buffer.from(content)),
+    ]);
 
     // Create the paste in the database
     return {
@@ -47,7 +50,9 @@ export async function createPaste(
         },
       })),
       key: id,
+      ext: ext,
       content: content,
+      language: await getLanguageName(ext),
     } as PasteWithContent;
   } catch {
     throw new Error("Failed to save paste to S3");
