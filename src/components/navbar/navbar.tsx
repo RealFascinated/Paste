@@ -33,10 +33,6 @@ export async function Navbar() {
             <BarChart3 className="w-4 h-4" />
             <span className="hidden sm:inline">Stats</span>
           </Link>
-          <div className="hidden sm:flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-            <span className="text-xs text-muted-foreground">Online</span>
-          </div>
         </div>
       </div>
     </div>
