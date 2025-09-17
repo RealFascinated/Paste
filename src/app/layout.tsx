@@ -30,7 +30,7 @@ export default function RootLayout({
           />
         )}
       <body
-        className={`${siteFont.className} antialiased w-full h-screen overflow-hidden`}
+        className={`${siteFont.className} antialiased w-full h-dvh overflow-hidden`}
       >
         <Toaster />
         <TooltipProvider>
