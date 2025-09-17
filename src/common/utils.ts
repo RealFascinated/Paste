@@ -25,18 +25,10 @@ export function getIP(req: Request | IncomingMessage | NextRequest) {
     return Array.isArray(value) ? value[0] : value ?? undefined;
   };
   
-  // Debug: log available headers in production
-  if (process.env.NODE_ENV === 'production') {
-    console.log('Available headers:', Object.keys(headers));
-    console.log('CF-Connecting-IP:', getHeader("CF-Connecting-IP"));
-    console.log('X-Forwarded-For:', getHeader("X-Forwarded-For"));
-    console.log('X-Real-IP:', getHeader("X-Real-IP"));
-  }
-  
   return (
-    getHeader("CF-Connecting-IP") ??
-    getHeader("X-Forwarded-For") ??
-    getHeader("X-Real-IP") ??
+    getHeader("cf-connecting-ip") ??
+    getHeader("x-forwarded-for") ??
+    getHeader("x-real-ip") ??
     "127.0.0.1"
   );
 }
