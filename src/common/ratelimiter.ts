@@ -1,3 +1,5 @@
+import { getIP } from "./utils";
+
 type RateLimitConfig = {
   windowMs: number;
   maxRequests: number;
@@ -57,10 +59,7 @@ export class Ratelimiter {
     if (!routeConfig) return undefined;
 
     // Get the user's IP address to use as the key
-    const ip: string =
-      request.headers.get("CF-Connecting-IP") ||
-      request.headers.get("X-Forwarded-For") ||
-      "127.0.0.1";
+    const ip: string = getIP(request);
     const key = `${route}:${ip}`;
 
     // If there is no limit info or the limit has expired, create a new one

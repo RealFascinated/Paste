@@ -6,6 +6,7 @@ import { schedule } from "node-cron";
 import { parse } from "url";
 import Logger from "./common/logger";
 import S3Service from "./common/s3";
+import { getIP } from "./common/utils";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
@@ -30,18 +31,8 @@ app.prepare().then(() => {
       const statusCode = res.statusCode || 200;
 
       Logger.infoWithTiming(
-        `${req.method} ${parsedUrl.path} ${statusCode}`,
+        `[${req.method} - ${getIP(req)}] ${parsedUrl.path} ${statusCode}`,
         before,
-        {
-          method: req.method,
-          path: parsedUrl.path,
-          statusCode,
-          userAgent: req.headers["user-agent"],
-          ip:
-            req.headers["x-forwarded-for"] ||
-            req.headers["x-real-ip"] ||
-            "unknown",
-        }
       );
     }
   }).listen(port);

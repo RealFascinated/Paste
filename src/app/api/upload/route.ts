@@ -3,8 +3,10 @@ import { buildErrorResponse } from "@/common/error";
 import Logger from "@/common/logger";
 import { createPaste } from "@/common/prisma";
 import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
+import { getIP } from "@/common/utils";
 import { formatBytes } from "@/common/utils/string.util";
 import { spamFilters } from "@/filter/filters";
+import { X } from "lucide-react";
 import { NextRequest } from "next/server";
 
 /**
@@ -18,14 +20,6 @@ Ratelimiter.configRoute("/api/upload", {
 export async function POST(req: NextRequest) {
   const startTime = performance.now();
 
-  Logger.info("Upload request started", {
-    userAgent: req.headers.get("user-agent"),
-    ip:
-      req.headers.get("x-forwarded-for") ||
-      req.headers.get("x-real-ip") ||
-      "unknown",
-  });
-
   // Handle rate limiting
   const rateLimitResponse: RateLimitResponse | undefined = Ratelimiter.check(
     req,
@@ -33,7 +27,7 @@ export async function POST(req: NextRequest) {
   );
   if (rateLimitResponse) {
     if (!rateLimitResponse.allowed) {
-      Logger.warn("Rate limit exceeded", {
+      Logger.warn(`Rate limit exceeded for upload: ${getIP(req)}`, {
         remaining: rateLimitResponse.remainingRequests,
         resetTime: rateLimitResponse.resetTime,
       });

@@ -1,5 +1,6 @@
 import Logger from "@/common/logger";
 import { getPaste } from "@/common/prisma";
+import { getIP } from "@/common/utils";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -12,10 +13,7 @@ export async function GET(
   Logger.info("Paste retrieval request", {
     pasteId,
     userAgent: request.headers.get("user-agent"),
-    ip:
-      request.headers.get("x-forwarded-for") ||
-      request.headers.get("x-real-ip") ||
-      "unknown",
+    ip: getIP(request),
   });
 
   try {
