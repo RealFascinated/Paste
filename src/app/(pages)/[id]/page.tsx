@@ -2,7 +2,7 @@ import { Config } from "@/common/config";
 import { defaultMetadata } from "@/common/metadata";
 import { getPaste } from "@/common/prisma";
 import { getRelativeTime } from "@/common/utils/date.util";
-import { formatBytes } from "@/common/utils/string.util";
+import { formatBytes, pluralize } from "@/common/utils/string.util";
 import { LoadingState } from "@/components/loading-states";
 import { PasteViewPage } from "@/components/paste/paste-view-page";
 import { Metadata } from "next";
@@ -22,7 +22,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
   }
 
   const title = `Paste ${queryId}`;
-  const description = `Code snippet in ${paste.language} • ${paste.lineCount} lines • ${formatBytes(paste.size)}${paste.expiresAt ? ` • Expires ${getRelativeTime(paste.expiresAt)}` : ""}`;
+  const description = `${paste.language} code snippet • ${paste.lineCount} ${pluralize(paste.lineCount, "line")} • ${formatBytes(paste.size)}${paste.expiresAt ? ` • Expires ${getRelativeTime(paste.expiresAt)}` : ""}`;
   const url = `${Config.siteUrl}/${queryId}`;
 
   return {

@@ -1,4 +1,4 @@
-import { formatBytes, formatNumber } from "@/common/utils/string.util";
+import { formatBytes, formatNumber, pluralize } from "@/common/utils/string.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
 import { MobilePasteDetails } from "@/components/paste/mobile-paste-details";
@@ -29,7 +29,7 @@ const pasteDetails: PasteDetails[] = [
     type: "paste",
     render: (paste?: PasteWithContent) =>
       paste &&
-      `${formatNumber(paste.views)} View${paste.views === 1 ? "" : "s"}`,
+      `${formatNumber(paste.views)} ${pluralize(paste.views, "View")}`,
   },
   {
     type: "paste",
