@@ -92,7 +92,6 @@ export async function POST(req: NextRequest) {
     ? new Date(new Date().getTime() + Number(expiresAtRaw) * 1000)
     : undefined;
 
-
   // Check if the expiry date is in the past
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     Logger.warn("Invalid expiry date - in the past", {
@@ -116,10 +115,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { id, ...paste } = await createPaste(
-      body,
-      expiresAt
-    );
+    const { id, ...paste } = await createPaste(body, expiresAt);
 
     Logger.infoWithTiming(
       `Paste created: ${id}, ${formatBytes(paste.size)}`,

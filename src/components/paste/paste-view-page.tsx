@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import Highlighter from "@/components/highlighter";
 import { usePasteViewShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { PasteWithContent } from "@/types/paste";
-import { AlertTriangle, FileText, Plus } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 
 type PasteViewPageProps = {
   paste: PasteWithContent | null;
@@ -62,7 +62,6 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-
       <main className="flex-1 min-h-0 overflow-auto">
         {paste ? (
           <Highlighter language={paste.ext} content={paste.content} />

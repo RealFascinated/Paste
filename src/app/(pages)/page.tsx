@@ -63,7 +63,6 @@ function Page() {
     });
   };
 
-
   useCreatePageShortcuts(
     handleSave,
     handleNew,
@@ -89,10 +88,7 @@ function Page() {
     toastUtil.loading("Creating your paste...");
 
     try {
-      const { paste, error } = await uploadPaste(
-        content,
-        expiry
-      );
+      const { paste, error } = await uploadPaste(content, expiry);
 
       if (error !== null || paste == null) {
         toastUtil.dismissLoading();

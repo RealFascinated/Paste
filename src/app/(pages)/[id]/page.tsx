@@ -20,7 +20,6 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     return defaultMetadata();
   }
 
-
   return {
     ...defaultMetadata(false),
     title: queryId,

@@ -6,7 +6,7 @@ import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Info, Plus, Save, Trash2 } from "lucide-react";
+import { Copy, FileText, Info, Plus, Save } from "lucide-react";
 import { useState } from "react";
 
 interface MobilePasteDetailsProps {

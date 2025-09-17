@@ -99,7 +99,6 @@ export async function getPaste(
   const content =
     (await S3Service.getFile(`${pasteId}.txt`))?.toString("utf-8") ?? "";
 
-
   Logger.infoWithTiming(`Got paste ${pasteId}`, before, {
     pasteId: pasteId,
     size: paste.size,
@@ -116,7 +115,6 @@ export async function getPaste(
     language: language,
   } as PasteWithContent;
 }
-
 
 /**
  * Expires all pastes that have expired.

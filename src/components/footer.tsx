@@ -5,7 +5,7 @@ import { DownloadPasteButton } from "@/components/paste/download-button";
 import { MobilePasteDetails } from "@/components/paste/mobile-paste-details";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Plus, Save, Trash2, X } from "lucide-react";
+import { Copy, FileText, Plus, Save, X } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Expiry } from "./expiry";

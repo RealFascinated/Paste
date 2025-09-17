@@ -155,5 +155,4 @@ export const toastUtil = {
     }),
 
   dismissLoading: () => toast.dismiss("loading"),
-
 };
