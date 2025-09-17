@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { calculateLineNumberWidth } from "@/common/utils/line-number.util";
 
 type CodeEditorProps = {
   content: string;
@@ -42,17 +43,18 @@ export function CodeEditor({
   const handleSelectionChange = () => {
     // No additional logic needed for plain text editor
   };
-
-  const lines = content.split("\n");
-  const lineCount = lines.length;
+  
+  const lineCount = content.split('\n').length;
+  const lineCountWidth = calculateLineNumberWidth(lineCount);
 
   return (
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Line Numbers */}
       <div
         ref={lineNumbersRef}
-        className="absolute left-0 top-0 bottom-0 w-10 sm:w-16 pr-1 sm:pr-4 text-right text-[#7d8590] select-none font-mono text-xs z-10 pointer-events-none overflow-hidden"
+        className="absolute left-0 top-0 bottom-0 pl-1 pr-2 text-right text-[#7d8590] select-none font-mono text-xs z-10 pointer-events-none overflow-hidden"
         style={{
+          width: `${lineCountWidth}px`,
           lineHeight: "1.5",
           fontVariantNumeric: "tabular-nums",
           letterSpacing: "-0.025em",
@@ -64,6 +66,12 @@ export function CodeEditor({
           </div>
         ))}
       </div>
+
+      {/* Vertical Line Separator */}
+      <div
+        className="absolute top-0 bottom-0 w-px bg-[#30363d] z-10 pointer-events-none"
+        style={{ left: `${lineCountWidth}px` }}
+      />
 
       {/* Textarea */}
       <textarea
@@ -80,8 +88,9 @@ export function CodeEditor({
         autoCapitalize="off"
         spellCheck="false"
         autoComplete="off"
-        className="code-editor-textarea absolute left-10 sm:left-16 right-0 top-0 bottom-0 text-white bg-transparent resize-none outline-none font-mono text-xs overflow-auto px-0 z-20 caret-white"
+        className="code-editor-textarea absolute right-0 top-0 bottom-0 text-white bg-transparent resize-none outline-none font-mono text-xs overflow-auto pl-2 z-20 caret-white"
         style={{
+          left: `${lineCountWidth}px`,
           lineHeight: "1.5",
           fontFamily: "inherit",
           height: "100%",

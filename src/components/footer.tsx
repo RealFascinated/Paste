@@ -49,7 +49,7 @@ const pasteDetails: PasteDetails[] = [
   {
     type: "paste",
     render: (paste?: PasteWithContent) =>
-      paste && <div className="flex gap-1 items-center">{paste.language}</div>,
+      paste && <p>{paste.language}</p>,
   },
 
   // Paste edit details
@@ -161,7 +161,7 @@ export function Footer({
                 isLoading={isLoading}
               />
             ) : (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2">
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (
@@ -203,7 +203,7 @@ export function Footer({
           {/* Desktop Actions */}
           <div className="hidden md:block">
             {paste ? (
-              <div className="flex flex-wrap gap-3 sm:gap-4">
+              <div className="flex flex-wrap gap-2">
                 <DownloadPasteButton paste={paste} />
                 {onCopyContent && (
                   <Button
@@ -250,7 +250,7 @@ export function Footer({
                 </Link>
               </div>
             ) : (
-              <div className="flex flex-wrap gap-3 sm:gap-4">
+              <div className="flex flex-wrap gap-2">
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (

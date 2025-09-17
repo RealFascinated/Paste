@@ -1,6 +1,7 @@
 "use client";
 
 import { Highlight, themes } from "prism-react-renderer";
+import { calculateLineNumberWidth } from "@/common/utils/line-number.util";
 
 type HighlighterProps = {
   content: string;
@@ -8,8 +9,16 @@ type HighlighterProps = {
 };
 
 export default function Highlighter({ content, language }: HighlighterProps) {
+  const lineCountWidth = calculateLineNumberWidth(content.split('\n').length);
+
   return (
     <div className="relative w-full" style={{ padding: 0, margin: 0 }}>
+      {/* Vertical Line Separator */}
+      <div
+        className="absolute top-0 bottom-0 w-px bg-[#30363d] z-10 pointer-events-none"
+        style={{ left: `${lineCountWidth}px` }}
+      />
+      
       <Highlight theme={themes.oneDark} code={content} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
@@ -44,8 +53,9 @@ export default function Highlighter({ content, language }: HighlighterProps) {
                 >
                   {/* Line Number */}
                   <span
-                    className="flex-shrink-0 w-16 pr-4 text-right text-[#7d8590] select-none font-mono text-xs"
+                    className="flex-shrink-0 pl-1 pr-2 text-right text-[#7d8590] select-none font-mono text-xs"
                     style={{
+                      width: `${lineCountWidth}px`,
                       lineHeight: "1.5",
                       fontVariantNumeric: "tabular-nums",
                       letterSpacing: "-0.025em",
@@ -56,7 +66,7 @@ export default function Highlighter({ content, language }: HighlighterProps) {
 
                   {/* Line Content */}
                   <span
-                    className="flex-1 min-w-0 w-full"
+                    className="flex-1 min-w-0 w-full pl-2"
                     style={{ lineHeight: "1.5" }}
                   >
                     {line.map((token, key) => (
