@@ -32,7 +32,7 @@ export function LoadingState({ type, progress, message }: LoadingStateProps) {
 
   if (type === "paste-edit") {
     return (
-      <div className="flex flex-col h-[calc(100vh-140px)] sm:h-[calc(100vh-120px)] w-full">
+      <div className="flex flex-col h-[calc(100dvh-140px)] sm:h-[calc(100dvh-120px)] w-full">
         <div className="flex-1 p-4">
           <CodeSkeleton />
         </div>

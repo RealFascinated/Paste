@@ -69,7 +69,7 @@ export function BottomSheet({
         </div>
 
         {/* Content */}
-        <div className="max-h-[70vh] overflow-y-auto">{children}</div>
+        <div className="max-h-[70dvh] overflow-y-auto">{children}</div>
       </div>
     </>
   );

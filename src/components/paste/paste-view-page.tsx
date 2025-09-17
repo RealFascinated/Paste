@@ -66,7 +66,7 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
         {paste ? (
           <Highlighter language={paste.ext} content={paste.content} />
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 py-8">
+          <div className="flex flex-col items-center justify-center min-h-[60dvh] px-4 py-8">
             <div className="text-center space-y-6 max-w-md">
               {/* 404 Icon */}
               <div className="flex justify-center">
