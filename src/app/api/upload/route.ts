@@ -17,10 +17,13 @@ Ratelimiter.configRoute("/api/upload", {
 
 export async function POST(req: NextRequest) {
   const startTime = performance.now();
-  
+
   Logger.info("Upload request started", {
     userAgent: req.headers.get("user-agent"),
-    ip: req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown"
+    ip:
+      req.headers.get("x-forwarded-for") ||
+      req.headers.get("x-real-ip") ||
+      "unknown",
   });
 
   // Handle rate limiting
@@ -32,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (!rateLimitResponse.allowed) {
       Logger.warn("Rate limit exceeded", {
         remaining: rateLimitResponse.remainingRequests,
-        resetTime: rateLimitResponse.resetTime
+        resetTime: rateLimitResponse.resetTime,
       });
       return Ratelimiter.applyHeaders(
         buildErrorResponse("You have been rate limited!", 429),
@@ -45,7 +48,9 @@ export async function POST(req: NextRequest) {
 
   // Validate the request body
   if (body == undefined || body == "") {
-    Logger.warn("Invalid request body - empty", { duration: performance.now() - startTime });
+    Logger.warn("Invalid request body - empty", {
+      duration: performance.now() - startTime,
+    });
     return new Response("Invalid request body", {
       status: 400,
     });
@@ -57,14 +62,14 @@ export async function POST(req: NextRequest) {
     Logger.warn("Paste size exceeded", {
       sizeKB: Math.round(bodySize / 1024),
       maxSizeKB: Config.maxPasteSize,
-      duration: performance.now() - startTime
+      duration: performance.now() - startTime,
     });
     return buildErrorResponse("Your paste exceeds the maximum size", 400);
   }
 
   Logger.debug("Request body validated", {
     sizeKB: Math.round(bodySize / 1024),
-    duration: performance.now() - startTime
+    duration: performance.now() - startTime,
   });
 
   for (const filter of spamFilters) {
@@ -72,7 +77,7 @@ export async function POST(req: NextRequest) {
       Logger.warn("Paste filtered by spam filter", {
         filterName: filter.getName(),
         sizeKB: Math.round(bodySize / 1024),
-        duration: performance.now() - startTime
+        duration: performance.now() - startTime,
       });
       return buildErrorResponse(
         "Your paste has been filtered by our spam filter",
@@ -95,7 +100,7 @@ export async function POST(req: NextRequest) {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     Logger.warn("Invalid expiry date - in the past", {
       expiresAt: expiresAt.toISOString(),
-      duration: performance.now() - startTime
+      duration: performance.now() - startTime,
     });
     return buildErrorResponse("Expiry date is in the past", 400);
   }
@@ -108,7 +113,7 @@ export async function POST(req: NextRequest) {
     Logger.warn("Invalid expiry date - too far in future", {
       expiresAt: expiresAt.toISOString(),
       maxExpiryLength: Config.maxExpiryLength,
-      duration: performance.now() - startTime
+      duration: performance.now() - startTime,
     });
     return buildErrorResponse("Expiry date is too far in the future", 400);
   }
@@ -120,14 +125,18 @@ export async function POST(req: NextRequest) {
       deleteAfterRead
     );
 
-    Logger.infoWithTiming(`Paste created: ${id}, ${formatBytes(paste.size)}`, startTime, {
-      pasteId: id,
-      size: paste.size,
-      ext: paste.ext,
-      language: paste.language,
-      deleteAfterRead,
-      expiresAt: paste.expiresAt?.toISOString()
-    });
+    Logger.infoWithTiming(
+      `Paste created: ${id}, ${formatBytes(paste.size)}`,
+      startTime,
+      {
+        pasteId: id,
+        size: paste.size,
+        ext: paste.ext,
+        language: paste.language,
+        deleteAfterRead,
+        expiresAt: paste.expiresAt?.toISOString(),
+      }
+    );
 
     return Response.json({
       key: `${id}.${paste.ext}`,
@@ -137,7 +146,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     Logger.errorWithTiming("Failed to create paste", startTime, {
       error: error instanceof Error ? error.message : String(error),
-      sizeKB: Math.round(bodySize / 1024)
+      sizeKB: Math.round(bodySize / 1024),
     });
     return buildErrorResponse("Failed to create paste", 500);
   }

@@ -1,4 +1,4 @@
-import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
+import { getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { PrismaClient } from "@/generated/prisma";
 import { PasteWithContent } from "@/types/paste";
@@ -100,24 +100,21 @@ export async function getPaste(
   // Handle delete after read pastes - they get deleted after first view
   if (paste.deleteAfterRead && isViewing) {
     Logger.info(`Triggering delete after read for paste ${id}`);
-    await handleDeleteAfterReadPaste(pasteId, ext);
+    await handleDeleteAfterReadPaste(pasteId);
   }
 
-  Logger.infoWithTiming(
-    `Got paste ${pasteId}`,
-    before,
-    {
-      pasteId: pasteId,
-      size: paste.size,
-      ext: ext,
-      language: language,
-      deleteAfterRead: paste.deleteAfterRead,
-      expiresAt: paste.expiresAt?.toISOString(),
-      isViewing
-    }
-  );
+  Logger.infoWithTiming(`Got paste ${pasteId}`, before, {
+    pasteId: pasteId,
+    size: paste.size,
+    ext: ext,
+    language: language,
+    deleteAfterRead: paste.deleteAfterRead,
+    expiresAt: paste.expiresAt?.toISOString(),
+    isViewing,
+  });
   return {
     ...paste,
+    key: id,
     content: content,
     ext: ext,
     language: language,
@@ -131,10 +128,7 @@ export async function getPaste(
  * @param id The paste ID to delete
  * @param ext The paste file extension
  */
-async function handleDeleteAfterReadPaste(
-  id: string,
-  ext: string
-): Promise<void> {
+async function handleDeleteAfterReadPaste(id: string): Promise<void> {
   Logger.info(`Processing delete after read for paste ${id}`);
 
   try {
@@ -191,6 +185,6 @@ export async function expirePastes() {
 
   Logger.info(`Expired ${count} pastes and cleaned up S3 files`, {
     expiredCount: count,
-    pastesToCleanup: expiredPastes.length
+    pastesToCleanup: expiredPastes.length,
   });
 }

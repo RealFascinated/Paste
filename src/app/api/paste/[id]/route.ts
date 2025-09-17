@@ -1,5 +1,5 @@
-import { getPaste } from "@/common/prisma";
 import Logger from "@/common/logger";
+import { getPaste } from "@/common/prisma";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -12,7 +12,10 @@ export async function GET(
   Logger.info("Paste retrieval request", {
     pasteId,
     userAgent: request.headers.get("user-agent"),
-    ip: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
+    ip:
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown",
   });
 
   try {
@@ -20,7 +23,7 @@ export async function GET(
     if (foundPaste == null) {
       Logger.warn("Paste not found", {
         pasteId,
-        duration: performance.now() - startTime
+        duration: performance.now() - startTime,
       });
       return Response.json(
         {
@@ -33,14 +36,14 @@ export async function GET(
     }
 
     const { id, ...paste } = foundPaste;
-    
+
     Logger.infoWithTiming("Paste retrieved successfully", startTime, {
       pasteId: id,
       size: paste.size,
       ext: paste.ext,
       language: paste.language,
       deleteAfterRead: paste.deleteAfterRead,
-      expiresAt: paste.expiresAt?.toISOString()
+      expiresAt: paste.expiresAt?.toISOString(),
     });
 
     return Response.json({
@@ -55,7 +58,7 @@ export async function GET(
   } catch (error) {
     Logger.errorWithTiming("Failed to retrieve paste", startTime, {
       pasteId,
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
 
     return Response.json(

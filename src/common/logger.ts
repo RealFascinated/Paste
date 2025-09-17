@@ -113,7 +113,11 @@ export default class Logger {
    * @param startTime the start time for timing calculation
    * @param args the arguments to log
    */
-  public static infoWithTiming(message: string, startTime: number, ...args: unknown[]) {
+  public static infoWithTiming(
+    message: string,
+    startTime: number,
+    ...args: unknown[]
+  ) {
     Logger.logWithTiming("info", message, startTime, ...args);
   }
 
@@ -124,7 +128,11 @@ export default class Logger {
    * @param startTime the start time for timing calculation
    * @param args the arguments to log
    */
-  public static errorWithTiming(message: string, startTime: number, ...args: unknown[]) {
+  public static errorWithTiming(
+    message: string,
+    startTime: number,
+    ...args: unknown[]
+  ) {
     Logger.logWithTiming("error", message, startTime, ...args);
   }
 

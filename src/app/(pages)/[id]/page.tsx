@@ -1,6 +1,6 @@
 import { defaultMetadata } from "@/common/metadata";
+import { getPaste } from "@/common/prisma";
 import { getRelativeTime } from "@/common/utils/date.util";
-import { lookupPaste } from "@/common/utils/paste.util";
 import { formatBytes } from "@/common/utils/string.util";
 import { LoadingState } from "@/components/loading-states";
 import { PasteViewPage } from "@/components/paste/paste-view-page";
@@ -15,11 +15,11 @@ type PasteProps = {
 
 export async function generateMetadata(props: PasteProps): Promise<Metadata> {
   const queryId = (await props.params).id;
-  const paste = await lookupPaste(queryId, false);
+  const paste = await getPaste(queryId, false);
   if (paste == null) {
     return defaultMetadata();
   }
-  
+
   // Return minimal metadata for self-destructing pastes
   if (paste.deleteAfterRead) {
     return {
@@ -56,7 +56,7 @@ Click to view the Paste.
 
 export default async function PastePage({ params }: PasteProps) {
   const queryId = (await params).id;
-  const paste = await lookupPaste(queryId, true);
+  const paste = await getPaste(queryId, true);
 
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>

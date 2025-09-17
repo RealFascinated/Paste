@@ -28,7 +28,7 @@ app.prepare().then(() => {
     // Log the request to the console
     if (!dev && !parsedUrl.path?.includes("_next")) {
       const statusCode = res.statusCode || 200;
-      
+
       Logger.infoWithTiming(
         `${req.method} ${parsedUrl.path} ${statusCode}`,
         before,
@@ -37,7 +37,10 @@ app.prepare().then(() => {
           path: parsedUrl.path,
           statusCode,
           userAgent: req.headers["user-agent"],
-          ip: req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || "unknown"
+          ip:
+            req.headers["x-forwarded-for"] ||
+            req.headers["x-real-ip"] ||
+            "unknown",
         }
       );
     }

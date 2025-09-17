@@ -44,7 +44,7 @@ export async function getLanguage(content: string): Promise<string> {
 
   // Sort by confidence and get the highest
   const sortedResponse = response
-    .filter((r) => r.confidence > 0.6) // 60% confidence or higher
+    .filter(r => r.confidence > 0.6) // 60% confidence or higher
     .sort((a, b) => b.confidence - a.confidence); // Sort by confidence
 
   // Check if we have any results after filtering
