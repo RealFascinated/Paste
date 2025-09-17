@@ -192,11 +192,9 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    // Add caching and compression headers
+    // Add caching headers
     imageResponse.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
     imageResponse.headers.set('ETag', `"${pasteId}"`);
-    imageResponse.headers.set('Content-Encoding', 'gzip');
-    imageResponse.headers.set('Vary', 'Accept-Encoding');
     
     return imageResponse;
   } catch (error) {
