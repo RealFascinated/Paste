@@ -3,36 +3,46 @@ import duration from "dayjs/plugin/duration";
 dayjs.extend(duration);
 
 /**
- * Formats a date as a relative time.
+ * This function returns the time ago of the input date
  *
- * @param date The date to format.
- * @returns The formatted date.
+ * @param input Date | string | number (timestamp)
+ * @returns the format of the time ago
  */
-export function getRelativeTime(date: Date | string | number): string {
-  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-  const now = new Date();
-  const targetDate = new Date(date);
+export function getRelativeTime(input: Date | string | number): string {
+  const inputDate = new Date(input).getTime(); // Convert input to a Date object if it's not already
+  const now = new Date().getTime();
+  const deltaSeconds = Math.floor((now - inputDate) / 1000); // Get time difference in seconds
 
-  const diffMs = targetDate.getTime() - now.getTime();
-  const absDiff = Math.abs(diffMs);
-
-  const timeUnits: [Intl.RelativeTimeFormatUnit, number][] = [
-    ["year", 1000 * 60 * 60 * 24 * 365],
-    ["month", 1000 * 60 * 60 * 24 * 30],
-    ["day", 1000 * 60 * 60 * 24],
-    ["hour", 1000 * 60 * 60],
-    ["minute", 1000 * 60],
-    ["second", 1000],
-  ];
-
-  for (const [unit, msInUnit] of timeUnits) {
-    if (absDiff >= msInUnit || unit === "second") {
-      const value = Math.round(diffMs / msInUnit);
-      return rtf.format(value, unit);
-    }
+  // Handle "just now" for very recent times
+  if (Math.abs(deltaSeconds) <= 5) {
+    return "just now";
   }
 
-  return "just now";
+  const timeUnits = [
+    { unit: "y", seconds: 60 * 60 * 24 * 365 }, // years
+    { unit: "mo", seconds: 60 * 60 * 24 * 30 }, // months
+    { unit: "d", seconds: 60 * 60 * 24 }, // days
+    { unit: "h", seconds: 60 * 60 }, // hours
+    { unit: "m", seconds: 60 }, // minutes
+    { unit: "s", seconds: 1 }, // seconds
+  ];
+
+  const result = [];
+  let remainingSeconds = Math.abs(deltaSeconds);
+
+  for (const { unit, seconds } of timeUnits) {
+    const count = Math.floor(remainingSeconds / seconds);
+    if (count > 0) {
+      result.push(`${count}${unit}`);
+      remainingSeconds -= count * seconds;
+    }
+    // Stop after two units have been added
+    if (result.length === 2) break;
+  }
+
+  // Return formatted result with at most two units
+  const suffix = deltaSeconds > 0 ? " ago" : " from now";
+  return result.join(", ") + suffix;
 }
 
 /**
