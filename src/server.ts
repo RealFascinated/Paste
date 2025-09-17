@@ -46,8 +46,8 @@ app.prepare().then(() => {
     }
   }).listen(port);
 
-  // Schedule the paste expiration every 5 minutes
-  schedule("0 */5 * * * *", async () => {
+  // Schedule the paste expiration
+  schedule("0 */1 * * * *", async () => {
     await expirePastes();
   });
 
