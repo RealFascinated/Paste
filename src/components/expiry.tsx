@@ -11,28 +11,28 @@ import {
 } from "./ui/select";
 
 type ExpiryOption = {
-  value: number;
   label: string;
+  value: number;
 };
 
-const expiryOptions: ExpiryOption[] = [
-  { value: -1, label: "Never" },
-  { value: 60 * 5, label: "5 Minutes" },
-  { value: 60 * 15, label: "15 Minutes" },
-  { value: 60 * 30, label: "30 Minutes" },
-  { value: 60 * 60, label: "1 Hour" },
-  { value: 60 * 60 * 12, label: "12 Hours" },
-  { value: 60 * 60 * 24, label: "1 Day" },
-  { value: 60 * 60 * 24 * 7, label: "1 Week" },
-  { value: 60 * 60 * 24 * 30, label: "1 Month" },
-  { value: 60 * 60 * 24 * 365, label: "1 Year" },
-];
+export const expiryOptions: Record<string, number> = {
+  "Never": -1,
+  "5 Minutes": 60 * 5,
+  "15 Minutes": 60 * 15,
+  "30 Minutes": 60 * 30,
+  "1 Hour": 60 * 60,
+  "12 Hours": 60 * 60 * 12,
+  "1 Day": 60 * 60 * 24,
+  "1 Week": 60 * 60 * 24 * 7,
+  "1 Month": 60 * 60 * 24 * 30,
+  "1 Year": 60 * 60 * 24 * 365,
+} as const;
 
 export function Expiry() {
   const { setExpiry } = usePasteExpiry();
 
   const handleExpiryChange = (value: string) => {
-    const expiry = expiryOptions.find(option => option.label === value)?.value;
+    const expiry = expiryOptions[value];
     if (expiry != null) {
       setExpiry(expiry);
     }
@@ -46,20 +46,20 @@ export function Expiry() {
         <span className="sm:hidden">Expires</span>
       </div>
       <Select
-        defaultValue={expiryOptions[0].label}
+        defaultValue={Object.keys(expiryOptions)[8]}
         onValueChange={handleExpiryChange}
       >
         <SelectTrigger className="w-[100px] sm:w-[120px] h-6 sm:h-7 bg-background-secondary/50 hover:bg-background-secondary text-xs sm:text-sm">
           <SelectValue placeholder="Select expiry" />
         </SelectTrigger>
         <SelectContent>
-          {expiryOptions.map(option => (
+          {Object.entries(expiryOptions).map(([label, value]) => (
             <SelectItem
-              key={option.value}
-              value={option.label}
+              key={value}
+              value={label}
               className="text-xs sm:text-sm"
             >
-              {option.label}
+              {label}
             </SelectItem>
           ))}
         </SelectContent>
