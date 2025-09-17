@@ -37,8 +37,6 @@ export function getIP(req: Request | IncomingMessage | NextRequest) {
     getHeader("CF-Connecting-IP") ??
     getHeader("X-Forwarded-For") ??
     getHeader("X-Real-IP") ??
-    // For IncomingMessage, try to get the socket remote address
-    ('socket' in req && req.socket?.remoteAddress) ??
     "127.0.0.1"
   );
 }
