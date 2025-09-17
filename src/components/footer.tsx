@@ -1,15 +1,14 @@
-import { getRelativeTime } from "@/common/utils/date.util";
 import { formatBytes, formatNumber } from "@/common/utils/string.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
 import { DownloadPasteButton } from "@/components/paste/download-button";
 import { MobilePasteDetails } from "@/components/paste/mobile-paste-details";
+import { PasteExpiryTime } from "@/components/paste/paste-expiry-time";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
 import { Copy, FileText, Plus, Save, X } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Expiry } from "./expiry";
-import Tooltip from "./tooltip";
 import { Button } from "./ui/button";
 
 type PasteDetails = {
@@ -44,11 +43,7 @@ const pasteDetails: PasteDetails[] = [
         return undefined;
       }
 
-      return (
-        <Tooltip display={paste.expiresAt.toLocaleString()}>
-          <p>Expires {getRelativeTime(paste.expiresAt)}</p>
-        </Tooltip>
-      );
+      return <PasteExpiryTime expiresAt={paste.expiresAt} />;
     },
   },
   {
