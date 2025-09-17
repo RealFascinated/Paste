@@ -19,7 +19,6 @@ export function getPrismaClient(): PrismaClient {
  *
  * @param content The content of the paste.
  * @param expiresAt The expiration date of the paste.
- * @param filename Optional filename to help with language detection
  * @param deleteAfterRead Whether to delete the paste after first read
  * @returns The created paste.
  */

@@ -23,49 +23,13 @@ function getGuessLangInstance(): GuessLang {
   return guessLangInstance;
 }
 
-// Map of common file extensions to language IDs
-const extensionToLanguage: Record<string, string> = {
-  js: "javascript",
-  ts: "typescript",
-  py: "python",
-  java: "java",
-  cpp: "cpp",
-  cs: "csharp",
-  php: "php",
-  rb: "ruby",
-  go: "go",
-  rs: "rust",
-  swift: "swift",
-  kt: "kotlin",
-  sql: "sql",
-  sh: "bash",
-  yml: "yaml",
-  yaml: "yaml",
-  json: "json",
-  md: "markdown",
-  html: "html",
-  css: "css",
-};
-
 /**
  * Gets the language of the given content.
  *
  * @param content The content to get the language of.
- * @param filename Optional filename to help with detection
  * @returns The language of the content.
  */
-export async function getLanguage(
-  content: string,
-  filename?: string
-): Promise<string> {
-  // Try to detect from filename extension
-  if (filename) {
-    const ext = filename.split(".").pop()?.toLowerCase();
-    if (ext && extensionToLanguage[ext]) {
-      return extensionToLanguage[ext];
-    }
-  }
-
+export async function getLanguage(content: string): Promise<string> {
   // Fall back to ML-based detection
   const guessLang = getGuessLangInstance();
   const response = await guessLang.runModel(content);
@@ -75,9 +39,15 @@ export async function getLanguage(
 
   // Sort by confidence and get the highest
   const sortedResponse = response
-    .filter(r => r.confidence > 0.85) // 85% confidence or higher
+    .filter((r) => r.confidence > 0.6) // 60% confidence or higher
     .sort((a, b) => b.confidence - a.confidence); // Sort by confidence
-  return sortedResponse[0].languageId || "txt";
+
+  // Check if we have any results after filtering
+  if (sortedResponse.length === 0) {
+    return "txt";
+  }
+
+  return sortedResponse[0].languageId;
 }
 
 /**
