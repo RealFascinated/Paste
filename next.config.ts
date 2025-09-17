@@ -8,14 +8,6 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  modularizeImports: {
-    "lucide-react": {
-      transform: "lucide-react/dist/esm/icons/{{member}}",
-    },
-    "@radix-ui/react-icons": {
-      transform: "@radix-ui/react-icons/dist/{{member}}.js",
-    },
-  },
   async headers() {
     return [
       {

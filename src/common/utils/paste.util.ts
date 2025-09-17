@@ -35,9 +35,7 @@ export async function lookupPaste(
   id: string,
   isViewing = false
 ): Promise<PasteWithContent | null> {
-  const pasteId = id.split(".")[0];
-
-  const paste = await getPaste(pasteId, isViewing);
+  const paste = await getPaste(id, isViewing);
   if (paste == null) {
     return null;
   }

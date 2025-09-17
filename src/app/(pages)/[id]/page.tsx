@@ -14,13 +14,11 @@ type PasteProps = {
 };
 
 export async function generateMetadata(props: PasteProps): Promise<Metadata> {
-  const id = (await props.params).id;
-  const paste = await lookupPaste(id, false);
+  const queryId = (await props.params).id;
+  const paste = await lookupPaste(queryId, false);
   if (paste == null) {
     return defaultMetadata();
   }
-
-  const formattedId = `${paste.id}.${paste.ext}`;
   
   // Return minimal metadata for self-destructing pastes
   if (paste.deleteAfterRead) {
@@ -37,9 +35,9 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
 
   return {
     ...defaultMetadata(false),
-    title: formattedId,
+    title: queryId,
     openGraph: {
-      title: `Paste - ${formattedId}`,
+      title: `Paste - ${queryId}`,
       description: `
 Lines: ${paste.content.split("\n").length}
 Size: ${formatBytes(paste.size)}
@@ -57,12 +55,12 @@ Click to view the Paste.
 }
 
 export default async function PastePage({ params }: PasteProps) {
-  const id = (await params).id;
-  const paste = await lookupPaste(id, true);
+  const queryId = (await params).id;
+  const paste = await lookupPaste(queryId, true);
 
   return (
     <Suspense fallback={<LoadingState type="paste-view" />}>
-      <PasteViewPage paste={paste} id={id} />
+      <PasteViewPage paste={paste} id={queryId} />
     </Suspense>
   );
 }

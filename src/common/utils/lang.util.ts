@@ -3,6 +3,11 @@ import ky from "ky";
 import YAML from "yaml";
 import Logger from "../logger";
 
+const languageOverrides: Record<string, string> = {
+  txt: "Text",
+  md: "Markdown",
+};
+
 let guessLangInstance: GuessLang | null = null;
 let languagesCache: Record<
   string,
@@ -57,8 +62,8 @@ export async function getLanguage(content: string): Promise<string> {
  * @returns The language name, or "Unknown" if not found.
  */
 export async function getLanguageName(extension: string) {
-  if (extension == "txt") {
-    return "Text";
+  if (languageOverrides[extension]) {
+    return languageOverrides[extension];
   }
 
   const languages = await getLanguages();

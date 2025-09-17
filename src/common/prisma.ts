@@ -66,11 +66,13 @@ export async function getPaste(
   isViewing = false
 ): Promise<PasteWithContent | null> {
   const before = performance.now();
+  const pasteId = id.split(".")[0];
+  const ext = id.split(".")[1]?.toLowerCase() ?? "txt";
 
   // Check if the paste exists
   const paste = await getPrismaClient().paste.findUnique({
     where: {
-      id: id,
+      id: pasteId,
     },
   });
   if (paste == null) {
@@ -81,7 +83,7 @@ export async function getPaste(
     // Use update with increment to both update and return data in one call
     await getPrismaClient().paste.update({
       where: {
-        id: id,
+        id: pasteId,
       },
       data: {
         views: {
@@ -91,23 +93,21 @@ export async function getPaste(
     });
   }
 
-  const ext = id.split(".")[1]?.toLowerCase() ?? "txt";
   const language = await getLanguageName(ext);
-
   const content =
-    (await S3Service.getFile(`${id}.txt`))?.toString("utf-8") ?? "";
+    (await S3Service.getFile(`${pasteId}.txt`))?.toString("utf-8") ?? "";
 
   // Handle delete after read pastes - they get deleted after first view
   if (paste.deleteAfterRead && isViewing) {
     Logger.info(`Triggering delete after read for paste ${id}`);
-    await handleDeleteAfterReadPaste(id, ext);
+    await handleDeleteAfterReadPaste(pasteId, ext);
   }
 
   Logger.infoWithTiming(
-    `Got paste ${id}`,
+    `Got paste ${pasteId}`,
     before,
     {
-      pasteId: id,
+      pasteId: pasteId,
       size: paste.size,
       ext: ext,
       language: language,
@@ -119,6 +119,8 @@ export async function getPaste(
   return {
     ...paste,
     content: content,
+    ext: ext,
+    language: language,
   } as PasteWithContent;
 }
 
@@ -137,7 +139,7 @@ async function handleDeleteAfterReadPaste(
 
   try {
     // Delete S3 file first
-    await S3Service.deleteFile(`${id}.${ext}`);
+    await S3Service.deleteFile(`${id}.txt`);
     Logger.info(`S3 file deleted for paste ${id}`);
 
     // Delete database record
