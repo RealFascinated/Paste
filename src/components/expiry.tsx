@@ -24,7 +24,7 @@ export const expiryOptions: Record<string, number> = {
 } as const;
 
 export function Expiry() {
-  const { setExpiry } = usePasteExpiry();
+  const { setExpiry } = usePasteExpiry(expiryOptions["1 Month"]);
 
   const handleExpiryChange = (value: string) => {
     const expiry = expiryOptions[value];

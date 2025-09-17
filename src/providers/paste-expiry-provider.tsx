@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface PasteExpiryContextProps {
   expiry: number;
@@ -22,9 +22,18 @@ export function PasteExpiryProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function usePasteExpiry() {
+export function usePasteExpiry(defaultExpiry: number = -1) {
   const context = useContext(PasteExpiryContext);
-  if (!context)
+  if (!context) {
     throw new Error("usePasteExpiry must be used within a PasteExpiryContext");
+  }
+  
+  // Initialize with default value if current expiry is -1 (uninitialized)
+  useEffect(() => {
+    if (context.expiry === -1 && defaultExpiry !== -1) {
+      context.setExpiry(defaultExpiry);
+    }
+  }, [context.expiry, context.setExpiry, defaultExpiry]);
+  
   return context;
 }
