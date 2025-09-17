@@ -10,13 +10,8 @@ import {
   SelectValue,
 } from "./ui/select";
 
-type ExpiryOption = {
-  label: string;
-  value: number;
-};
-
 export const expiryOptions: Record<string, number> = {
-  "Never": -1,
+  Never: -1,
   "5 Minutes": 60 * 5,
   "15 Minutes": 60 * 15,
   "30 Minutes": 60 * 30,
