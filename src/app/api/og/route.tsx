@@ -1,18 +1,20 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import Logger from "@/common/logger";
 
 export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const title = searchParams.get("title") || "Paste";
-    const description =
-      searchParams.get("description") || "Free and open-source paste service";
-    const language = searchParams.get("language") || "";
-    const lines = searchParams.get("lines") || "";
-    const size = searchParams.get("size") || "";
+  const before = performance.now();
+  const { searchParams } = new URL(request.url);
+  const title = searchParams.get("title") || "Paste";
+  const description =
+    searchParams.get("description") || "Free and open-source paste service";
+  const language = searchParams.get("language") || "";
+  const lines = searchParams.get("lines") || "";
+  const size = searchParams.get("size") || "";
 
+  try {
     return new ImageResponse(
       (
         <div
@@ -193,9 +195,17 @@ export async function GET(request: NextRequest) {
         height: 630,
       }
     );
-    } catch {
+  } catch (error) {
+    Logger.error("Failed to generate OG image", { error });
     return new Response(`Failed to generate the image`, {
       status: 500,
+    });
+  } finally {
+    Logger.infoWithTiming("OG image generation finished", before, {
+      title,
+      language,
+      lines,
+      size,
     });
   }
 }
