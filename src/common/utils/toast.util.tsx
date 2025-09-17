@@ -89,12 +89,6 @@ export const toastUtil = {
       description: "Your changes have been saved successfully",
     }),
 
-  pasteDeleted: () =>
-    toastUtil.success("Paste deleted", {
-      title: "Deleted",
-      description: "The paste has been permanently deleted",
-    }),
-
   pasteDownloaded: (filename: string) =>
     toastUtil.success("Download started", {
       title: "Downloading",
