@@ -7,13 +7,11 @@ import ky from "ky";
  *
  * @param content the content of the paste.
  * @param expires the expiration time in seconds.
- * @param deleteAfterRead whether to delete the paste after first read.
  * @returns the response from the server or the error.
  */
 export async function uploadPaste(
   content: string,
-  expires?: number,
-  deleteAfterRead?: boolean
+  expires?: number
 ): Promise<{ paste: PasteWithContent | null; error: ErrorResponse | null }> {
   const response = await ky.post<PasteWithContent | ErrorResponse>(
     "/api/upload",
@@ -21,7 +19,6 @@ export async function uploadPaste(
       body: content,
       searchParams: {
         ...(expires && expires > 0 ? { expires: expires } : {}),
-        ...(deleteAfterRead ? { deleteAfterRead: "true" } : {}),
       },
       throwHttpErrors: false,
     }

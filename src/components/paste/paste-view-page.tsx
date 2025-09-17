@@ -62,23 +62,6 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Self-destructing paste warning */}
-      {paste && paste.deleteAfterRead && (
-        <div className="bg-red-500/10 border-b border-red-500/20 px-4 py-3">
-          <div className="flex items-center gap-2 text-red-400">
-            <div className="flex items-center gap-2 text-red-400">
-              <AlertTriangle className="w-4 h-4" />
-              <span className="text-sm font-medium">
-                Self-Destructing Paste
-              </span>
-            </div>
-          </div>
-          <p className="text-xs text-red-300 mt-1">
-            This paste will be automatically deleted after viewing. Copy the
-            content now if you need to save it.
-          </p>
-        </div>
-      )}
 
       <main className="flex-1 min-h-0 overflow-auto">
         {paste ? (
@@ -112,7 +95,6 @@ export function PasteViewPage({ paste, id }: PasteViewPageProps) {
                 <p className="font-medium">This could be because:</p>
                 <ul className="space-y-1 list-disc list-inside">
                   <li>The paste has expired</li>
-                  <li>The paste was self-destructing and has been deleted</li>
                   <li>The URL is incorrect</li>
                   <li>The paste was never created</li>
                 </ul>

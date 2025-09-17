@@ -24,8 +24,5 @@ model Paste {
   // When the paste was created
   timestamp DateTime @default(now())
 
-  // Whether to delete the paste after first read
-  deleteAfterRead Boolean @default(false)
-
   @@map("pastes")
 }

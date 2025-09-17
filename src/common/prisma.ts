@@ -19,13 +19,11 @@ export function getPrismaClient(): PrismaClient {
  *
  * @param content The content of the paste.
  * @param expiresAt The expiration date of the paste.
- * @param deleteAfterRead Whether to delete the paste after first read
  * @returns The created paste.
  */
 export async function createPaste(
   content: string,
-  expiresAt?: Date,
-  deleteAfterRead?: boolean
+  expiresAt?: Date
 ): Promise<PasteWithContent> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
     expiresAt = undefined;
@@ -46,7 +44,6 @@ export async function createPaste(
           size: Buffer.byteLength(content),
           expiresAt: expiresAt,
           timestamp: new Date(),
-          deleteAfterRead: deleteAfterRead || false,
         },
       })),
       key: id,
@@ -102,18 +99,12 @@ export async function getPaste(
   const content =
     (await S3Service.getFile(`${pasteId}.txt`))?.toString("utf-8") ?? "";
 
-  // Handle delete after read pastes - they get deleted after first view
-  if (paste.deleteAfterRead && isViewing) {
-    Logger.info(`Triggering delete after read for paste ${id}`);
-    await handleDeleteAfterReadPaste(pasteId);
-  }
 
   Logger.infoWithTiming(`Got paste ${pasteId}`, before, {
     pasteId: pasteId,
     size: paste.size,
     ext: ext,
     language: language,
-    deleteAfterRead: paste.deleteAfterRead,
     expiresAt: paste.expiresAt?.toISOString(),
     isViewing,
   });
@@ -126,33 +117,6 @@ export async function getPaste(
   } as PasteWithContent;
 }
 
-/**
- * Handles deletion of a paste that was marked for delete after read.
- * This function is called after the paste content has been served to the user.
- *
- * @param id The paste ID to delete
- * @param ext The paste file extension
- */
-async function handleDeleteAfterReadPaste(id: string): Promise<void> {
-  Logger.info(`Processing delete after read for paste ${id}`);
-
-  try {
-    // Delete S3 file first
-    await S3Service.deleteFile(`${id}.txt`);
-    Logger.info(`S3 file deleted for paste ${id}`);
-
-    // Delete database record
-    await getPrismaClient().paste.delete({
-      where: { id },
-    });
-    Logger.info(`Database record deleted for paste ${id}`);
-
-    Logger.info(`Paste ${id} successfully deleted after read`);
-  } catch (error) {
-    Logger.error(`Failed to delete paste ${id} after read: ${error}`);
-    // Don't throw - we don't want to break the user experience
-  }
-}
 
 /**
  * Expires all pastes that have expired.

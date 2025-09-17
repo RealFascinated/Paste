@@ -92,9 +92,6 @@ export async function POST(req: NextRequest) {
     ? new Date(new Date().getTime() + Number(expiresAtRaw) * 1000)
     : undefined;
 
-  // Parse the delete after read flag
-  const deleteAfterReadRaw = req.nextUrl.searchParams.get("deleteAfterRead");
-  const deleteAfterRead = deleteAfterReadRaw === "true";
 
   // Check if the expiry date is in the past
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
@@ -121,8 +118,7 @@ export async function POST(req: NextRequest) {
   try {
     const { id, ...paste } = await createPaste(
       body,
-      expiresAt,
-      deleteAfterRead
+      expiresAt
     );
 
     Logger.infoWithTiming(
@@ -132,7 +128,6 @@ export async function POST(req: NextRequest) {
         pasteId: id,
         size: paste.size,
         language: paste.language,
-        deleteAfterRead,
         expiresAt: paste.expiresAt?.toISOString(),
       }
     );

@@ -42,7 +42,6 @@ export async function GET(
       size: paste.size,
       ext: paste.ext,
       language: paste.language,
-      deleteAfterRead: paste.deleteAfterRead,
       expiresAt: paste.expiresAt?.toISOString(),
     });
 

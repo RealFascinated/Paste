@@ -156,18 +156,4 @@ export const toastUtil = {
 
   dismissLoading: () => toast.dismiss("loading"),
 
-  // Delete after read specific toasts
-  deleteAfterReadEnabled: () =>
-    toastUtil.warning("Self-destruct mode enabled", {
-      title: "⚠️ Self-Destructing Paste",
-      description:
-        "This paste will be automatically deleted after the first view",
-      duration: 5000,
-    }),
-
-  deleteAfterReadDisabled: () =>
-    toastUtil.info("Self-destruct mode disabled", {
-      title: "Paste Saved Normally",
-      description: "This paste will remain available until it expires",
-    }),
 };

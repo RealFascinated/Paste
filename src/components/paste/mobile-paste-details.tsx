@@ -54,16 +54,6 @@ export function MobilePasteDetails({
       render: (paste?: PasteWithContent) =>
         paste && <PasteCreatedTime createdAt={paste.timestamp} />,
     },
-    {
-      type: "self-destructing",
-      render: (paste?: PasteWithContent) =>
-        paste && paste.deleteAfterRead ? (
-          <div className="flex gap-1 items-center text-red-400">
-            <Trash2 className="w-3 h-3" />
-            <span className="text-xs font-medium">Self-destructing</span>
-          </div>
-        ) : undefined,
-    },
   ];
 
   return (

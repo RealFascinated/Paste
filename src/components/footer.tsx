@@ -8,7 +8,6 @@ import { PasteEditDetails } from "@/types/paste-edit-details";
 import { Copy, FileText, Plus, Save, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { DeleteAfterRead } from "./delete-after-read";
 import { Expiry } from "./expiry";
 import Tooltip from "./tooltip";
 import { Button } from "./ui/button";
@@ -56,16 +55,6 @@ const pasteDetails: PasteDetails[] = [
     type: "paste",
     render: (paste?: PasteWithContent) =>
       paste && <div className="flex gap-1 items-center">{paste.language}</div>,
-  },
-  {
-    type: "paste",
-    render: (paste?: PasteWithContent) =>
-      paste && paste.deleteAfterRead ? (
-        <div className="flex gap-1 items-center text-red-400">
-          <Trash2 className="w-3 h-3" />
-          <span className="text-xs font-medium">Self-destructing</span>
-        </div>
-      ) : undefined,
   },
 
   // Paste edit details
@@ -127,8 +116,6 @@ type FooterProps = {
   onCopyUrl?: () => void;
   onCopyContent?: () => void;
   onClear?: () => void;
-  onDeleteAfterReadToggle?: (enabled: boolean) => void;
-  deleteAfterRead?: boolean;
 };
 
 export function Footer({
@@ -142,8 +129,6 @@ export function Footer({
   onCopyUrl,
   onCopyContent,
   onClear,
-  onDeleteAfterReadToggle,
-  deleteAfterRead = false,
 }: FooterProps) {
   return (
     <div
@@ -156,12 +141,6 @@ export function Footer({
           {!paste && (
             <>
               <Expiry />
-              {onDeleteAfterReadToggle && (
-                <DeleteAfterRead
-                  onToggle={onDeleteAfterReadToggle}
-                  defaultEnabled={deleteAfterRead}
-                />
-              )}
             </>
           )}
           <div className="hidden md:block">
