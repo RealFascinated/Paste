@@ -26,7 +26,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     openGraph: {
       title: `Paste - ${queryId}`,
       description: `
-Lines: ${paste.content.split("\n").length}
+Lines: ${paste.lineCount}
 Size: ${formatBytes(paste.size)}
 Language: ${paste.language}
 ${

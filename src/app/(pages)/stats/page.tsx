@@ -1,6 +1,4 @@
-import { LoadingState } from "@/components/loading-states";
 import { StatsPageContent } from "@/components/stats/stats-page-content";
-import { Suspense } from "react";
 
 export default function StatsPage() {
   return (
@@ -16,9 +14,7 @@ export default function StatsPage() {
             </p>
           </div>
 
-          <Suspense fallback={<LoadingState type="stats" />}>
-            <StatsPageContent />
-          </Suspense>
+          <StatsPageContent />
         </div>
       </div>
     </div>

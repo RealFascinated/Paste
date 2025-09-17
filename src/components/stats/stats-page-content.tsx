@@ -19,7 +19,7 @@ export function StatsPageContent() {
     queryKey: ["stats"],
     queryFn: fetchStats,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) {

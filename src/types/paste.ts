@@ -20,4 +20,9 @@ export type PasteWithContent = PrismaPaste & {
    * The paste's content.
    */
   content: string;
+
+  /**
+   * The number of lines in the paste.
+   */
+  lineCount: number;
 };

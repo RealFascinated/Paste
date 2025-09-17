@@ -115,6 +115,7 @@ export async function getPaste(
     content: content,
     ext: ext,
     language: language,
+    lineCount: content.split("\n").length,
   } as PasteWithContent;
 }
 
