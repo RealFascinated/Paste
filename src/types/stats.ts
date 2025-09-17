@@ -10,6 +10,5 @@ export interface StatsOverview {
 
 export interface StatsResponse {
   overview: StatsOverview;
-  languages: Record<string, number>;
   monthlyData: Record<string, number>;
 }

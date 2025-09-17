@@ -3,7 +3,6 @@
 import { StatsResponse } from "@/types/stats";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityMetrics } from "./activity-metrics";
-import { LanguageChart } from "./language-chart";
 import { MonthlyChart } from "./monthly-chart";
 import { StatsOverview } from "./stats-overview";
 
@@ -51,11 +50,8 @@ export function StatsPageContent() {
       {/* Activity Metrics */}
       <ActivityMetrics data={data.overview} />
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-        <LanguageChart data={data.languages} />
-        <MonthlyChart data={data.monthlyData} />
-      </div>
+      {/* Monthly Chart */}
+      <MonthlyChart data={data.monthlyData} />
     </div>
   );
 }

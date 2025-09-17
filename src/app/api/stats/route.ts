@@ -30,7 +30,6 @@ export async function GET() {
     const [
       totalPastes,
       sizeResult,
-      pastesByLanguage,
       pastes,
       recentPastes,
       avgSizeResult,
@@ -44,14 +43,6 @@ export async function GET() {
       // Total size
       prisma.paste.aggregate({
         _sum: { size: true },
-      }),
-
-      // Pastes by language
-      prisma.paste.groupBy({
-        by: ["language"],
-        _count: { language: true },
-        orderBy: { _count: { language: "desc" } },
-        take: 10,
       }),
 
       // Pastes for monthly data
@@ -91,16 +82,6 @@ export async function GET() {
     const averageSize = Math.round(avgSizeResult._avg.size || 0);
     const totalViews = totalViewsResult._sum.views || 0;
 
-    // Process languages data into object format
-    const languages = pastesByLanguage.reduce(
-      (acc, item) => {
-        const language = item.language || "Unknown";
-        acc[language] = item._count.language;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
-
     // Process monthly data (most recent first)
     const monthlyData: Record<string, number> = {};
     Array.from({ length: 12 }, (_, i) => {
@@ -128,7 +109,6 @@ export async function GET() {
         pastesToday,
         pastesThisWeek,
       },
-      languages,
       monthlyData,
     };
 
@@ -140,7 +120,6 @@ export async function GET() {
       recentPastes,
       pastesToday,
       pastesThisWeek,
-      languageCount: Object.keys(languages).length,
       monthlyDataPoints: Object.keys(monthlyData).length,
     });
 
