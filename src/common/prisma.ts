@@ -4,7 +4,6 @@ import { PrismaClient } from "@/generated/prisma";
 import { PasteWithContent } from "@/types/paste";
 import Logger from "./logger";
 import S3Service from "./s3";
-import { formatDuration } from "./utils/date.util";
 
 let prismaClientInstance: PrismaClient | null = null;
 
@@ -27,7 +26,6 @@ export function getPrismaClient(): PrismaClient {
 export async function createPaste(
   content: string,
   expiresAt?: Date,
-  filename?: string,
   deleteAfterRead?: boolean
 ): Promise<PasteWithContent> {
   if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
@@ -35,9 +33,8 @@ export async function createPaste(
   }
 
   const id = await generatePasteId();
-  const ext = await getLanguage(content, filename);
   try {
-    await S3Service.saveFile(`${id}.${ext}`, Buffer.from(content)); // Save the paste to S3
+    await S3Service.saveFile(`${id}.txt`, Buffer.from(content)); // Save the paste to S3
 
     // Create the paste in the database
     return {
@@ -46,8 +43,6 @@ export async function createPaste(
           id: id,
           size: Buffer.byteLength(content),
           expiresAt: expiresAt,
-          language: await getLanguageName(ext),
-          ext: ext,
           timestamp: new Date(),
           deleteAfterRead: deleteAfterRead || false,
         },
@@ -97,17 +92,30 @@ export async function getPaste(
     });
   }
 
+  const ext = id.split(".")[1]?.toLowerCase() ?? "txt";
+  const language = await getLanguageName(ext);
+
   const content =
-    (await S3Service.getFile(`${id}.${paste.ext}`))?.toString("utf-8") ?? "";
+    (await S3Service.getFile(`${id}.txt`))?.toString("utf-8") ?? "";
 
   // Handle delete after read pastes - they get deleted after first view
   if (paste.deleteAfterRead && isViewing) {
     Logger.info(`Triggering delete after read for paste ${id}`);
-    await handleDeleteAfterReadPaste(id, paste.ext);
+    await handleDeleteAfterReadPaste(id, ext);
   }
 
-  Logger.info(
-    `Got paste ${id} in ${formatDuration(performance.now() - before)}`
+  Logger.infoWithTiming(
+    `Got paste ${id}`,
+    before,
+    {
+      pasteId: id,
+      size: paste.size,
+      ext: ext,
+      language: language,
+      deleteAfterRead: paste.deleteAfterRead,
+      expiresAt: paste.expiresAt?.toISOString(),
+      isViewing
+    }
   );
   return {
     ...paste,
@@ -159,14 +167,13 @@ export async function expirePastes() {
     },
     select: {
       id: true,
-      ext: true,
     },
   });
 
   // Delete files from S3
   for (const paste of expiredPastes) {
     try {
-      await S3Service.deleteFile(`${paste.id}.${paste.ext}`);
+      await S3Service.deleteFile(`${paste.id}.txt`);
     } catch (error) {
       Logger.error(`Failed to delete S3 file for paste ${paste.id}: ${error}`);
     }
@@ -181,5 +188,8 @@ export async function expirePastes() {
     },
   });
 
-  Logger.info(`Expired ${count} pastes and cleaned up S3 files`);
+  Logger.info(`Expired ${count} pastes and cleaned up S3 files`, {
+    expiredCount: count,
+    pastesToCleanup: expiredPastes.length
+  });
 }

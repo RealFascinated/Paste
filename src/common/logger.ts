@@ -35,7 +35,33 @@ export default class Logger {
 
     const color = Logger.LogColors[level];
     console[level](
-      `${ConsoleColors.gray}${dayjs().format("HH:mm:ss")} ${color}[Paste / ${level.toUpperCase()}]: ${ConsoleColors.reset}${message}`,
+      `${ConsoleColors.gray}${dayjs().format("HH:mm:ss.SSS")} ${color}[Paste / ${level.toUpperCase()}]: ${ConsoleColors.reset}${message}`,
+      ...args
+    );
+  }
+
+  /**
+   * Logs a message with timing information.
+   *
+   * @param level the log level to use
+   * @param message the message to log
+   * @param startTime the start time for timing calculation
+   * @param args the arguments to log
+   */
+  public static logWithTiming(
+    level: keyof typeof Logger.LogLevel,
+    message: string,
+    startTime: number,
+    ...args: unknown[]
+  ) {
+    if (!Logger.shouldLog(level)) {
+      return;
+    }
+
+    const duration = performance.now() - startTime;
+    const color = Logger.LogColors[level];
+    console[level](
+      `${ConsoleColors.gray}${dayjs().format("HH:mm:ss.SSS")} ${color}[Paste / ${level.toUpperCase()}] (${duration.toFixed(2)}ms): ${ConsoleColors.reset}${message}`,
       ...args
     );
   }
@@ -78,6 +104,28 @@ export default class Logger {
    */
   public static error(message: string, ...args: unknown[]) {
     Logger.log("error", message, ...args);
+  }
+
+  /**
+   * Logs an info message with timing.
+   *
+   * @param message the message to log
+   * @param startTime the start time for timing calculation
+   * @param args the arguments to log
+   */
+  public static infoWithTiming(message: string, startTime: number, ...args: unknown[]) {
+    Logger.logWithTiming("info", message, startTime, ...args);
+  }
+
+  /**
+   * Logs an error message with timing.
+   *
+   * @param message the message to log
+   * @param startTime the start time for timing calculation
+   * @param args the arguments to log
+   */
+  public static errorWithTiming(message: string, startTime: number, ...args: unknown[]) {
+    Logger.logWithTiming("error", message, startTime, ...args);
   }
 
   /**

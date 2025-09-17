@@ -15,12 +15,6 @@ model Paste {
   // The size of the paste in bytes
   size Int
 
-  // The extension of the paste
-  ext String @default("txt")
-
-  // The language of the paste
-  language String @default("text")
-
   // The number of views for the paste
   views Int @default(0)
 

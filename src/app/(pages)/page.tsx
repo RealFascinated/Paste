@@ -111,7 +111,7 @@ function Page() {
         return;
       }
 
-      const pasteUrl = `${Config.siteUrl}/${paste.key}.${paste.ext}`;
+      const pasteUrl = `${Config.siteUrl}/${paste.key}`;
       await navigator.clipboard.writeText(pasteUrl);
 
       toastUtil.dismissLoading();

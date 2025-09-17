@@ -7,6 +7,16 @@ export type PasteWithContent = PrismaPaste & {
   key: string;
 
   /**
+   * The paste's extension.
+   */
+  ext: string;
+
+  /**
+   * The paste's language.
+   */
+  language: string;
+
+  /**
    * The paste's content.
    */
   content: string;

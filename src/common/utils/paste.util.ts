@@ -3,6 +3,7 @@ import { getPaste, getPrismaClient } from "@/common/prisma";
 import { randomString } from "@/common/utils/string.util";
 import { Paste as PrismaPaste } from "@/generated/prisma/client";
 import { PasteWithContent } from "@/types/paste";
+import { getLanguageName } from "./lang.util";
 
 /**
  * Generates a paste ID.
@@ -34,7 +35,9 @@ export async function lookupPaste(
   id: string,
   isViewing = false
 ): Promise<PasteWithContent | null> {
-  const paste = await getPaste(id.split(".")[0], isViewing);
+  const pasteId = id.split(".")[0];
+
+  const paste = await getPaste(pasteId, isViewing);
   if (paste == null) {
     return null;
   }

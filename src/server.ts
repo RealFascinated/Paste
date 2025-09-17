@@ -27,8 +27,18 @@ app.prepare().then(() => {
 
     // Log the request to the console
     if (!dev && !parsedUrl.path?.includes("_next")) {
-      Logger.info(
-        ` ${req.method} ${parsedUrl.path} in ${(performance.now() - before).toFixed(2)}ms`
+      const statusCode = res.statusCode || 200;
+      
+      Logger.infoWithTiming(
+        `${req.method} ${parsedUrl.path} ${statusCode}`,
+        before,
+        {
+          method: req.method,
+          path: parsedUrl.path,
+          statusCode,
+          userAgent: req.headers["user-agent"],
+          ip: req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || "unknown"
+        }
       );
     }
   }).listen(port);

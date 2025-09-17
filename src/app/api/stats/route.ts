@@ -1,8 +1,13 @@
 import { getPrismaClient } from "@/common/prisma";
+import Logger from "@/common/logger";
 import { StatsResponse } from "@/types/stats";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  const startTime = performance.now();
+  
+  Logger.info("Stats request started");
+
   try {
     const prisma = getPrismaClient();
 
@@ -127,9 +132,24 @@ export async function GET() {
       monthlyData,
     };
 
+    Logger.infoWithTiming("Stats retrieved successfully", startTime, {
+      totalPastes,
+      totalSize,
+      averageSize,
+      totalViews,
+      recentPastes,
+      pastesToday,
+      pastesThisWeek,
+      languageCount: Object.keys(languages).length,
+      monthlyDataPoints: Object.keys(monthlyData).length
+    });
+
     return NextResponse.json(response);
   } catch (error) {
-    console.error("Error fetching statistics:", error);
+    Logger.errorWithTiming("Failed to fetch statistics", startTime, {
+      error: error instanceof Error ? error.message : String(error)
+    });
+
     return NextResponse.json(
       { error: "Failed to fetch statistics" },
       { status: 500 }
