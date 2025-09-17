@@ -11,7 +11,7 @@ export function defaultMetadata(openGraph: boolean = true): Metadata {
   return {
     title: {
       default: Config.siteTitle,
-      template: `${Config.siteTitle} - %s`,
+      template: `%s | ${Config.siteTitle}`,
     },
     description:
       "Free and open-source paste service for sharing code snippets and text",

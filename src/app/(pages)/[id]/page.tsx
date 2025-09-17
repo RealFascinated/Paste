@@ -21,7 +21,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     return defaultMetadata();
   }
 
-  const title = `Paste ${queryId}`;
+  const title = `${queryId}`;
   const description = `${paste.language} code snippet • ${paste.lineCount} ${pluralize(paste.lineCount, "line")} • ${formatBytes(paste.size)}${paste.expiresAt ? ` • Expires ${getRelativeTime(paste.expiresAt)}` : ""}`;
   const url = `${Config.siteUrl}/${queryId}`;
 
