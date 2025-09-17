@@ -1,15 +1,19 @@
-import { formatBytes, formatNumber, pluralize } from "@/common/utils/string.util";
+import { downloadFile } from "@/common/utils/browser.util";
+import {
+  formatBytes,
+  formatNumber,
+  pluralize,
+} from "@/common/utils/string.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
-import { DownloadPasteButton } from "@/components/paste/download-button";
 import { MobilePasteDetails } from "@/components/paste/mobile-paste-details";
 import { PasteExpiryTime } from "@/components/paste/paste-expiry-time";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Plus, Save, X } from "lucide-react";
+import { Copy, Download, FileText, Plus, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Expiry } from "./expiry";
-import { Button } from "./ui/button";
+import { PasteFooterButton } from "./paste-footer-button";
 
 type PasteDetails = {
   type: "paste" | "edit";
@@ -28,8 +32,7 @@ const pasteDetails: PasteDetails[] = [
   {
     type: "paste",
     render: (paste?: PasteWithContent) =>
-      paste &&
-      `${formatNumber(paste.views)} ${pluralize(paste.views, "View")}`,
+      paste && `${formatNumber(paste.views)} ${pluralize(paste.views, "View")}`,
   },
   {
     type: "paste",
@@ -127,11 +130,13 @@ export function Footer({
   return (
     <div
       className={
-        "px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-between items-center text-sm w-full"
+        "px-2 sm:px-4 py-2 sm:py-2.5 bg-background/50 backdrop-blur-sm border-t border-border/50 select-none flex flex-col justify-center sm:justify-between items-center text-sm w-full"
       }
     >
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center w-full">
-        <div className="flex flex-wrap gap-3 sm:gap-6 items-center justify-center sm:justify-start min-w-0 flex-1">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 items-center justify-center sm:justify-between w-full">
+        <div
+          className={`flex flex-wrap gap-3 sm:gap-6 items-center justify-center sm:justify-start min-w-0 ${paste ? "hidden sm:flex" : "flex-1"}`}
+        >
           {!paste && (
             <>
               <Expiry />
@@ -146,7 +151,7 @@ export function Footer({
 
         <div className="flex-shrink-0 w-full sm:w-auto flex justify-center sm:justify-end">
           {/* Mobile Actions */}
-          <div className="md:hidden">
+          <div className="md:hidden relative z-50">
             {paste ? (
               <MobilePasteDetails
                 paste={paste}
@@ -160,28 +165,25 @@ export function Footer({
                 isLoading={isLoading}
               />
             ) : (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 w-full">
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (
-                    <Button
+                    <PasteFooterButton
                       type="button"
                       variant="outline"
-                      size="default"
-                      className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0"
                       onClick={onClear}
                       disabled={isLoading}
                     >
-                      <X className="h-3 w-3 mr-1" />
+                      <Trash2 className="h-3 w-3 mr-1" />
                       Clear
-                    </Button>
+                    </PasteFooterButton>
                   )}
-                <Button
+                <PasteFooterButton
                   type="submit"
                   form="paste-form"
-                  size="default"
-                  className="text-sm font-semibold px-6 py-3 h-12 shadow-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 rounded-lg flex-1 min-w-0"
                   disabled={isLoading}
+                  className="font-semibold shadow-lg flex-1"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center space-x-2">
@@ -194,7 +196,7 @@ export function Footer({
                       <span>Save Paste</span>
                     </div>
                   )}
-                </Button>
+                </PasteFooterButton>
               </div>
             )}
           </div>
@@ -203,49 +205,39 @@ export function Footer({
           <div className="hidden md:block">
             {paste ? (
               <div className="flex flex-wrap gap-2">
-                <DownloadPasteButton paste={paste} />
+                <PasteFooterButton
+                  onClick={() => downloadFile(`${paste.key}`, paste.content)}
+                  iconOnly
+                >
+                  <Download className="h-3 w-3 lg:mr-1" />
+                  <span className="hidden lg:inline">Download</span>
+                </PasteFooterButton>
                 {onCopyContent && (
-                  <Button
-                    onClick={onCopyContent}
-                    variant="outline"
-                    size="default"
-                    className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0"
-                  >
-                    <Copy className="h-3 w-3 mr-1" />
-                    Copy
-                  </Button>
+                  <PasteFooterButton onClick={onCopyContent} iconOnly>
+                    <Copy className="h-3 w-3 lg:mr-1" />
+                    <span className="hidden lg:inline">Copy</span>
+                  </PasteFooterButton>
                 )}
                 <Link
                   href={`/?duplicate=${encodeURI(paste.id)}`}
                   prefetch={false}
                 >
-                  <Button
-                    variant="secondary"
-                    size="default"
-                    className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white border-0"
-                  >
-                    <Copy className="h-3 w-3 mr-1" />
-                    Duplicate
-                  </Button>
+                  <PasteFooterButton variant="secondary" iconOnly>
+                    <Copy className="h-3 w-3 lg:mr-1" />
+                    <span className="hidden lg:inline">Duplicate</span>
+                  </PasteFooterButton>
                 </Link>
                 <Link href={`/raw/${paste.id}.${paste.ext}`} prefetch={false}>
-                  <Button
-                    variant="outline"
-                    size="default"
-                    className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white border-0"
-                  >
-                    <FileText className="h-3 w-3 mr-1" />
-                    Raw
-                  </Button>
+                  <PasteFooterButton variant="orange" iconOnly>
+                    <FileText className="h-3 w-3 lg:mr-1" />
+                    <span className="hidden lg:inline">Raw</span>
+                  </PasteFooterButton>
                 </Link>
                 <Link href="/" prefetch={false}>
-                  <Button
-                    size="default"
-                    className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0"
-                  >
-                    <Plus className="h-3 w-3 mr-1" />
-                    New
-                  </Button>
+                  <PasteFooterButton variant="emerald" iconOnly>
+                    <Plus className="h-3 w-3 lg:mr-1" />
+                    <span className="hidden lg:inline">New</span>
+                  </PasteFooterButton>
                 </Link>
               </div>
             ) : (
@@ -253,37 +245,36 @@ export function Footer({
                 {onClear &&
                   editDetails?.content &&
                   editDetails.content.trim().length > 0 && (
-                    <Button
+                    <PasteFooterButton
                       type="button"
                       variant="outline"
-                      size="default"
-                      className="text-sm font-medium px-4 py-2 h-9 shadow-md bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0"
                       onClick={onClear}
                       disabled={isLoading}
+                      iconOnly
                     >
-                      <X className="h-3 w-3 mr-1" />
-                      Clear
-                    </Button>
+                      <Trash2 className="h-3 w-3 lg:mr-1" />
+                      <span className="hidden lg:inline">Clear</span>
+                    </PasteFooterButton>
                   )}
-                <Button
+                <PasteFooterButton
                   type="submit"
                   form="paste-form"
-                  size="default"
-                  className="text-sm font-semibold px-6 py-2 h-9 shadow-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 rounded-lg"
                   disabled={isLoading}
+                  className="font-semibold shadow-lg"
+                  iconOnly
                 >
                   {isLoading ? (
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center lg:space-x-2">
                       <div className="w-4 h-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      <span>Saving...</span>
+                      <span className="hidden lg:inline">Saving...</span>
                     </div>
                   ) : (
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center lg:space-x-2">
                       <Save className="h-4 w-4" />
-                      <span>Save</span>
+                      <span className="hidden lg:inline">Save</span>
                     </div>
                   )}
-                </Button>
+                </PasteFooterButton>
               </div>
             )}
           </div>

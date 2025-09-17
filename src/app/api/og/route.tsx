@@ -1,6 +1,6 @@
+import Logger from "@/common/logger";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import Logger from "@/common/logger";
 
 export const runtime = "edge";
 
@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background: "linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 25%, #2d1b69 75%, #0f0f23 100%)",
+            background:
+              "linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 25%, #2d1b69 75%, #0f0f23 100%)",
             position: "relative",
           }}
         >
@@ -36,7 +37,8 @@ export async function GET(request: NextRequest) {
               left: "-50%",
               width: "200%",
               height: "200%",
-              background: "radial-gradient(circle, rgba(59, 130, 246, 0.08) 1px, transparent 1px)",
+              background:
+                "radial-gradient(circle, rgba(59, 130, 246, 0.08) 1px, transparent 1px)",
               backgroundSize: "80px 80px",
             }}
           />
@@ -47,7 +49,8 @@ export async function GET(request: NextRequest) {
               right: "5%",
               width: "500px",
               height: "500px",
-              background: "radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 60%)",
+              background:
+                "radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 60%)",
               borderRadius: "50%",
             }}
           />
@@ -58,7 +61,8 @@ export async function GET(request: NextRequest) {
               left: "10%",
               width: "400px",
               height: "400px",
-              background: "radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%)",
               borderRadius: "50%",
             }}
           />
@@ -70,7 +74,8 @@ export async function GET(request: NextRequest) {
               transform: "translate(-50%, -50%)",
               width: "600px",
               height: "600px",
-              background: "radial-gradient(circle, rgba(168, 85, 247, 0.03) 0%, transparent 80%)",
+              background:
+                "radial-gradient(circle, rgba(168, 85, 247, 0.03) 0%, transparent 80%)",
               borderRadius: "50%",
             }}
           />

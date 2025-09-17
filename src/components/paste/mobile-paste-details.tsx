@@ -1,12 +1,12 @@
 "use client";
 
+import { downloadFile } from "@/common/utils/browser.util";
 import { PasteCreatedTime } from "@/components/paste/created-time";
-import { DownloadPasteButton } from "@/components/paste/download-button";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { PasteWithContent } from "@/types/paste";
 import { PasteEditDetails } from "@/types/paste-edit-details";
-import { Copy, FileText, Info, Plus, Save } from "lucide-react";
+import { Copy, Download, FileText, Info, Plus, Save } from "lucide-react";
 import { useState } from "react";
 
 interface MobilePasteDetailsProps {
@@ -63,7 +63,7 @@ export function MobilePasteDetails({
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="md:hidden h-8 px-3 text-xs"
+        className="md:hidden h-9 px-3 text-xs relative z-50 isolate"
       >
         <Info className="h-3 w-3 mr-1" />
         Details
@@ -204,10 +204,14 @@ export function MobilePasteDetails({
 
               {paste && (
                 <div className="col-span-2">
-                  <DownloadPasteButton
-                    paste={paste}
+                  <Button
+                    onClick={() => downloadFile(`${paste.key}`, paste.content)}
+                    size="sm"
                     className="w-full text-xs font-medium px-3 py-2 h-9 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white border-0"
-                  />
+                  >
+                    <Download className="h-3 w-3 mr-1" />
+                    Download
+                  </Button>
                 </div>
               )}
             </div>

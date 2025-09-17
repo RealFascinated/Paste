@@ -12,10 +12,10 @@ export default function Highlighter({ content, language }: HighlighterProps) {
   const lineCountWidth = calculateLineNumberWidth(content.split("\n").length);
 
   return (
-    <div className="relative w-full" style={{ padding: 0, margin: 0 }}>
+    <div className="relative w-full h-full" style={{ padding: 0, margin: 0 }}>
       {/* Vertical Line Separator */}
       <div
-        className="absolute top-0 bottom-0 w-px bg-[#30363d] z-10 pointer-events-none"
+        className="absolute top-0 bottom-0 w-px bg-[#30363d] z-0 pointer-events-none"
         style={{ left: `${lineCountWidth}px` }}
       />
 

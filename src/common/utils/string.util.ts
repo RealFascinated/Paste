@@ -83,6 +83,10 @@ export function getLines(text: string | undefined, lineCount: number) {
  * @param plural The plural form of the word (defaults to singular + "s").
  * @returns The appropriate form of the word.
  */
-export function pluralize(count: number, singular: string, plural?: string): string {
+export function pluralize(
+  count: number,
+  singular: string,
+  plural?: string
+): string {
   return count === 1 ? singular : (plural ?? singular + "s");
 }
