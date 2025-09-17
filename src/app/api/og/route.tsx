@@ -12,12 +12,9 @@ export async function GET(request: NextRequest) {
   const language = searchParams.get("language") || "";
   const lines = searchParams.get("lines") || "";
   const size = searchParams.get("size") || "";
-  
-  // Extract paste ID from title (format: "Paste {id}.{ext}")
-  const pasteId = title.replace(/^Paste\s+/, '').replace(/\.[^.]+$/, '');
 
   try {
-    const imageResponse = new ImageResponse(
+    return new ImageResponse(
       (
         <div
           style={{
@@ -27,11 +24,56 @@ export async function GET(request: NextRequest) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#0a0a0a",
-            backgroundImage: "radial-gradient(circle at 25% 25%, #1a1a1a 2px, transparent 2px)",
-            backgroundSize: "40px 40px",
+            background: "linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 25%, #2d1b69 75%, #0f0f23 100%)",
+            position: "relative",
           }}
         >
+          {/* Background elements */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-50%",
+              left: "-50%",
+              width: "200%",
+              height: "200%",
+              background: "radial-gradient(circle, rgba(59, 130, 246, 0.08) 1px, transparent 1px)",
+              backgroundSize: "80px 80px",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "10%",
+              right: "5%",
+              width: "500px",
+              height: "500px",
+              background: "radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 60%)",
+              borderRadius: "50%",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "5%",
+              left: "10%",
+              width: "400px",
+              height: "400px",
+              background: "radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%)",
+              borderRadius: "50%",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "600px",
+              height: "600px",
+              background: "radial-gradient(circle, rgba(168, 85, 247, 0.03) 0%, transparent 80%)",
+              borderRadius: "50%",
+            }}
+          />
           {/* Main content container */}
           <div
             style={{
@@ -39,12 +81,14 @@ export async function GET(request: NextRequest) {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "rgba(0, 0, 0, 0.9)",
+              backgroundColor: "#1e1e2e",
               borderRadius: "16px",
               padding: "48px",
-              border: "1px solid #333",
-              maxWidth: "1000px",
+              border: "1px solid #313244",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+              maxWidth: "800px",
               margin: "0 40px",
+              position: "relative",
             }}
           >
             {/* Logo/Icon */}
@@ -53,9 +97,9 @@ export async function GET(request: NextRequest) {
                 width: "64px",
                 height: "64px",
                 backgroundColor: "#3b82f6",
-                borderRadius: "16px",
+                borderRadius: "12px",
                 marginBottom: "24px",
-                fontSize: "32px",
+                fontSize: "28px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -68,12 +112,13 @@ export async function GET(request: NextRequest) {
             {/* Title */}
             <h1
               style={{
-                fontSize: "42px",
-                fontWeight: "bold",
-                color: "white",
+                fontSize: "48px",
+                fontWeight: "700",
+                color: "#ffffff",
                 textAlign: "center",
-                margin: "0 0 16px 0",
+                margin: "0 0 20px 0",
                 lineHeight: "1.1",
+                letterSpacing: "-0.02em",
               }}
             >
               {title}
@@ -82,12 +127,13 @@ export async function GET(request: NextRequest) {
             {/* Description */}
             <p
               style={{
-                fontSize: "20px",
+                fontSize: "22px",
                 color: "#a1a1aa",
                 textAlign: "center",
-                margin: "0 0 24px 0",
-                lineHeight: "1.3",
-                maxWidth: "800px",
+                margin: "0 0 32px 0",
+                lineHeight: "1.4",
+                maxWidth: "700px",
+                fontWeight: "400",
               }}
             >
               {description}
@@ -98,7 +144,7 @@ export async function GET(request: NextRequest) {
               <div
                 style={{
                   display: "flex",
-                  gap: "20px",
+                  gap: "16px",
                   alignItems: "center",
                   justifyContent: "center",
                   flexWrap: "wrap",
@@ -109,17 +155,16 @@ export async function GET(request: NextRequest) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      backgroundColor: "rgba(59, 130, 246, 0.1)",
-                      border: "1px solid #3b82f6",
+                      backgroundColor: "#313244",
                       borderRadius: "8px",
                       padding: "8px 16px",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: "16px",
-                        color: "#3b82f6",
-                        fontWeight: "600",
+                        fontSize: "14px",
+                        color: "#cdd6f4",
+                        fontWeight: "500",
                       }}
                     >
                       {language}
@@ -131,17 +176,16 @@ export async function GET(request: NextRequest) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      backgroundColor: "rgba(34, 197, 94, 0.1)",
-                      border: "1px solid #22c55e",
+                      backgroundColor: "#313244",
                       borderRadius: "8px",
                       padding: "8px 16px",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: "16px",
-                        color: "#22c55e",
-                        fontWeight: "600",
+                        fontSize: "14px",
+                        color: "#cdd6f4",
+                        fontWeight: "500",
                       }}
                     >
                       {lines} lines
@@ -153,17 +197,16 @@ export async function GET(request: NextRequest) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      backgroundColor: "rgba(168, 85, 247, 0.1)",
-                      border: "1px solid #a855f7",
+                      backgroundColor: "#313244",
                       borderRadius: "8px",
                       padding: "8px 16px",
                     }}
                   >
                     <span
                       style={{
-                        fontSize: "16px",
-                        color: "#a855f7",
-                        fontWeight: "600",
+                        fontSize: "14px",
+                        color: "#cdd6f4",
+                        fontWeight: "500",
                       }}
                     >
                       {size}
@@ -178,7 +221,8 @@ export async function GET(request: NextRequest) {
               style={{
                 marginTop: "32px",
                 fontSize: "16px",
-                color: "#71717a",
+                color: "#6c7086",
+                fontWeight: "400",
               }}
             >
               paste.fascinated.cc
@@ -191,12 +235,6 @@ export async function GET(request: NextRequest) {
         height: 630,
       }
     );
-
-    // Add caching headers
-    imageResponse.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
-    imageResponse.headers.set('ETag', `"${pasteId}"`);
-    
-    return imageResponse;
   } catch (error) {
     Logger.error("Failed to generate OG image", { error });
     return new Response(`Failed to generate the image`, {
