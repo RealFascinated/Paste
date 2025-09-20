@@ -26,6 +26,7 @@ export default function RootLayout({
         <script
           src={env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT}
           data-website-id={env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID}
+          async
         />
       )}
       <body

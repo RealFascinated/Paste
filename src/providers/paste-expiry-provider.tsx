@@ -39,7 +39,7 @@ export function usePasteExpiry(defaultExpiry: number = -1) {
     if (context.expiry === -1 && defaultExpiry !== -1) {
       context.setExpiry(defaultExpiry);
     }
-  }, [context.expiry, context.setExpiry, defaultExpiry]);
+  }, [context.expiry, context.setExpiry, defaultExpiry, context]);
 
   return context;
 }
