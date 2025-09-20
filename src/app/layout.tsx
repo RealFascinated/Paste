@@ -21,12 +21,10 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const isProduction = process.env.NODE_ENV === "production";
-
   return (
     <html lang="en">
-      {env.NEXT_PUBLIC_ANALYTICS_SERVICE === "umami" && isProduction && (
-        <Script
+      {env.NEXT_PUBLIC_ANALYTICS_SERVICE === "umami" && (
+        <script
           src={env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT}
           data-website-id={env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID}
         />
