@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import { ReactNode } from "react";
 import "./globals.css";
+import { env } from "@/common/env";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",
@@ -20,15 +21,16 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const isProduction = process.env.NODE_ENV === "production";
+
   return (
     <html lang="en">
-      {process.env.ANALYTICS_SERVICE === "umami" &&
-        process.env.NODE_ENV === "production" && (
-          <Script
-            src={process.env.ANALYTICS_UMAMI_SCRIPT}
-            data-domain={process.env.ANALYTICS_UMAMI_DOMAIN}
-          />
-        )}
+      {env.NEXT_PUBLIC_ANALYTICS_SERVICE === "umami" && isProduction && (
+        <Script
+          src={env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT}
+          data-website-id={env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID}
+        />
+      )}
       <body
         className={`${siteFont.className} antialiased w-full h-dvh overflow-hidden`}
       >
