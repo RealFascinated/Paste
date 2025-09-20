@@ -26,9 +26,12 @@ export const env = createEnv({
     LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
 
     // Analytics
-    ANALYTICS_SERVICE: process.env.ANALYTICS_SERVICE ?? "umami",
-    ANALYTICS_UMAMI_SCRIPT: process.env.ANALYTICS_UMAMI_SCRIPT,
-    ANALYTICS_UMAMI_DATA_ID: process.env.ANALYTICS_UMAMI_DATA_ID,
+    NEXT_PUBLIC_ANALYTICS_SERVICE:
+      process.env.NEXT_PUBLIC_ANALYTICS_SERVICE ?? "umami",
+    NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT:
+      process.env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT,
+    NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID:
+      process.env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID,
 
     // S3
     S3_ENDPOINT: process.env.S3_ENDPOINT,
