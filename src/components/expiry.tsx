@@ -42,7 +42,9 @@ export function Expiry() {
         <span className="sm:hidden">Expires</span>
       </div>
       <Select
-        defaultValue={Object.keys(EXPIRY_OPTIONS).find(key => EXPIRY_OPTIONS[key] === DEFAULT_EXPIRY)}
+        defaultValue={Object.keys(EXPIRY_OPTIONS).find(
+          key => EXPIRY_OPTIONS[key] === DEFAULT_EXPIRY
+        )}
         onValueChange={handleExpiryChange}
       >
         <SelectTrigger className="w-[100px] sm:w-[120px] h-6 sm:h-7 bg-background-secondary/50 hover:bg-background-secondary text-xs sm:text-sm">

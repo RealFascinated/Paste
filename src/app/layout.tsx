@@ -1,13 +1,12 @@
+import { env } from "@/common/env";
 import { defaultMetadata } from "@/common/metadata";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/providers/query-provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { ReactNode } from "react";
 import "./globals.css";
-import { env } from "@/common/env";
 
 const siteFont = localFont({
   src: "./fonts/JetBrainsMono.ttf",

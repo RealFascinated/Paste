@@ -16,15 +16,17 @@ export function cn(...inputs: ClassValue[]) {
 export function getIP(req: Request | IncomingMessage | NextRequest) {
   const headers = req.headers;
   if (!headers) return "127.0.0.1";
-  
+
   const getHeader = (name: string) => {
-    if ('get' in headers && typeof headers.get === 'function') {
+    if ("get" in headers && typeof headers.get === "function") {
       return headers.get(name) ?? undefined;
     }
-    const value = (headers as Record<string, string | string[] | undefined>)[name];
-    return Array.isArray(value) ? value[0] : value ?? undefined;
+    const value = (headers as Record<string, string | string[] | undefined>)[
+      name
+    ];
+    return Array.isArray(value) ? value[0] : (value ?? undefined);
   };
-  
+
   return (
     getHeader("cf-connecting-ip") ??
     getHeader("x-forwarded-for") ??
