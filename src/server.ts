@@ -32,7 +32,7 @@ app.prepare().then(() => {
 
       Logger.infoWithTiming(
         `[${req.method} - ${getIP(req)}] ${parsedUrl.path} ${statusCode}`,
-        before,
+        before
       );
     }
   }).listen(port);

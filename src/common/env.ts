@@ -13,13 +13,25 @@ export const env = createEnv({
     S3_BUCKET: z.string(),
   },
 
-  client: {},
+  client: {
+    NEXT_PUBLIC_ANALYTICS_SERVICE: z.enum(["umami"]),
+    NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT: z.string(),
+    NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID: z.string(),
+  },
 
   /**
    * This is the environment variables that are available on the server.
    */
   runtimeEnv: {
     LOG_LEVEL: process.env.LOG_LEVEL ?? "info",
+
+    // Analytics
+    NEXT_PUBLIC_ANALYTICS_SERVICE:
+      process.env.NEXT_PUBLIC_ANALYTICS_SERVICE ?? "umami",
+    NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT:
+      process.env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT,
+    NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID:
+      process.env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID,
 
     // S3
     S3_ENDPOINT: process.env.S3_ENDPOINT,

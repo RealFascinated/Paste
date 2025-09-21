@@ -1,10 +1,10 @@
+import { env } from "@/common/env";
 import { defaultMetadata } from "@/common/metadata";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryProvider } from "@/providers/query-provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { ReactNode } from "react";
 import "./globals.css";
 
@@ -22,13 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {process.env.ANALYTICS_SERVICE === "umami" &&
-        process.env.NODE_ENV === "production" && (
-          <Script
-            src={process.env.ANALYTICS_UMAMI_SCRIPT}
-            data-domain={process.env.ANALYTICS_UMAMI_DOMAIN}
-          />
-        )}
+      {env.NEXT_PUBLIC_ANALYTICS_SERVICE === "umami" && (
+        <script
+          src={env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT}
+          data-website-id={env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID}
+          async
+        />
+      )}
       <body
         className={`${siteFont.className} antialiased w-full h-dvh overflow-hidden`}
       >

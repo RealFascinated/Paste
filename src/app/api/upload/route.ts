@@ -6,7 +6,6 @@ import { Ratelimiter, RateLimitResponse } from "@/common/ratelimiter";
 import { getIP } from "@/common/utils";
 import { formatBytes } from "@/common/utils/string.util";
 import { spamFilters } from "@/filter/filters";
-import { X } from "lucide-react";
 import { NextRequest } from "next/server";
 
 /**
