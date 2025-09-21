@@ -22,7 +22,7 @@ export const EXPIRY_OPTIONS: Record<string, number> = {
   "1 Month": 60 * 60 * 24 * 30,
   "1 Year": 60 * 60 * 24 * 365,
 } as const;
-const DEFAULT_EXPIRY = EXPIRY_OPTIONS["1 Month"];
+const DEFAULT_EXPIRY = EXPIRY_OPTIONS["Never"];
 
 export function Expiry() {
   const { setExpiry } = usePasteExpiry(DEFAULT_EXPIRY);
