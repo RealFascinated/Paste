@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export const EXPIRY_OPTIONS: Record<string, number> = {
+export const EXPIRY_OPTIONS = {
   Never: -1,
   "5 Minutes": 60 * 5,
   "15 Minutes": 60 * 15,
@@ -22,13 +22,13 @@ export const EXPIRY_OPTIONS: Record<string, number> = {
   "1 Month": 60 * 60 * 24 * 30,
   "1 Year": 60 * 60 * 24 * 365,
 } as const;
-const DEFAULT_EXPIRY = EXPIRY_OPTIONS["Never"];
+const DEFAULT_EXPIRY = EXPIRY_OPTIONS.Never;
 
 export function Expiry() {
   const { setExpiry } = usePasteExpiry(DEFAULT_EXPIRY);
 
   const handleExpiryChange = (value: string) => {
-    const expiry = EXPIRY_OPTIONS[value];
+    const expiry = EXPIRY_OPTIONS[value as keyof typeof EXPIRY_OPTIONS];
     if (expiry != null) {
       setExpiry(expiry);
     }
@@ -43,7 +43,7 @@ export function Expiry() {
       </div>
       <Select
         defaultValue={Object.keys(EXPIRY_OPTIONS).find(
-          key => EXPIRY_OPTIONS[key] === DEFAULT_EXPIRY
+          key => EXPIRY_OPTIONS[key as keyof typeof EXPIRY_OPTIONS] === DEFAULT_EXPIRY
         )}
         onValueChange={handleExpiryChange}
       >
