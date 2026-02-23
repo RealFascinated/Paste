@@ -9,7 +9,7 @@ import { LoadingState } from "@/components/loading-states";
 import { useCreatePageShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { usePasteExpiry } from "@/providers/paste-expiry-provider";
 import { redirect, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useEffect, useRef, useState } from "react";
+import { SubmitEvent, Suspense, useEffect, useRef, useState } from "react";
 
 export default function PasteCreatePage() {
   return (
@@ -33,11 +33,11 @@ function Page() {
     if (duplicate && content == "") {
       setIsLoadingDuplicate(true);
       getPaste(duplicate)
-        .then(paste => {
+        .then((paste) => {
           const newPage = "/";
           const newState = { page: newPage };
           window.history.replaceState(newState, "", newPage);
-          setContent(paste.content);
+          setContent(paste!.content);
         })
         .catch(() => {
           toastUtil.pasteNotFound();
@@ -66,7 +66,7 @@ function Page() {
   useCreatePageShortcuts(
     handleSave,
     handleNew,
-    content.trim().length > 0 && !isLoading
+    content.trim().length > 0 && !isLoading,
   );
 
   /**
@@ -74,11 +74,11 @@ function Page() {
    *
    * @param event
    */
-  async function createPaste(event: FormEvent<HTMLFormElement>) {
+  async function createPaste(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const form = new FormData(event.target as HTMLFormElement);
-    const content = form.get("content") as string;
+    const form = new FormData(event.currentTarget);
+    const content = form.get("content")?.toString() ?? "";
     if (content == null || content.length == 0) {
       toastUtil.pasteEmpty();
       return;
@@ -123,7 +123,7 @@ function Page() {
       <form
         id="paste-form"
         ref={formRef}
-        onSubmit={async event => {
+        onSubmit={async (event) => {
           event.preventDefault();
           await createPaste(event);
         }}

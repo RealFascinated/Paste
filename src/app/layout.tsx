@@ -6,6 +6,7 @@ import { QueryProvider } from "@/providers/query-provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
+import Script from "next/script";
 import "./globals.css";
 
 const siteFont = localFont({
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {env.NEXT_PUBLIC_ANALYTICS_SERVICE === "umami" && (
-        <script
+        <Script
           src={env.NEXT_PUBLIC_ANALYTICS_UMAMI_SCRIPT}
           data-website-id={env.NEXT_PUBLIC_ANALYTICS_UMAMI_DATA_ID}
           async

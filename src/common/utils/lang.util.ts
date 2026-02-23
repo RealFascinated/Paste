@@ -1,5 +1,4 @@
 import { GuessLang } from "@ray-d-song/guesslang-js";
-import ky from "ky";
 import YAML from "yaml";
 import Logger from "../logger";
 
@@ -96,14 +95,16 @@ export async function getLanguages(): Promise<Record<
   }
 
   Logger.info("Getting languages...");
-  const response = await ky
-    .get(
-      "https://raw.githubusercontent.com/github-linguist/linguist/refs/heads/main/lib/linguist/languages.yml"
-    )
-    .text();
+  const response = await fetch(
+    "https://raw.githubusercontent.com/github-linguist/linguist/refs/heads/main/lib/linguist/languages.yml"
+  );
+  if (!response.ok) {
+    return null;
+  }
+  const responseText = await response.text();
   if (response == null) {
     return null;
   }
-  languagesCache = YAML.parse(response.split("---")[1]);
+  languagesCache = YAML.parse(responseText.split("---")[1]);
   return languagesCache;
 }
