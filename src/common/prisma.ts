@@ -2,6 +2,7 @@ import { getLanguage, getLanguageName } from "@/common/utils/lang.util";
 import { generatePasteId } from "@/common/utils/paste.util";
 import { PrismaClient } from "@/generated/prisma";
 import { PasteWithContent } from "@/types/paste";
+import { PrismaPg } from "@prisma/adapter-pg";
 import Logger from "./logger";
 import S3Service from "./s3";
 
@@ -9,7 +10,12 @@ let prismaClientInstance: PrismaClient | null = null;
 
 export function getPrismaClient(): PrismaClient {
   if (!prismaClientInstance) {
-    prismaClientInstance = new PrismaClient();
+    const connectionString = process.env.DATABASE_URL;
+    if (!connectionString) {
+      throw new Error("DATABASE_URL environment variable is not set");
+    }
+    const adapter = new PrismaPg({ connectionString });
+    prismaClientInstance = new PrismaClient({ adapter });
   }
   return prismaClientInstance;
 }
