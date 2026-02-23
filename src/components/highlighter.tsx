@@ -1,7 +1,32 @@
 "use client";
 
 import { calculateLineNumberWidth } from "@/common/utils/line-number.util";
+import Prism from "@/lib/prism-all-languages";
 import { Highlight, themes } from "prism-react-renderer";
+
+/** Map file extensions to Prism language ids when they differ (e.g. py -> python). */
+const EXT_TO_PRISM: Record<string, string> = {
+  py: "python",
+  ts: "typescript",
+  js: "javascript",
+  md: "markdown",
+  rb: "ruby",
+  rs: "rust",
+  kt: "kotlin",
+  kts: "kotlin",
+  go: "go",
+  sh: "bash",
+  yml: "yaml",
+  yaml: "yaml",
+  cs: "csharp",
+  vb: "vbnet",
+  fs: "fsharp",
+  ex: "elixir",
+  exs: "elixir",
+  hs: "haskell",
+  tsx: "tsx",
+  jsx: "jsx",
+};
 
 type HighlighterProps = {
   content: string;
@@ -10,6 +35,7 @@ type HighlighterProps = {
 
 export default function Highlighter({ content, language }: HighlighterProps) {
   const lineCountWidth = calculateLineNumberWidth(content.split("\n").length);
+  const prismLang = EXT_TO_PRISM[language.toLowerCase()] ?? language;
 
   return (
     <div className="relative w-full h-full" style={{ padding: 0, margin: 0 }}>
@@ -19,7 +45,12 @@ export default function Highlighter({ content, language }: HighlighterProps) {
         style={{ left: `${lineCountWidth}px` }}
       />
 
-      <Highlight theme={themes.oneDark} code={content} language={language}>
+      <Highlight
+        prism={Prism}
+        theme={themes.oneDark}
+        code={content}
+        language={prismLang}
+      >
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
             style={{
@@ -53,7 +84,7 @@ export default function Highlighter({ content, language }: HighlighterProps) {
                 >
                   {/* Line Number */}
                   <span
-                    className="flex-shrink-0 pl-1 pr-2 text-right text-[#7d8590] select-none font-mono text-xs"
+                    className="shrink-0 pl-1 pr-2 text-right text-[#7d8590] select-none font-mono text-xs"
                     style={{
                       width: `${lineCountWidth}px`,
                       lineHeight: "1.5",

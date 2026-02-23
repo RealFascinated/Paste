@@ -10,7 +10,8 @@ import { getIP } from "./common/utils";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev, turbo: true });
+// Turbopack fails to load node:crypto chunk (ChunkLoadError) when using Prisma + pg; force webpack in dev.
+const app = next({ dev, ...(dev && { webpack: true }) });
 const handle = app.getRequestHandler();
 
 Logger.info(
