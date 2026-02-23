@@ -118,18 +118,6 @@ export async function GET() {
       monthlyData,
     };
 
-    Logger.infoWithTiming("Stats retrieved successfully", startTime, {
-      totalPastes,
-      totalSize,
-      averageSize,
-      totalViews,
-      recentPastes,
-      pastesToday,
-      pastesThisWeek,
-      expiredPastes,
-      monthlyDataPoints: Object.keys(monthlyData).length,
-    });
-
     return NextResponse.json(response);
   } catch (error) {
     Logger.errorWithTiming("Failed to fetch statistics", startTime, {
